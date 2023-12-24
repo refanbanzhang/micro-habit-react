@@ -24,7 +24,6 @@ import request from '@/shared/request';
  * 新增任务
  * @param {Object} data
  * @param {string} data.name
- * @param {string} data.username
  * @param {string} data.target
  * @returns {ApiResponse}
  */
@@ -38,7 +37,6 @@ export const add = (data) => request({
  * 更新任务
  * @param {Object} data
  * @param {string} [data.name]
- * @param {string} [data.username]
  * @param {string} [data.target]
  * @returns {ApiResponse}
  */
@@ -52,7 +50,6 @@ export const update = (data) => request({
  * 任务列表
  * @param {Object} params
  * @param {string} [params.name]
- * @param {string} [params.username]
  * @param {string} [params.target]
  * @returns {TaskApiResponse}
  */
