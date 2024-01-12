@@ -6,6 +6,7 @@ import {
 import Index from './pages/index'
 import Login from './pages/login'
 import Register from './pages/register'
+import Daily from './pages/daily'
 
 const router = createHashRouter([
   {
@@ -19,6 +20,10 @@ const router = createHashRouter([
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/daily",
+    element: <Daily />,
   },
 ]);
 
