@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import classnames from 'classnames';
 
 import styles from './style.less';
 
@@ -15,6 +16,7 @@ function Head() {
     },
   ]);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const onClick = (path) => {
     navigate(path);
@@ -26,7 +28,12 @@ function Head() {
         {items.map((item) => (
           <li
             key={item.path}
-            className={styles.item}
+            className={classnames([
+              styles.item,
+              {
+                [styles.active]: pathname === item.path,
+              },
+            ])}
             onClick={() => onClick(item.path)}
           >
             {item.name}
