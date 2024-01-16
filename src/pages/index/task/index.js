@@ -12,6 +12,7 @@ function getPercent(obj) {
 
 function Task() {
   const [tasks, setTasks] = useState([]);
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
     taskApi.list().then((res) => {
@@ -40,13 +41,13 @@ function Task() {
         };
       });
 
-      setTasks(nextTasks);
+      setItems(nextTasks);
     });
   }, [tasks]);
 
   return (
     <div className={styles.container}>
-      {tasks.map((item) => (
+      {items.map((item) => (
         <Card
           key={item._id}
           title={item.name}
