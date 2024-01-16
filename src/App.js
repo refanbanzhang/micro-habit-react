@@ -1,36 +1,8 @@
-import {
-  createHashRouter,
-  RouterProvider,
-} from "react-router-dom";
-
-import Index from './pages/index'
-import Login from './pages/login'
-import Register from './pages/register'
-import Daily from './pages/daily'
-
-const router = createHashRouter([
-  {
-    path: "/",
-    element: <Index />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/register",
-    element: <Register />,
-  },
-  {
-    path: "/daily",
-    element: <Daily />,
-  },
-]);
+import { RouterProvider } from 'react-router-dom';
+import router from '@/router';
 
 function App() {
-  return (
-    <RouterProvider router={router} />
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import classnames from 'classnames';
+import router from '@/router';
 
 import styles from './style.less';
 
@@ -15,11 +16,10 @@ function Head() {
       path: '/daily',
     },
   ]);
-  const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const onClick = (path) => {
-    navigate(path);
+    router.navigate(path);
   };
 
   return (
