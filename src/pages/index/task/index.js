@@ -19,6 +19,7 @@ function Task() {
       {
         tasks.map(item => (
           <Card
+            key={item._id}
             title={item.name}
             className={styles.card}
             style={{ maxWidth: '50%' }}
