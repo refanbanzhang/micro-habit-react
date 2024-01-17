@@ -51,7 +51,7 @@ function Year() {
           <li
             key={item.date}
             title={`${item.date} ${item.value}`}
-            className={classnames([styles.day, getLevelClass(item.value, item.target, item.allFinished)])}
+            className={classnames([styles.item, getLevelClass(item.value, item.target, item.allFinished)])}
           ></li>
         ))}
       </ul>
