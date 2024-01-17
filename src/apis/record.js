@@ -32,11 +32,12 @@ import request from '@/shared/request';
  * @param {string} data.target
  * @returns {ApiResponse}
  */
-export const add = (data) => request({
-  method: 'post',
-  url: '/record/add',
-  data,
-});
+export const add = (data) =>
+  request({
+    method: 'post',
+    url: '/record/add',
+    data,
+  });
 
 /**
  * 更新记录
@@ -48,11 +49,12 @@ export const add = (data) => request({
  * @param {string} [data.target]
  * @returns {ApiResponse}
  */
-export const update = (data = {}) => request({
-  method: 'post',
-  url: '/record/update',
-  data,
-});
+export const update = (data = {}) =>
+  request({
+    method: 'post',
+    url: '/record/update',
+    data,
+  });
 
 /**
  * 记录列表
@@ -64,8 +66,21 @@ export const update = (data = {}) => request({
  * @param {string} [params.target]
  * @returns {RecordApiResponse}
  */
-export const list = (params = {}) => request({
-  method: 'get',
-  url: '/record/list',
-  params,
-});
+export const list = (params = {}) =>
+  request({
+    method: 'get',
+    url: '/record/list',
+    params,
+  });
+
+/**
+ * 合计
+ * @param {Object} params
+ * @returns {Number}
+ */
+export const totalValue = (params = {}) =>
+  request({
+    method: 'get',
+    url: '/record/totalValue',
+    params,
+  });

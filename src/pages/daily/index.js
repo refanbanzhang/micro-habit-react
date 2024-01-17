@@ -6,6 +6,8 @@ function Index() {
   return (
     <div className={styles.container}>
       <Head />
+
+      <div>实现中</div>
     </div>
   );
 }

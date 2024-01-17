@@ -1,5 +1,6 @@
 import Head from '@/shared/components/Head';
 import Year from '@/shared/components/Year';
+import Bar from '@/shared/components/Bar';
 
 import styles from './style.less';
 import Task from './task';
@@ -10,7 +11,8 @@ function Index() {
       <Head />
       <Task />
       <div style={{ marginBottom: '20px' }} />
-      <Year />
+      <Year style={{ marginBottom: '20px' }} />
+      <Bar />
     </div>
   );
 }
