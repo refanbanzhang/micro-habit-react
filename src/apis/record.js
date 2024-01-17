@@ -48,7 +48,7 @@ export const add = (data) => request({
  * @param {string} [data.target]
  * @returns {ApiResponse}
  */
-export const update = (data) => request({
+export const update = (data = {}) => request({
   method: 'post',
   url: '/record/update',
   data,
@@ -64,7 +64,7 @@ export const update = (data) => request({
  * @param {string} [params.target]
  * @returns {RecordApiResponse}
  */
-export const list = (params) => request({
+export const list = (params = {}) => request({
   method: 'get',
   url: '/record/list',
   params,

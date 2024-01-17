@@ -7,12 +7,12 @@ const instance = axios.create({
 
 const request = (query) => {
   const token = localStorage.getItem('token');
-
   return instance({
-    headers: {
-      token,
-    },
     ...query,
+    params: {
+      token,
+      ...query.params,
+    },
   }).then((res) => res.data);
 };
 

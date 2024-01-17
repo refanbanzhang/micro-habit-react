@@ -27,11 +27,12 @@ import request from '@/shared/request';
  * @param {string} data.target
  * @returns {ApiResponse}
  */
-export const add = (data) => request({
-  method: 'post',
-  url: '/task/add',
-  data,
-});
+export const add = (data) =>
+  request({
+    method: 'post',
+    url: '/task/add',
+    data,
+  });
 
 /**
  * 更新任务
@@ -40,11 +41,12 @@ export const add = (data) => request({
  * @param {string} [data.target]
  * @returns {ApiResponse}
  */
-export const update = (data) => request({
-  method: 'post',
-  url: '/task/update',
-  data,
-});
+export const update = (data = {}) =>
+  request({
+    method: 'post',
+    url: '/task/update',
+    data,
+  });
 
 /**
  * 任务列表
@@ -53,8 +55,9 @@ export const update = (data) => request({
  * @param {string} [params.target]
  * @returns {TaskApiResponse}
  */
-export const list = (params) => request({
-  method: 'get',
-  url: '/task/list',
-  params,
-});
+export const list = (params = {}) =>
+  request({
+    method: 'get',
+    url: '/task/list',
+    params,
+  });
