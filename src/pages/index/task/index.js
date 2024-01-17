@@ -1,16 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Card } from '@douyinfe/semi-ui';
+import { getToday, getPercent } from '@/shared/utils';
 import * as taskApi from '@/apis/task';
 import * as recordApi from '@/apis/record';
 
 import styles from './style.less';
 
-function getPercent(obj) {
-  const percent = obj.value / obj.target;
-  return (percent * 100).toFixed(2);
-}
-
 function Task() {
+  const today = getToday();
   const [tasks, setTasks] = useState([]);
   const [items, setItems] = useState([]);
 
@@ -27,7 +24,7 @@ function Task() {
 
     const pros = tasks.map((item) =>
       recordApi.list({
-        date: '2024-01-16',
+        date: today,
         name: item.name,
       }),
     );
@@ -43,7 +40,7 @@ function Task() {
 
       setItems(nextTasks);
     });
-  }, [tasks]);
+  }, [today, tasks]);
 
   return (
     <div className={styles.container}>
@@ -56,7 +53,7 @@ function Task() {
         >
           <div>目标：{item.target}</div>
           <div>已完成：{item.value}</div>
-          <div>进度：{getPercent(item)}</div>
+          <div>进度：{getPercent(item.value, item.target)}</div>
         </Card>
       ))}
     </div>
