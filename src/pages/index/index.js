@@ -1,4 +1,5 @@
-import Head from '@/shared/components/head';
+import Head from '@/shared/components/Head';
+import Year from '@/shared/components/Year';
 
 import styles from './style.less';
 import Task from './task';
@@ -8,6 +9,8 @@ function Index() {
     <div className={styles.container}>
       <Head />
       <Task />
+      <div style={{ marginBottom: '20px' }} />
+      <Year />
     </div>
   );
 }

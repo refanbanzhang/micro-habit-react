@@ -1,4 +1,4 @@
-import Head from '@/shared/components/head';
+import Head from '@/shared/components/Head';
 
 import styles from './style.less';
 
