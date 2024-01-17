@@ -18,7 +18,6 @@ function Year() {
 
       const tasks = taskRes.data;
       const dates = recordRes.data;
-
       const targetTotalAmount = tasks.reduce((acc, curr) => (acc += curr.target), 0);
 
       const list = year.map((item) => {
@@ -43,7 +42,7 @@ function Year() {
     };
 
     loadData();
-  });
+  }, []);
 
   return (
     <div className={styles.container}>
