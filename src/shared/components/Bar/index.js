@@ -22,8 +22,8 @@ function Bar() {
 
   return (
     <div className={styles.container}>
-      <div class={styles.title}>1万小时定律（{parseInt(value / 60)}/10000）</div>
-      <div class={styles.barContainer}>
+      <div className={styles.title}>1万小时定律（{parseInt(value / 60)}/10000）</div>
+      <div className={styles.barContainer}>
         <div
           className={styles.bar}
           style={{ width: `${percent}%` }}
