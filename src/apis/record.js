@@ -24,25 +24,24 @@ import request from '@/shared/request';
 
 /**
  * 新增记录
- * @param {Object} data
- * @param {string} data.username
- * @param {string} data.date
- * @param {string} data.name
- * @param {string} data.value
- * @param {string} data.target
+ * @param {Object} params
+ * @param {string} params.username
+ * @param {string} params.date
+ * @param {string} params.name
+ * @param {string} params.value
+ * @param {string} params.target
  * @returns {ApiResponse}
  */
-export const add = (data) =>
+export const add = (params) =>
   request({
-    method: 'post',
+    method: 'get',
     url: '/record/add',
-    data,
+    params,
   });
 
 /**
  * 更新记录
  * @param {Object} data
- * @param {string} [data.username]
  * @param {string} [data.date]
  * @param {string} [data.name]
  * @param {string} [data.value]

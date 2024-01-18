@@ -9,6 +9,9 @@ const request = (query) => {
   const token = localStorage.getItem('token');
   return instance({
     ...query,
+    headers: {
+      token,
+    },
     params: {
       token,
       ...query.params,

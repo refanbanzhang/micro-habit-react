@@ -13,17 +13,57 @@ function Task() {
   const [tasks, setTasks] = useState([]);
   const [items, setItems] = useState([]);
   const [value, setValue] = useState(5);
-  const [visible, setVisible] = useState(true);
+  const [currTaskId, setCurrTaskId] = useState('');
+  const [visible, setVisible] = useState(false);
 
-  const onShowModal = () => {
+  const onShowModal = (taskId) => {
+    setCurrTaskId(taskId);
     setVisible(true);
   };
 
-  const onConfirm = () => {
+  const setRecord = async (today, value, currTaskId) => {
+    const currTask = tasks.find((task) => task._id === currTaskId);
+    const res = await recordApi.list({
+      name: currTask.name,
+      date: today,
+    });
+
+    const records = res.data;
+
+    if (records.length === 0) {
+      await recordApi.add({
+        date: today,
+        name: currTask.name,
+        value: value,
+        target: currTask.target,
+      });
+      return;
+    }
+
+    if (records.length === 1) {
+      await recordApi.update({
+        query: {
+          date: today,
+          name: currTask.name,
+        },
+        payload: {
+          value: records[0].value + value,
+        },
+      });
+      return;
+    }
+
+    throw new Error('查询到超过一条数据，无法定位到需要更新的数据');
+  };
+
+  const onConfirm = async () => {
     onCancel();
 
-    // 设置当前任务的value
-    console.log('value', value);
+    if (today && value && currTaskId) {
+      await setRecord(today, value, currTaskId);
+      // 如何自动更新items呢？
+      window.location.reload();
+    }
   };
 
   const onCancel = () => {
@@ -73,12 +113,7 @@ function Task() {
           title={item.name}
           className={styles.card}
           style={{ maxWidth: '50%' }}
-          headerExtraContent={
-            <Button
-              icon={<IconPlus onClick={onShowModal} />}
-              aria-label="截屏"
-            />
-          }
+          headerExtraContent={<Button icon={<IconPlus onClick={() => onShowModal(item._id)} />} />}
         >
           <div>目标：{item.target}</div>
           <div>已完成：{item.value}</div>
