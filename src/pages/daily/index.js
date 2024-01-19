@@ -17,11 +17,9 @@ function Daily() {
 
   const onChange = (checkedValues) => {
     console.log('checked = ', checkedValues);
-    // 根据checkedValues的情况，更新数据库
+    // 1. 收集任务名
 
-    // 1. 创建任务 daily name username
-    // 2. 创建一条任务日期 dailyDate name date username
-
+    // 2. 创建一条任务日期name date
     dailyDateApi.add({
       name: 'tg',
       date: '2024-01-19'
@@ -29,6 +27,9 @@ function Daily() {
   };
 
   const onAddTask = () => {
+    // 1. 收集任务名称
+
+    // 2. 创建任务name
     dailyTaskApi.add({
       name: 'tg2'
     })
