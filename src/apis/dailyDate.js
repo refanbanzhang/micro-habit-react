@@ -46,3 +46,16 @@ export const add = (data) => request({
   url: '/dailyDate/add',
   data,
 });
+
+
+/**
+ * 删除
+ * @param {Object} params
+ * @param {string} params.id
+ * @returns {ApiResponse}
+ */
+export const del = (params) => request({
+  method: 'get',
+  url: '/dailyDate/del',
+  params,
+});
