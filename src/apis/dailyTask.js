@@ -1,9 +1,8 @@
 import request from '@/shared/request';
 
 /**
- * @typedef {Object} Daily
+ * @typedef {Object} DailyTask
  * @property {string} _id
- * @property {string} date
  * @property {string} name
  * @property {string} username
  */
@@ -15,36 +14,32 @@ import request from '@/shared/request';
  */
 
 /**
- * @typedef {Object} DailyApiResponse
+ * @typedef {Object} DailyTaskApiResponse
  * @extends {ApiResponse}
- * @property {Daily[]} data
+ * @property {DailyTask[]} data
  */
 
 /**
  * 列表
  * @param {Object} params
  * @param {string} [params._id]
- * @param {string} [params.date]
  * @param {string} [params.name]
- * @param {string} [params.username]
- * @returns {DailyApiResponse}
+ * @returns {DailyTaskApiResponse}
  */
 export const list = (params) => request({
   method: 'get',
-  url: '/daily/list',
+  url: '/dailyTask/list',
   params,
 });
 
 /**
  * 新增
  * @param {Object} data
- * @param {string} data.date
  * @param {string} data.name
- * @param {string} data.username
  * @returns {ApiResponse}
  */
 export const add = (data) => request({
   method: 'post',
-  url: '/daily/add',
+  url: '/dailyTask/add',
   data,
 });
