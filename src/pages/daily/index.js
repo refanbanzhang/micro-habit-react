@@ -34,6 +34,7 @@ function Daily() {
   useEffect(() => {
     async function update() {
       console.log('checkedValues')
+      // TODO: 勾选为什么会发出del请求？
 
       for (const name of checkedValues) {
         const res = await dailyDateApi.list({
