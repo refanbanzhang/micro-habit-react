@@ -11,6 +11,7 @@ function Bar() {
 
   useEffect(() => {
     const loadData = async () => {
+      // TODO: 云对象的单次最大查询长度为1000条，后续需要优化
       const res = await recordApi.totalValue();
       setValue(res);
     };
