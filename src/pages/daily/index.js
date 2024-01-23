@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Input, Button, CheckboxGroup, Checkbox, Modal } from '@douyinfe/semi-ui';
+import { Input, Button, Checkbox, Modal } from '@douyinfe/semi-ui';
 
 import { getToday } from '@/shared/utils';
 import * as dailyTaskApi from '@/apis/dailyTask';
@@ -11,55 +11,48 @@ import styles from './style.less';
 const today = getToday();
 
 function Daily() {
-  const [taskNameModal, setTaskNameModal] = useState(false);
+  const [tasks, setTasks] = useState([]);
   const [taskName, setTaskName] = useState('');
-  const [items, setItems] = useState([]);
-  const [dates, setDates] = useState([]);
-  const [checkedValues, setCheckedValues] = useState([]);
+  const [taskNameModal, setTaskNameModal] = useState(false);
 
   useEffect(() => {
-    dailyTaskApi.list().then((res) => {
-      setItems(res.data);
-    });
-
-    dailyDateApi
-      .list({
+    const loadData = async () => {
+      const taskRes = await dailyTaskApi.list();
+      const dateRes = await dailyDateApi.list({
         date: today,
-      })
-      .then((res) => {
-        setDates(res.data);
       });
+
+      // 将dates中的数据，融合到tasks中，实现初始化选中
+      const names = dateRes.data.map(item => item.name)
+      setTasks(
+        taskRes.data.map((item) => ({
+          ...item,
+          checked: names.includes(item.name),
+        })),
+      );
+    };
+
+    loadData();
   }, []);
 
-  useEffect(() => {
-    async function update() {
-      console.log('checkedValues')
-      // TODO: 勾选为什么会发出del请求？
-
-      for (const name of checkedValues) {
-        const res = await dailyDateApi.list({
-          name: name,
-          date: today,
-        });
-
-        if (res.data.length) {
-          await dailyDateApi.del({
-            id: res.data[0]._id
-          })
-        } else {
-          await dailyDateApi.add({
-            name: name,
-            date: today,
-          })
-        }
-      }
+  const update = async (name, checked) => {
+    if (checked) {
+      await dailyDateApi.del({
+        name,
+        date: today,
+      });
+    } else {
+      await dailyDateApi.add({
+        name,
+        date: today,
+      });
     }
+  };
 
-    update();
-  }, [checkedValues]);
+  const onChange = (e) => {
+    const { value, checked } = e.target;
 
-  const onChange = (checkedValues) => {
-    setCheckedValues(checkedValues);
+    update(value, !checked);
   };
 
   const onAddTask = () => {
@@ -77,26 +70,21 @@ function Daily() {
     setTaskNameModal(false);
   };
 
-  console.log('dates', dates);
-
   return (
     <div className={styles.container}>
       <Head />
       <Button onClick={onAddTask}>创建打卡任务</Button>
-      <CheckboxGroup
-        style={{ width: '100%' }}
-        value={checkedValues}
-        onChange={onChange}
-      >
-        {items.map((item) => (
-          <Checkbox
-            key={item._id}
-            value={item.name}
-          >
-            {item.name}
-          </Checkbox>
-        ))}
-      </CheckboxGroup>
+
+      {tasks.map((item) => (
+        <Checkbox
+          key={item._id}
+          value={item.name}
+          defaultChecked={item.checked}
+          onChange={onChange}
+        >
+          {item.name}
+        </Checkbox>
+      ))}
 
       <Modal
         title="请输入任务名"

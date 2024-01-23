@@ -51,7 +51,7 @@ export const add = (data) => request({
 /**
  * 删除
  * @param {Object} params
- * @param {string} params.id
+ * @param {string} params.name
  * @returns {ApiResponse}
  */
 export const del = (params) => request({
