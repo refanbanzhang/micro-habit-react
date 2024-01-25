@@ -43,3 +43,15 @@ export const add = (data) => request({
   url: '/dailyTask/add',
   data,
 });
+
+/**
+ * 删除
+ * @param {Object} data
+ * @param {string} data.id
+ * @returns {ApiResponse}
+ */
+export const del = (data) => request({
+  method: 'post',
+  url: '/dailyTask/del',
+  data,
+});
