@@ -75,6 +75,7 @@ export const list = (params = {}) =>
 /**
  * 合计
  * @param {Object} params
+ * @param {string} params.name
  * @returns {Number}
  */
 export const totalValue = (params = {}) =>

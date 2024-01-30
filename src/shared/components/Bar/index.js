@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import * as taskApi from '@/apis/task';
 import * as recordApi from '@/apis/record';
 
 import styles from './style.less';
@@ -7,29 +8,42 @@ import styles from './style.less';
 const target = 10000 * 60;
 
 function Bar() {
-  const [value, setValue] = useState(0);
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
     const loadData = async () => {
       // TODO: 云对象的单次最大查询长度为1000条，后续需要优化
-      const res = await recordApi.totalValue();
-      setValue(res);
+
+      // 得到当前用户的所有任务
+      const taskRes = await taskApi.list();
+      const pros = taskRes.data.map((task) =>
+        recordApi.totalValue({ name: task.name }).then((value) => ({
+          name: task.name,
+          value,
+        })),
+      );
+      const reses = await Promise.all(pros);
+      setItems(reses);
     };
 
     loadData();
   }, []);
 
-  const percent = (value / target) * 100;
-
   return (
     <div className={styles.container}>
-      <div className={styles.title}>1万小时定律（{parseInt(value / 60)}/10000）</div>
-      <div className={styles.barContainer}>
-        <div
-          className={styles.bar}
-          style={{ width: `${percent}%` }}
-        ></div>
-      </div>
+      {items.map((item) => (
+        <div key={item.name} className={styles.item}>
+          <div className={styles.title}>
+          {item.name} 1万小时定律（{parseInt(item.value / 60)}/10000）
+          </div>
+          <div className={styles.barContainer}>
+            <div
+              className={styles.bar}
+              style={{ width: `${(item.value / target) * 100}%` }}
+            ></div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
