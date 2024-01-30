@@ -75,7 +75,7 @@ function Daily() {
     await dailyTaskApi.del({
       id,
     });
-    // window.location.reload();
+    window.location.reload();
   };
 
   return (
