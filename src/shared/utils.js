@@ -65,3 +65,11 @@ export function logout() {
   // TODO: 接入token后，需要去掉username
   localStorage.removeItem('username');
 }
+
+export function isLogged() {
+  const token = localStorage.getItem('token');
+  // TODO: 接入token后，需要去掉username
+  const username = localStorage.getItem('username');
+
+  return token && username;
+}

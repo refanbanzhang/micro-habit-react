@@ -4,11 +4,12 @@ import Index from '@/pages/index';
 import Login from '@/pages/login';
 import Register from '@/pages/register';
 import Daily from '@/pages/daily';
+import Auth from '@/shared/components/Auth';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Index />,
+    element: <Auth><Index /></Auth>,
   },
   {
     path: '/login',
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/daily',
-    element: <Daily />,
+    element: <Auth><Daily /></Auth>,
   },
 ]);
 
