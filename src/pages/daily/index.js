@@ -84,7 +84,7 @@ function Daily() {
       <Button onClick={onAddTask}>创建打卡任务</Button>
 
       {tasks.map((item) => (
-        <div className={styles.item}>
+        <div className={styles.item} key={item._id}>
           <Checkbox
             key={item._id}
             value={item.name}
