@@ -59,3 +59,9 @@ export const getLevelClass = (value, target, allFinished) => {
   }
   return 'l4-bg';
 };
+
+export function logout() {
+  localStorage.removeItem('token');
+  // TODO: 接入token后，需要去掉username
+  localStorage.removeItem('username');
+}
