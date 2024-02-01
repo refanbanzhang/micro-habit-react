@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Card, Button, Modal, RadioGroup, Radio } from '@douyinfe/semi-ui';
 import { IconPlus } from '@douyinfe/semi-icons';
+import classnames from 'classnames';
 
 import { getToday, getPercent, getLevelClassNew } from '@/shared/utils';
 import * as taskApi from '@/apis/task';
@@ -111,7 +112,7 @@ function Task() {
         <Card
           key={item._id}
           title={item.name}
-          className={[styles.card, getLevelClassNew(item.value, item.target)]}
+          className={classnames([styles.card, getLevelClassNew(item.value, item.target)])}
           style={{ maxWidth: '50%' }}
           headerExtraContent={<Button icon={<IconPlus onClick={() => onShowModal(item._id)} />} />}
         >
