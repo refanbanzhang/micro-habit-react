@@ -60,6 +60,27 @@ export const getLevelClass = (value, target, allFinished) => {
   return 'l4-bg';
 };
 
+export const getLevelClassNew = (value, target) => {
+  const ratio = value / target;
+
+  if (!target) {
+    return '';
+  }
+  if (ratio < 1) {
+    return '';
+  }
+  if (ratio === 1) {
+    return 'l1-bg';
+  }
+  if (ratio <= 5) {
+    return 'l2-bg';
+  }
+  if (ratio <= 10) {
+    return 'l3-bg';
+  }
+  return 'l4-bg';
+};
+
 export function logout() {
   localStorage.removeItem('token');
   // TODO: 接入token后，需要去掉username
