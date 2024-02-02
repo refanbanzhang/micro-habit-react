@@ -9,8 +9,7 @@ function Index() {
   return (
     <div className={styles.container}>
       <Head />
-      <Task />
-      <div style={{ marginBottom: '20px' }} />
+      <Task style={{ marginBottom: '20px' }} />
       <Year style={{ marginBottom: '20px' }} />
       <Bar />
     </div>

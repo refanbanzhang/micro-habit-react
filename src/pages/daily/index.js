@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
-import { Input, Button, Checkbox, Modal } from '@douyinfe/semi-ui';
+import { Input, Button, Checkbox, Modal, Spin } from '@douyinfe/semi-ui';
+import { IconLoading } from '@douyinfe/semi-icons';
 
 import { getToday } from '@/shared/utils';
 import * as dailyTaskApi from '@/apis/dailyTask';
@@ -11,18 +12,18 @@ import styles from './style.less';
 const today = getToday();
 
 function Daily() {
-  const inputRef = useRef(null)
+  const inputRef = useRef(null);
   const [tasks, setTasks] = useState([]);
   const [dates, setDates] = useState([]);
   const [taskName, setTaskName] = useState('');
+  const [loading, setLoading] = useState(true);
   const [taskNameModal, setTaskNameModal] = useState(false);
 
   useEffect(() => {
     if (taskNameModal) {
       inputRef.current.focus();
     }
-
-  }, [taskNameModal])
+  }, [taskNameModal]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -48,6 +49,7 @@ function Daily() {
           checked: names.includes(item.name),
         })),
       );
+      setLoading(false);
     };
 
     loadData();
@@ -107,24 +109,38 @@ function Daily() {
   return (
     <div className={styles.container}>
       <Head />
-      <Button className={styles.addBtn} onClick={onAddTask}>创建打卡任务</Button>
+      <Button
+        className={styles.addBtn}
+        onClick={onAddTask}
+      >
+        创建打卡任务
+      </Button>
 
-      {tasks.map((item) => (
-        <div
-          className={styles.item}
-          key={item._id}
-        >
-          <Checkbox
+      {loading ? (
+        <Spin indicator={<IconLoading />} />
+      ) : (
+        tasks.map((item) => (
+          <div
+            className={styles.item}
             key={item._id}
-            value={item.name}
-            defaultChecked={item.checked}
-            onChange={onChange}
           >
-            <span className={styles.name}>{item.name}</span> 已打卡天数：{getCount(item.name, dates)}
-          </Checkbox>
-          <Button  className={styles.delBtn} onClick={() => onDelTask(item._id)}>删除</Button>
-        </div>
-      ))}
+            <Checkbox
+              key={item._id}
+              value={item.name}
+              defaultChecked={item.checked}
+              onChange={onChange}
+            >
+              <span className={styles.name}>{item.name}</span> 已打卡天数：{getCount(item.name, dates)}
+            </Checkbox>
+            <Button
+              className={styles.delBtn}
+              onClick={() => onDelTask(item._id)}
+            >
+              删除
+            </Button>
+          </div>
+        ))
+      )}
 
       <Modal
         title="请输入任务名"

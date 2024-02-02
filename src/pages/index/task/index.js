@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Card, Button, Modal, RadioGroup, Radio } from '@douyinfe/semi-ui';
-import { IconPlus } from '@douyinfe/semi-icons';
+import { Card, Button, Modal, RadioGroup, Radio, Spin } from '@douyinfe/semi-ui';
+import { IconPlus, IconLoading } from '@douyinfe/semi-icons';
 import classnames from 'classnames';
 
 import { getToday, getPercent, getLevelClassNew } from '@/shared/utils';
@@ -11,6 +11,7 @@ import styles from './style.less';
 
 function Task() {
   const today = getToday();
+  const [loading, setLoading] = useState(true);
   const [tasks, setTasks] = useState([]);
   const [items, setItems] = useState([]);
   const [value, setValue] = useState(5);
@@ -78,6 +79,7 @@ function Task() {
   useEffect(() => {
     taskApi.list().then((res) => {
       setTasks(res.data);
+      setLoading(false);
     });
   }, []);
 
@@ -105,6 +107,10 @@ function Task() {
       setItems(nextTasks);
     });
   }, [today, tasks]);
+
+  if (loading) {
+    return <Spin indicator={<IconLoading />} />;
+  }
 
   return (
     <div className={styles.container}>

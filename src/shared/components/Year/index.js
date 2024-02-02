@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import classnames from 'classnames';
+import { Spin } from '@douyinfe/semi-ui';
+import { IconLoading } from '@douyinfe/semi-icons';
 import { getYearDatesUntilToday, getLevelClass } from '@/shared/utils';
 import * as recordApi from '@/apis/record';
 import * as taskApi from '@/apis/task';
@@ -10,6 +12,7 @@ const year = getYearDatesUntilToday();
 
 function Year() {
   const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
@@ -39,10 +42,15 @@ function Year() {
       });
 
       setItems(list);
+      setLoading(false);
     };
 
     loadData();
   }, []);
+
+  if (loading) {
+    return <Spin indicator={<IconLoading />} />;
+  }
 
   return (
     <div className={styles.container}>

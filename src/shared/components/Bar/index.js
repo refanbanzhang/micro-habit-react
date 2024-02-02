@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { Spin } from '@douyinfe/semi-ui';
+import { IconLoading } from '@douyinfe/semi-icons';
 import * as taskApi from '@/apis/task';
 import * as recordApi from '@/apis/record';
 
@@ -9,6 +11,7 @@ const target = 10000 * 60;
 
 function Bar() {
   const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
@@ -22,19 +25,27 @@ function Bar() {
           value,
         })),
       );
-      const reses = await Promise.all(pros);
-      setItems(reses);
+      const resList = await Promise.all(pros);
+      setItems(resList);
+      setLoading(false);
     };
 
     loadData();
   }, []);
 
+  if (loading) {
+    return <Spin indicator={<IconLoading />} />;
+  }
+
   return (
     <div className={styles.container}>
       {items.map((item) => (
-        <div key={item.name} className={styles.item}>
+        <div
+          key={item.name}
+          className={styles.item}
+        >
           <div className={styles.title}>
-          {item.name} 1万小时定律（{parseInt(item.value / 60)}/10000）
+            {item.name} 1万小时定律（{parseInt(item.value / 60)}/10000）
           </div>
           <div className={styles.barContainer}>
             <div
