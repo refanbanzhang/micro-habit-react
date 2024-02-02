@@ -1,12 +1,11 @@
 import { createHashRouter } from 'react-router-dom';
-
+import Auth from '@/shared/components/Auth';
 import Index from '@/pages/index';
 import Login from '@/pages/login';
 import Register from '@/pages/register';
 import Daily from '@/pages/daily';
-import Auth from '@/shared/components/Auth';
 
-const router = createHashRouter([
+export default createHashRouter([
   {
     path: '/',
     element: <Auth><Index /></Auth>,
@@ -24,5 +23,3 @@ const router = createHashRouter([
     element: <Auth><Daily /></Auth>,
   },
 ]);
-
-export default router;
