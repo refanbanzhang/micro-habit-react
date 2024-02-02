@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { Input, Button, Checkbox, Modal, Spin, Popconfirm } from '@douyinfe/semi-ui';
 import { IconLoading, IconDelete } from '@douyinfe/semi-icons';
 
@@ -42,26 +42,26 @@ function Daily() {
     loadData();
   }, []);
 
+  const init = useCallback(async () => {
+    const taskRes = await dailyTaskApi.list();
+    const dateRes = await dailyDateApi.list({
+      date: today,
+    });
+
+    // 将dates中的数据，融合到tasks中，实现初始化选中
+    const names = dateRes.data.map((item) => item.name);
+    setTasks(
+      taskRes.data.map((item) => ({
+        ...item,
+        checked: names.includes(item.name),
+      })),
+    );
+    setLoading(false);
+  }, [])
+
   useEffect(() => {
-    const loadData = async () => {
-      const taskRes = await dailyTaskApi.list();
-      const dateRes = await dailyDateApi.list({
-        date: today,
-      });
-
-      // 将dates中的数据，融合到tasks中，实现初始化选中
-      const names = dateRes.data.map((item) => item.name);
-      setTasks(
-        taskRes.data.map((item) => ({
-          ...item,
-          checked: names.includes(item.name),
-        })),
-      );
-      setLoading(false);
-    };
-
-    loadData();
-  }, []);
+    init();
+  }, [init]);
 
   const update = async (name, checked) => {
     if (checked) {
@@ -91,18 +91,20 @@ function Daily() {
     await dailyTaskApi.add({
       name: taskName,
     });
+    init();
     onTaskNameModalCancel();
   };
 
   const onTaskNameModalCancel = () => {
     setVisible(false);
+    setTaskName('');
   };
 
   const onDelTask = async (id) => {
     await dailyTaskApi.del({
       id,
     });
-    window.location.reload();
+    init();
   };
 
   return (
