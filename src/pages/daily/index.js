@@ -12,8 +12,18 @@ const today = getToday();
 
 function Daily() {
   const [tasks, setTasks] = useState([]);
+  const [dates, setDates] = useState([]);
   const [taskName, setTaskName] = useState('');
   const [taskNameModal, setTaskNameModal] = useState(false);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const res = await dailyDateApi.list();
+      setDates(res.data);
+    };
+
+    loadData();
+  }, []);
 
   useEffect(() => {
     const loadData = async () => {
@@ -78,20 +88,31 @@ function Daily() {
     window.location.reload();
   };
 
+  /**
+   * 获取任务的完成次数
+   * @param {string} name
+   * @param {Record[]} dates
+   * @returns {boolean}
+   */
+  const getCount = (name, dates = []) => dates.filter((date) => date.name === name).length;
+
   return (
     <div className={styles.container}>
       <Head />
       <Button onClick={onAddTask}>创建打卡任务</Button>
 
       {tasks.map((item) => (
-        <div className={styles.item} key={item._id}>
+        <div
+          className={styles.item}
+          key={item._id}
+        >
           <Checkbox
             key={item._id}
             value={item.name}
             defaultChecked={item.checked}
             onChange={onChange}
           >
-            {item.name}
+            {item.name} 已打卡天数：{getCount(item.name, dates)}
           </Checkbox>
           <Button onClick={() => onDelTask(item._id)}>删除</Button>
         </div>
