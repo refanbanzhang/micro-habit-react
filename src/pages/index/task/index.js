@@ -114,7 +114,12 @@ function Task() {
           title={item.name}
           className={classnames([styles.card, getLevelClassNew(item.value, item.target)])}
           style={{ maxWidth: '50%' }}
-          headerExtraContent={<Button icon={<IconPlus onClick={() => onShowModal(item._id)} />} />}
+          headerExtraContent={
+            <Button
+              icon={<IconPlus />}
+              onClick={() => onShowModal(item._id)}
+            />
+          }
         >
           <div>目标：{item.target}</div>
           <div>已完成：{item.value}</div>
