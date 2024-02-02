@@ -10,7 +10,7 @@ import styles from './style.less';
 function Head() {
   const [items] = useState([
     {
-      name: '习惯',
+      name: '先完成一万小时再说吧',
       path: '/',
     },
     {
