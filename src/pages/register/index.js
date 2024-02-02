@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Button, Input, Toast } from '@douyinfe/semi-ui';
-
 import * as userApi from '@/apis/user';
+import router from '@/router';
+
 import styles from './style.less';
 
 function Register() {
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -20,7 +19,7 @@ function Register() {
 
   const login = ({ username }) => {
     localStorage.setItem('username', username);
-    navigate('/');
+    router.navigate('/')
   };
 
   const register = async (payload) => {

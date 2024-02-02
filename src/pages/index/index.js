@@ -3,7 +3,7 @@ import Year from '@/shared/components/Year';
 import Bar from '@/shared/components/Bar';
 
 import styles from './style.less';
-import Task from './task';
+import Task from './Task';
 
 function Index() {
   return (

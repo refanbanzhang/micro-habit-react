@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
+import classnames from 'classnames';
 import { Card, Button, Modal, RadioGroup, Radio, Spin } from '@douyinfe/semi-ui';
 import { IconPlus, IconLoading } from '@douyinfe/semi-icons';
-import classnames from 'classnames';
-
 import { getToday, getPercent, getLevelClassNew } from '@/shared/utils';
 import * as taskApi from '@/apis/task';
 import * as recordApi from '@/apis/record';
