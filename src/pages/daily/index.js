@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
-import { Input, Button, Checkbox, Modal, Spin } from '@douyinfe/semi-ui';
-import { IconLoading } from '@douyinfe/semi-icons';
+import { Input, Button, Checkbox, Modal, Spin, Popconfirm } from '@douyinfe/semi-ui';
+import { IconLoading, IconDelete } from '@douyinfe/semi-icons';
 
 import { getToday } from '@/shared/utils';
 import * as dailyTaskApi from '@/apis/dailyTask';
@@ -133,13 +133,13 @@ function Daily() {
             >
               <span className={styles.name}>{item.name}</span> 已打卡天数：{getCount(item.name, dates)}
             </Checkbox>
-            <Button
-              size="small"
-              className={styles.delBtn}
-              onClick={() => onDelTask(item._id)}
+            <Popconfirm
+              title="确认"
+              content="要删除该条记录吗？"
+              onConfirm={() => onDelTask(item._id)}
             >
-              删除
-            </Button>
+              <IconDelete className={styles.delBtn} />
+            </Popconfirm>
           </div>
         ))
       )}
