@@ -110,6 +110,7 @@ function Daily() {
     <div className={styles.container}>
       <Head />
       <Button
+        size="large"
         className={styles.addBtn}
         onClick={onAddTask}
       >
@@ -133,6 +134,7 @@ function Daily() {
               <span className={styles.name}>{item.name}</span> 已打卡天数：{getCount(item.name, dates)}
             </Checkbox>
             <Button
+              size="small"
               className={styles.delBtn}
               onClick={() => onDelTask(item._id)}
             >
