@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Input, Button, Checkbox, Modal } from '@douyinfe/semi-ui';
 
 import { getToday } from '@/shared/utils';
@@ -11,10 +11,18 @@ import styles from './style.less';
 const today = getToday();
 
 function Daily() {
+  const inputRef = useRef(null)
   const [tasks, setTasks] = useState([]);
   const [dates, setDates] = useState([]);
   const [taskName, setTaskName] = useState('');
   const [taskNameModal, setTaskNameModal] = useState(false);
+
+  useEffect(() => {
+    if (taskNameModal) {
+      inputRef.current.focus();
+    }
+
+  }, [taskNameModal])
 
   useEffect(() => {
     const loadData = async () => {
@@ -126,6 +134,7 @@ function Daily() {
         closeOnEsc={true}
       >
         <Input
+          ref={inputRef}
           value={taskName}
           onChange={setTaskName}
         ></Input>
