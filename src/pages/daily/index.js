@@ -107,7 +107,7 @@ function Daily() {
   return (
     <div className={styles.container}>
       <Head />
-      <Button onClick={onAddTask}>创建打卡任务</Button>
+      <Button className={styles.addBtn} onClick={onAddTask}>创建打卡任务</Button>
 
       {tasks.map((item) => (
         <div
@@ -120,9 +120,9 @@ function Daily() {
             defaultChecked={item.checked}
             onChange={onChange}
           >
-            {item.name} 已打卡天数：{getCount(item.name, dates)}
+            <span className={styles.name}>{item.name}</span> 已打卡天数：{getCount(item.name, dates)}
           </Checkbox>
-          <Button onClick={() => onDelTask(item._id)}>删除</Button>
+          <Button  className={styles.delBtn} onClick={() => onDelTask(item._id)}>删除</Button>
         </div>
       ))}
 
