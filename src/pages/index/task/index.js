@@ -112,7 +112,13 @@ function Task() {
         <Card
           key={item._id}
           title={item.name}
-          className={classnames([styles.card, getLevelClassNew(item.value, item.target)])}
+          className={classnames([
+            styles.card,
+            getLevelClassNew(item.value, item.target),
+            {
+              [styles.finished]: item.value >= item.target,
+            },
+          ])}
           style={{ maxWidth: '50%' }}
           headerExtraContent={
             <Button
