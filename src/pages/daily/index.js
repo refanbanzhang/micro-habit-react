@@ -96,7 +96,6 @@ function Daily() {
 
   const onTaskNameModalCancel = () => {
     setVisible(false);
-    window.location.reload();
   };
 
   const onDelTask = async (id) => {
