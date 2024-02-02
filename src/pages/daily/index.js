@@ -11,19 +11,27 @@ import styles from './style.less';
 
 const today = getToday();
 
+/**
+ * 获取任务的完成次数
+ * @param {string} name
+ * @param {Record[]} dates
+ * @returns {boolean}
+ */
+const getCount = (name, dates = []) => dates.filter((date) => date.name === name).length;
+
 function Daily() {
   const inputRef = useRef(null);
   const [tasks, setTasks] = useState([]);
   const [dates, setDates] = useState([]);
-  const [taskName, setTaskName] = useState('');
   const [loading, setLoading] = useState(true);
-  const [taskNameModal, setTaskNameModal] = useState(false);
+  const [taskName, setTaskName] = useState('');
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (taskNameModal) {
+    if (visible) {
       inputRef.current.focus();
     }
-  }, [taskNameModal]);
+  }, [visible]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -76,7 +84,7 @@ function Daily() {
   };
 
   const onAddTask = () => {
-    setTaskNameModal(true);
+    setVisible(true);
   };
 
   const onTaskNameModalOk = async () => {
@@ -87,7 +95,7 @@ function Daily() {
   };
 
   const onTaskNameModalCancel = () => {
-    setTaskNameModal(false);
+    setVisible(false);
     window.location.reload();
   };
 
@@ -97,14 +105,6 @@ function Daily() {
     });
     window.location.reload();
   };
-
-  /**
-   * 获取任务的完成次数
-   * @param {string} name
-   * @param {Record[]} dates
-   * @returns {boolean}
-   */
-  const getCount = (name, dates = []) => dates.filter((date) => date.name === name).length;
 
   return (
     <div className={styles.container}>
@@ -146,7 +146,7 @@ function Daily() {
 
       <Modal
         title="请输入任务名"
-        visible={taskNameModal}
+        visible={visible}
         onOk={onTaskNameModalOk}
         onCancel={onTaskNameModalCancel}
         closeOnEsc={true}
