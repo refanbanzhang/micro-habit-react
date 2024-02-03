@@ -78,7 +78,7 @@ function Task() {
 
   const onAddTaskCancel = () => {
     setTaskVisible(false);
-  }
+  };
 
   const onAddTaskConfirm = async () => {
     if (!taskName) {
@@ -95,9 +95,9 @@ function Task() {
     await taskApi.add({
       name: taskName,
       target: taskTarget,
-    })
+    });
 
-    onAddTaskCancel()
+    onAddTaskCancel();
   };
 
   const onCancel = () => {
@@ -147,37 +147,40 @@ function Task() {
 
   return (
     <div className={styles.container}>
-      <Button
-        type="primary"
-        onClick={onAddTask}
-      >
-        添加任务
-      </Button>
-
-      {items.map((item) => (
-        <Card
-          key={item._id}
-          title={item.name}
-          className={classnames([
-            styles.card,
-            getLevelClassNew(item.value, item.target),
-            {
-              [styles.finished]: item.value >= item.target,
-            },
-          ])}
-          style={{ maxWidth: '50%' }}
-          headerExtraContent={
-            <Button
-              icon={<IconPlus />}
-              onClick={() => onShowModal(item._id)}
-            />
-          }
+      <div className={styles.marginBottom}>
+        <Button
+          type="primary"
+          onClick={onAddTask}
         >
-          <div>目标：{item.target}</div>
-          <div>已完成：{item.value}</div>
-          <div>进度：{getPercent(item.value, item.target)}</div>
-        </Card>
-      ))}
+          添加任务
+        </Button>
+      </div>
+      <div className={styles.items}>
+        {items.map((item) => (
+          <Card
+            key={item._id}
+            title={item.name}
+            className={classnames([
+              styles.card,
+              getLevelClassNew(item.value, item.target),
+              {
+                [styles.finished]: item.value >= item.target,
+              },
+            ])}
+            style={{ maxWidth: '50%' }}
+            headerExtraContent={
+              <Button
+                icon={<IconPlus />}
+                onClick={() => onShowModal(item._id)}
+              />
+            }
+          >
+            <div>目标：{item.target}</div>
+            <div>已完成：{item.value}</div>
+            <div>进度：{getPercent(item.value, item.target)}</div>
+          </Card>
+        ))}
+      </div>
 
       <Modal
         title="创建任务"
