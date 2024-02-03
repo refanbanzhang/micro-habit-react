@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import classnames from 'classnames';
-import { Card, Button, Modal, RadioGroup, Radio, Spin, Input } from '@douyinfe/semi-ui';
-import { IconPlus, IconLoading } from '@douyinfe/semi-icons';
+import { Popconfirm, Card, Button, Modal, RadioGroup, Radio, Spin, Input } from '@douyinfe/semi-ui';
+import { IconPlus, IconLoading, IconDelete } from '@douyinfe/semi-icons';
 import { getToday, getPercent, getLevelClassNew } from '@/shared/utils';
 import * as taskApi from '@/apis/task';
 import * as recordApi from '@/apis/record';
@@ -97,6 +97,7 @@ function Task() {
       target: taskTarget,
     });
 
+    init();
     onAddTaskCancel();
   };
 
@@ -141,6 +142,19 @@ function Task() {
     setTaskVisible(true);
   };
 
+  const deleteTask = async (id) => {
+    await taskApi.remove({
+      id
+    });
+    init();
+  };
+
+  const onDeleteTask = (id) => {
+    if (id) {
+      deleteTask(id);
+    }
+  };
+
   if (loading) {
     return <Spin indicator={<IconLoading />} />;
   }
@@ -169,10 +183,19 @@ function Task() {
             ])}
             style={{ maxWidth: '50%' }}
             headerExtraContent={
-              <Button
-                icon={<IconPlus />}
-                onClick={() => onShowModal(item._id)}
-              />
+              <>
+                <Button
+                  icon={<IconPlus />}
+                  onClick={() => onShowModal(item._id)}
+                />
+                <Popconfirm
+                  title="确定是否要保存此修改？"
+                  content="此修改将不可逆"
+                  onConfirm={() => onDeleteTask(item._id)}
+                >
+                  <Button icon={<IconDelete />} />
+                </Popconfirm>
+              </>
             }
           >
             <div>目标：{item.target}</div>

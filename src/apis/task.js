@@ -61,3 +61,16 @@ export const list = (params = {}) =>
     url: '/task/list',
     params,
   });
+
+/**
+ * 删除任务
+ * @param {Object} data
+ * @param {string} data.id
+ * @returns {TaskApiResponse}
+ */
+export const remove = (data = {}) =>
+  request({
+    method: 'post',
+    url: '/task/remove',
+    data,
+  });
