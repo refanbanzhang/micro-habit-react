@@ -146,6 +146,7 @@ function Daily() {
 
       <Modal
         title="请输入任务名"
+        size="full-width"
         visible={visible}
         onOk={onTaskNameModalOk}
         onCancel={onTaskNameModalCancel}

@@ -142,16 +142,16 @@ function Task() {
   const onAddTask = () => {
     setTaskVisible(true);
   };
-  
+
   useEffect(() => {
     if (taskVisible) {
       inputRef.current?.focus();
     }
-  }, [taskVisible])
+  }, [taskVisible]);
 
   const deleteTask = async (id) => {
     await taskApi.remove({
-      id
+      id,
     });
     init();
   };
@@ -215,6 +215,7 @@ function Task() {
 
       <Modal
         title="创建任务"
+        size="full-width"
         visible={taskVisible}
         onCancel={onAddTaskCancel}
         footer={
@@ -245,6 +246,7 @@ function Task() {
 
       <Modal
         title="请选择需要添加的时间："
+        size="full-width"
         visible={visible}
         onCancel={onCancel}
         footer={
