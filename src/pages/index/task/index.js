@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import classnames from 'classnames';
-import { Card, Button, Modal, RadioGroup, Radio, Spin } from '@douyinfe/semi-ui';
+import { Card, Button, Modal, RadioGroup, Radio, Spin, Input } from '@douyinfe/semi-ui';
 import { IconPlus, IconLoading } from '@douyinfe/semi-icons';
 import { getToday, getPercent, getLevelClassNew } from '@/shared/utils';
 import * as taskApi from '@/apis/task';
@@ -16,13 +16,16 @@ function Task() {
   const [value, setValue] = useState(5);
   const [currTaskId, setCurrTaskId] = useState('');
   const [visible, setVisible] = useState(false);
+  const [taskName, setTaskName] = useState('');
+  const [taskTarget, setTaskTarget] = useState(0);
+  const [addTaskVisible, setTaskVisible] = useState(false);
 
   const init = useCallback(() => {
     taskApi.list().then((res) => {
       setTasks(res.data);
       setLoading(false);
     });
-  }, [])
+  }, []);
 
   const onShowModal = (taskId) => {
     setCurrTaskId(taskId);
@@ -73,6 +76,30 @@ function Task() {
     }
   };
 
+  const onAddTaskCancel = () => {
+    setTaskVisible(false);
+  }
+
+  const onAddTaskConfirm = async () => {
+    if (!taskName) {
+      alert('请输入任务名称');
+      return;
+    }
+
+    if (!taskTarget) {
+      alert('请输入目标时间');
+      return;
+    }
+
+    // 发起创建请求
+    await taskApi.add({
+      name: taskName,
+      target: taskTarget,
+    })
+
+    onAddTaskCancel()
+  };
+
   const onCancel = () => {
     setVisible(false);
   };
@@ -110,12 +137,23 @@ function Task() {
     });
   }, [today, tasks]);
 
+  const onAddTask = () => {
+    setTaskVisible(true);
+  };
+
   if (loading) {
     return <Spin indicator={<IconLoading />} />;
   }
 
   return (
     <div className={styles.container}>
+      <Button
+        type="primary"
+        onClick={onAddTask}
+      >
+        添加任务
+      </Button>
+
       {items.map((item) => (
         <Card
           key={item._id}
@@ -140,6 +178,35 @@ function Task() {
           <div>进度：{getPercent(item.value, item.target)}</div>
         </Card>
       ))}
+
+      <Modal
+        title="创建任务"
+        visible={addTaskVisible}
+        onCancel={onAddTaskCancel}
+        footer={
+          <Button
+            type="primary"
+            onClick={onAddTaskConfirm}
+          >
+            确定
+          </Button>
+        }
+      >
+        <div className={styles.box}>
+          <div className={styles.label}>任务名：</div>
+          <Input
+            value={taskName}
+            className={styles.input}
+            onChange={setTaskName}
+          />
+          <div className={styles.label}>任务目标：</div>
+          <Input
+            value={taskTarget}
+            className={styles.input}
+            onChange={setTaskTarget}
+          />
+        </div>
+      </Modal>
 
       <Modal
         title="请选择需要添加的时间："
