@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import classnames from 'classnames';
 import { Popconfirm, Card, Button, Modal, RadioGroup, Radio, Spin, Input } from '@douyinfe/semi-ui';
 import { IconPlus, IconLoading, IconDelete } from '@douyinfe/semi-icons';
@@ -17,8 +17,9 @@ function Task() {
   const [currTaskId, setCurrTaskId] = useState('');
   const [visible, setVisible] = useState(false);
   const [taskName, setTaskName] = useState('');
-  const [taskTarget, setTaskTarget] = useState(0);
-  const [addTaskVisible, setTaskVisible] = useState(false);
+  const [taskTarget, setTaskTarget] = useState(5);
+  const [taskVisible, setTaskVisible] = useState(false);
+  const inputRef = useRef(null);
 
   const init = useCallback(() => {
     taskApi.list().then((res) => {
@@ -141,6 +142,12 @@ function Task() {
   const onAddTask = () => {
     setTaskVisible(true);
   };
+  
+  useEffect(() => {
+    if (taskVisible) {
+      inputRef.current?.focus();
+    }
+  }, [taskVisible])
 
   const deleteTask = async (id) => {
     await taskApi.remove({
@@ -208,7 +215,7 @@ function Task() {
 
       <Modal
         title="创建任务"
-        visible={addTaskVisible}
+        visible={taskVisible}
         onCancel={onAddTaskCancel}
         footer={
           <Button
@@ -222,11 +229,12 @@ function Task() {
         <div className={styles.box}>
           <div className={styles.label}>任务名：</div>
           <Input
+            ref={inputRef}
             value={taskName}
             className={styles.input}
             onChange={setTaskName}
           />
-          <div className={styles.label}>任务目标：</div>
+          <div className={styles.label}>任务目标（分钟）：</div>
           <Input
             value={taskTarget}
             className={styles.input}
