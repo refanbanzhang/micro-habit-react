@@ -183,7 +183,7 @@ function Task() {
             ])}
             style={{ maxWidth: '50%' }}
             headerExtraContent={
-              <> 
+              <>
                 <Button
                   style={{ marginRight: 10 }}
                   icon={<IconPlus />}
