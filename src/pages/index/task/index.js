@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import classnames from 'classnames';
 import { Card, Button, Modal, RadioGroup, Radio, Spin } from '@douyinfe/semi-ui';
 import { IconPlus, IconLoading } from '@douyinfe/semi-icons';
@@ -16,6 +16,13 @@ function Task() {
   const [value, setValue] = useState(5);
   const [currTaskId, setCurrTaskId] = useState('');
   const [visible, setVisible] = useState(false);
+
+  const init = useCallback(() => {
+    taskApi.list().then((res) => {
+      setTasks(res.data);
+      setLoading(false);
+    });
+  }, [])
 
   const onShowModal = (taskId) => {
     setCurrTaskId(taskId);
@@ -62,8 +69,7 @@ function Task() {
 
     if (today && value && currTaskId) {
       await setRecord(today, value, currTaskId);
-      // 如何自动更新items呢？
-      window.location.reload();
+      init();
     }
   };
 
@@ -76,11 +82,8 @@ function Task() {
   };
 
   useEffect(() => {
-    taskApi.list().then((res) => {
-      setTasks(res.data);
-      setLoading(false);
-    });
-  }, []);
+    init();
+  }, [init]);
 
   useEffect(() => {
     if (!tasks.length) {
