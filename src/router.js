@@ -1,25 +1,48 @@
+import React, { Suspense } from 'react';
 import { createHashRouter } from 'react-router-dom';
+import { Spin } from '@douyinfe/semi-ui';
+import { IconLoading } from '@douyinfe/semi-icons';
 import Auth from '@/shared/components/Auth';
-import Index from '@/pages/index';
-import Login from '@/pages/login';
-import Register from '@/pages/register';
-import Daily from '@/pages/daily';
+const Index = React.lazy(() => import('@/pages/index'));
+const Login = React.lazy(() => import('@/pages/login'));
+const Register = React.lazy(() => import('@/pages/register'));
+const Daily = React.lazy(() => import('@/pages/daily'));
 
 export default createHashRouter([
   {
     path: '/',
-    element: <Auth><Index /></Auth>,
+    element: (
+      <Suspense fallback={<Spin indicator={<IconLoading />} />}>
+        <Auth>
+          <Index />
+        </Auth>
+      </Suspense>
+    ),
   },
   {
     path: '/login',
-    element: <Login />,
+    element: (
+      <Suspense fallback={<Spin indicator={<IconLoading />} />}>
+        <Login />
+      </Suspense>
+    ),
   },
   {
     path: '/register',
-    element: <Register />,
+    element: (
+      <Suspense fallback={<Spin indicator={<IconLoading />} />}>
+        <Register />
+      </Suspense>
+    ),
   },
   {
     path: '/daily',
-    element: <Auth><Daily /></Auth>,
+    element: (
+      <Suspense fallback={<Spin indicator={<IconLoading />} />}>
+        <Auth>
+          <Daily />
+        </Auth>
+      </Suspense>
+    ),
   },
 ]);
