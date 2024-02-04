@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 import { Input, Button, Checkbox, Modal, Spin, Popconfirm } from '@douyinfe/semi-ui';
 import { IconLoading, IconDelete } from '@douyinfe/semi-icons';
-import { getToday } from '@/shared/utils';
+import { getToday, isMobile } from '@/shared/utils';
 import * as dailyTaskApi from '@/apis/dailyTask';
 import * as dailyDateApi from '@/apis/dailyDate';
 import Head from '@/shared/components/Head';
@@ -146,7 +146,7 @@ function Daily() {
 
       <Modal
         title="请输入任务名"
-        size="full-width"
+        size={isMobile() ? 'full-width' : "small"}
         visible={visible}
         onOk={onTaskNameModalOk}
         onCancel={onTaskNameModalCancel}
