@@ -5,6 +5,7 @@ import { IconPlus, IconLoading, IconDelete } from '@douyinfe/semi-icons';
 import { getToday, getPercent, getLevelClassNew, isMobile } from '@/shared/utils';
 import * as taskApi from '@/apis/task';
 import * as recordApi from '@/apis/record';
+import open from '@/shared/components/Loading/mount';
 
 import styles from './style.less';
 
@@ -22,7 +23,7 @@ function Task() {
   const inputRef = useRef(null);
 
   const init = useCallback(() => {
-    taskApi.list().then((res) => {
+    return taskApi.list().then((res) => {
       setTasks(res.data);
       setLoading(false);
     });
@@ -35,6 +36,7 @@ function Task() {
 
   const setRecord = async (today, value, currTaskId) => {
     const currTask = tasks.find((task) => task._id === currTaskId);
+
     const res = await recordApi.list({
       name: currTask.name,
       date: today,
@@ -72,8 +74,11 @@ function Task() {
     onCancel();
 
     if (today && value && currTaskId) {
+      const close = open();
+
       await setRecord(today, value, currTaskId);
-      init();
+      await init();
+      close();
     }
   };
 
@@ -215,7 +220,7 @@ function Task() {
 
       <Modal
         title="创建任务"
-        size={isMobile() ? 'full-width' : "small"}
+        size={isMobile() ? 'full-width' : 'small'}
         visible={taskVisible}
         onCancel={onAddTaskCancel}
         footer={
@@ -246,7 +251,7 @@ function Task() {
 
       <Modal
         title="请选择需要添加的时间："
-        size={isMobile() ? 'full-width' : "small"}
+        size={isMobile() ? 'full-width' : 'small'}
         visible={visible}
         onCancel={onCancel}
         footer={
