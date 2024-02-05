@@ -7,6 +7,7 @@ import router from '@/router';
 import ThemeContext from '@/shared/ThemeContext';
 
 import styles from './style.less';
+import classNames from 'classnames';
 
 function Head() {
   const context = useContext(ThemeContext);
@@ -37,7 +38,7 @@ function Head() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={classNames([styles.container, styles[context.state]])}>
       <div className={styles.box}>
         <ul className={styles.list}>
           {items.map((item) => (

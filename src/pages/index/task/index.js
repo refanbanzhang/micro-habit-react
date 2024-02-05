@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useRef, useState, useEffect, useCallback, useContext } from 'react';
 import classnames from 'classnames';
 import { Popconfirm, Card, Button, Modal, RadioGroup, Radio, Spin, Input } from '@douyinfe/semi-ui';
 import { IconPlus, IconLoading, IconDelete } from '@douyinfe/semi-icons';
@@ -6,8 +6,10 @@ import { getToday, getPercent, getLevelClassNew, isMobile } from '@/shared/utils
 import * as taskApi from '@/apis/task';
 import * as recordApi from '@/apis/record';
 import open from '@/shared/components/Loading/mount';
+import ThemeContext from '@/shared/ThemeContext';
 
 import styles from './style.less';
+import classNames from 'classnames';
 
 function Task() {
   const today = getToday();
@@ -21,6 +23,7 @@ function Task() {
   const [taskTarget, setTaskTarget] = useState(5);
   const [taskVisible, setTaskVisible] = useState(false);
   const inputRef = useRef(null);
+  const context = useContext(ThemeContext);
 
   const init = useCallback(() => {
     return taskApi.list().then((res) => {
@@ -172,7 +175,7 @@ function Task() {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={classNames([styles.container, styles[context.state]])}>
       <div className={styles.marginBottom}>
         <Button
           type="primary"

@@ -1,10 +1,12 @@
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useRef, useState, useEffect, useCallback, useContext } from 'react';
 import { Input, Button, Checkbox, Modal, Spin, Popconfirm } from '@douyinfe/semi-ui';
 import { IconLoading, IconDelete } from '@douyinfe/semi-icons';
+import classNames from 'classnames';
 import { getToday, isMobile } from '@/shared/utils';
 import * as dailyTaskApi from '@/apis/dailyTask';
 import * as dailyDateApi from '@/apis/dailyDate';
 import Head from '@/shared/components/Head';
+import ThemeContext from '@/shared/ThemeContext';
 
 import styles from './style.less';
 
@@ -25,6 +27,7 @@ function Daily() {
   const [loading, setLoading] = useState(true);
   const [taskName, setTaskName] = useState('');
   const [visible, setVisible] = useState(false);
+  const context = useContext(ThemeContext);
 
   useEffect(() => {
     if (visible) {
@@ -108,7 +111,7 @@ function Daily() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={classNames([styles.container, styles[context.state]])}>
       <Head />
       <Button
         size="large"
