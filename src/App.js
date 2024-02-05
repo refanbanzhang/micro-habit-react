@@ -6,7 +6,7 @@ import styles from './App.less';
 
 function App() {
   const theme = localStorage.getItem('theme');
-  const themeClassName = theme === 'daytime' ? styles.daytime : styles.night;
+  const themeClassName = theme === 'light' ? styles.light : styles.dark;
   return (
     <div className={classNames([styles.container, themeClassName])}>
       <RouterProvider router={router} />
