@@ -32,14 +32,14 @@ function Daily() {
     }
   }, [visible]);
 
-  useEffect(() => {
-    const loadData = async () => {
-      const res = await dailyDateApi.list();
-      setDates(res.data);
-    };
-
-    loadData();
+  const loadDateData = useCallback(async () => {
+    const res = await dailyDateApi.list();
+    setDates(res.data);
   }, []);
+
+  useEffect(() => {
+    loadDateData();
+  }, [loadDateData]);
 
   const init = useCallback(async () => {
     const taskRes = await dailyTaskApi.list();
@@ -56,7 +56,7 @@ function Daily() {
       })),
     );
     setLoading(false);
-  }, [])
+  }, []);
 
   useEffect(() => {
     init();
@@ -74,6 +74,7 @@ function Daily() {
         date: today,
       });
     }
+    await loadDateData();
   };
 
   const onChange = (e) => {
@@ -146,7 +147,7 @@ function Daily() {
 
       <Modal
         title="请输入任务名"
-        size={isMobile() ? 'full-width' : "small"}
+        size={isMobile() ? 'full-width' : 'small'}
         visible={visible}
         onOk={onTaskNameModalOk}
         onCancel={onTaskNameModalCancel}
