@@ -5,10 +5,9 @@ let existLoading = false;
 
 /**
  * 打开loading弹层
- * @param {Object} options
- * @returns {function}
+ * @returns {function} 关闭loading的函数
  */
-function open(options) {
+function open() {
   if (existLoading) {
     return;
   }
