@@ -1,15 +1,15 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import classnames from 'classnames';
 import { Button } from '@douyinfe/semi-ui';
 import { logout } from '@/shared/utils';
 import router from '@/router';
+import ThemeContext from '@/shared/ThemeContext';
 
 import styles from './style.less';
 
 function Head() {
-  const initialTheme = localStorage.getItem('theme');
-  const [theme, setTheme] = useState(initialTheme);
+  const context = useContext(ThemeContext);
   const [items] = useState([
     {
       name: '先完成一万小时再说吧',
@@ -32,10 +32,8 @@ function Head() {
   };
 
   const onChangeTheme = () => {
-    const nextTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(nextTheme);
-    localStorage.setItem('theme', nextTheme);
-    window.location.reload();
+    const nextTheme = context.state === 'light' ? 'dark' : 'light';
+    context.setState(nextTheme);
   };
 
   return (
@@ -62,7 +60,7 @@ function Head() {
             style={{ marginRight: 10 }}
             onClick={onChangeTheme}
           >
-            {theme === 'light' ? '白天' : '夜晚'}模式
+            {context.state === 'light' ? '白天' : '夜晚'}模式
           </Button>
           <Button onClick={onLogout}>退出登录</Button>
         </div>
