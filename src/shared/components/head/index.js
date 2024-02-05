@@ -7,7 +7,11 @@ import router from '@/router';
 
 import styles from './style.less';
 
+const daytime = '白天';
+const night = '夜晚';
+
 function Head() {
+  const [isDaytime, setIsDayTime] = useState(true);
   const [items] = useState([
     {
       name: '先完成一万小时再说吧',
@@ -27,7 +31,11 @@ function Head() {
   const onLogout = () => {
     logout();
     router.navigate('/login');
-  }
+  };
+
+  const onChangeTheme = () => {
+    setIsDayTime(!isDaytime);
+  };
 
   return (
     <div className={styles.container}>
@@ -48,7 +56,15 @@ function Head() {
             </li>
           ))}
         </ul>
-        <Button onClick={onLogout}>退出登录</Button>
+        <div className={styles.btns}>
+          <Button
+            style={{ marginRight: 10 }}
+            onClick={onChangeTheme}
+          >
+            {isDaytime ? daytime : night}模式
+          </Button>
+          <Button onClick={onLogout}>退出登录</Button>
+        </div>
       </div>
     </div>
   );
