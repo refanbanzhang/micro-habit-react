@@ -35,16 +35,16 @@ function Daily() {
     }
   }, [visible]);
 
-  const loadDateData = useCallback(async () => {
+  const loadDateData = async () => {
     const res = await dailyDateApi.list();
     setDates(res.data);
-  }, []);
+  };
 
   useEffect(() => {
     loadDateData();
-  }, [loadDateData]);
+  }, []);
 
-  const init = useCallback(async () => {
+  const init = async () => {
     const taskRes = await dailyTaskApi.list();
     const dateRes = await dailyDateApi.list({
       date: today,
@@ -59,11 +59,11 @@ function Daily() {
       })),
     );
     setLoading(false);
-  }, []);
+  };
 
   useEffect(() => {
     init();
-  }, [init]);
+  }, []);
 
   const update = async (name, checked) => {
     if (checked) {

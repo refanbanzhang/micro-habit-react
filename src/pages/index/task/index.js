@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useCallback, useContext } from 'react';
+import { useRef, useState, useEffect, useContext } from 'react';
 import classnames from 'classnames';
 import { Popconfirm, Card, Button, Modal, RadioGroup, Radio, Spin, Input } from '@douyinfe/semi-ui';
 import { IconPlus, IconLoading, IconDelete } from '@douyinfe/semi-icons';
@@ -25,12 +25,12 @@ function Task() {
   const inputRef = useRef(null);
   const context = useContext(ThemeContext);
 
-  const init = useCallback(() => {
+  const init = () => {
     return taskApi.list().then((res) => {
       setTasks(res.data);
       setLoading(false);
     });
-  }, []);
+  };
 
   const onShowModal = (taskId) => {
     setCurrTaskId(taskId);
@@ -120,7 +120,7 @@ function Task() {
 
   useEffect(() => {
     init();
-  }, [init]);
+  }, []);
 
   useEffect(() => {
     if (!tasks.length) {
