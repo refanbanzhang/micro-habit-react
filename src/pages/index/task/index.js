@@ -25,12 +25,11 @@ function Task() {
   const inputRef = useRef(null);
   const context = useContext(ThemeContext);
 
-  const init = () => {
-    return taskApi.list().then((res) => {
+  const init = () =>
+    taskApi.list().then((res) => {
       setTasks(res.data);
       setLoading(false);
     });
-  };
 
   const onShowModal = (taskId) => {
     setCurrTaskId(taskId);
@@ -118,10 +117,31 @@ function Task() {
     setValue(e.target.value);
   };
 
-  useEffect(() => {
-    init();
-  }, []);
+  const onAddTask = () => {
+    setTaskVisible(true);
+  };
 
+  const deleteTask = async (id) => {
+    await taskApi.remove({
+      id,
+    });
+    init();
+  };
+
+  const onDeleteTask = (id) => {
+    if (id) {
+      deleteTask(id);
+    }
+  };
+
+  // 新增任务弹层，input自动focus
+  useEffect(() => {
+    if (taskVisible) {
+      inputRef.current?.focus();
+    }
+  }, [taskVisible]);
+
+  // 将记录合计到任务中
   useEffect(() => {
     if (!tasks.length) {
       return;
@@ -147,28 +167,9 @@ function Task() {
     });
   }, [today, tasks]);
 
-  const onAddTask = () => {
-    setTaskVisible(true);
-  };
-
   useEffect(() => {
-    if (taskVisible) {
-      inputRef.current?.focus();
-    }
-  }, [taskVisible]);
-
-  const deleteTask = async (id) => {
-    await taskApi.remove({
-      id,
-    });
     init();
-  };
-
-  const onDeleteTask = (id) => {
-    if (id) {
-      deleteTask(id);
-    }
-  };
+  }, []);
 
   if (loading) {
     return <Spin indicator={<IconLoading />} />;
