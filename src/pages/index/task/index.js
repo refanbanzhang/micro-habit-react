@@ -9,7 +9,6 @@ import open from '@/shared/components/Loading/mount';
 import ThemeContext from '@/shared/ThemeContext';
 
 import styles from './style.less';
-import classNames from 'classnames';
 
 function Task() {
   const today = getToday();
@@ -176,7 +175,7 @@ function Task() {
   }
 
   return (
-    <div className={classNames([styles.container, styles[context.state]])}>
+    <div className={classnames([styles.container, styles[context.state]])}>
       <div className={styles.marginBottom}>
         <Button
           type="primary"
