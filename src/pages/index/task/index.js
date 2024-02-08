@@ -120,16 +120,12 @@ function Task() {
     setTaskVisible(true);
   };
 
-  const deleteTask = async (id) => {
-    await taskApi.remove({
-      id,
-    });
-    init();
-  };
-
-  const onDeleteTask = (id) => {
+  const onDeleteTask = async (id) => {
     if (id) {
-      deleteTask(id);
+      await taskApi.remove({
+        id,
+      });
+      await init();
     }
   };
 
