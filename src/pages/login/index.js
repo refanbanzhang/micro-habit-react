@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Input, Typography, Toast } from '@douyinfe/semi-ui';
 import * as userApi from '@/apis/user';
 import router from '@/router';
@@ -8,10 +8,10 @@ import styles from './style.less';
 const { Text } = Typography;
 
 function Login() {
+  const inputRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const isDisabled = !username;
 
   const login = async () => {
     setLoading(true);
@@ -27,18 +27,27 @@ function Login() {
       localStorage.setItem('token', res.data);
       // TODO: 接入token后，需要去掉username
       localStorage.setItem('username', username);
-      router.navigate('/')
+      router.navigate('/');
     }
   };
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
     login();
   };
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
+  const isDisabled = !username.trim();
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>微习惯</h1>
       <Input
+        ref={inputRef}
         className={styles.input}
         value={username}
         onKeyUp={(e) => e.keyCode === 13 && onSubmit()}
