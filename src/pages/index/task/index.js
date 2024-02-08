@@ -72,14 +72,12 @@ function Task() {
   };
 
   const onConfirm = async () => {
-    onCancel();
-
     if (today && value && currTaskId) {
       const close = open();
-
       await setRecord(today, value, currTaskId);
       await init();
       close();
+      onCancel();
     }
   };
 
@@ -114,10 +112,6 @@ function Task() {
 
   const onChange = (e) => {
     setValue(e.target.value);
-  };
-
-  const onAddTask = () => {
-    setTaskVisible(true);
   };
 
   const onDeleteTask = async (id) => {
@@ -175,7 +169,7 @@ function Task() {
       <div className={styles.marginBottom}>
         <Button
           type="primary"
-          onClick={onAddTask}
+          onClick={() => setTaskVisible(true)}
         >
           添加任务
         </Button>
