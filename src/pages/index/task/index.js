@@ -15,7 +15,7 @@ function Task() {
   const [loading, setLoading] = useState(true);
   const [tasks, setTasks] = useState([]);
   const [items, setItems] = useState([]);
-  const [value, setValue] = useState(5);
+  const [value, setValue] = useState(25);
   const [currTaskId, setCurrTaskId] = useState('');
   const [visible, setVisible] = useState(false);
   const [taskName, setTaskName] = useState('');
