@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import classnames from 'classnames';
+import classNames from 'classnames';
 import { Spin } from '@douyinfe/semi-ui';
 import { IconLoading } from '@douyinfe/semi-icons';
 import { getYearDatesUntilToday, getLevelClass } from '@/shared/utils';
@@ -10,7 +10,8 @@ import styles from './style.less';
 
 const year = getYearDatesUntilToday();
 
-function Year() {
+function Year(props) {
+  const { timestamp } = props;
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -21,8 +22,8 @@ function Year() {
 
       const tasks = taskRes.data;
       const dates = recordRes.data;
+      // 得到当前用户没挺任务目标的总时间
       const targetTotalAmount = tasks.reduce((acc, curr) => (acc += curr.target), 0);
-
       const list = year.map((item) => {
         const dateData = dates.filter((date) => date.date === item.date);
         const value = dateData.reduce((acc, curr) => (acc += curr.value), 0);
@@ -46,7 +47,7 @@ function Year() {
     };
 
     loadData();
-  }, []);
+  }, [timestamp]);
 
   if (loading) {
     return <Spin indicator={<IconLoading />} />;
@@ -59,7 +60,7 @@ function Year() {
           <li
             key={item.date}
             title={`${item.date} ${item.value}`}
-            className={classnames([styles.item, getLevelClass(item.value, item.target, item.allFinished)])}
+            className={classNames([styles.item, getLevelClass(item.value, item.target, item.allFinished)])}
           ></li>
         ))}
       </ul>

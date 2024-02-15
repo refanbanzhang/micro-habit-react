@@ -5,12 +5,13 @@ import { IconPlus, IconLoading, IconDelete } from '@douyinfe/semi-icons';
 import { getToday, getPercent, getLevelClassNew, isMobile } from '@/shared/utils';
 import * as taskApi from '@/apis/task';
 import * as recordApi from '@/apis/record';
-import open from '@/shared/components/Loading/mount';
+import openLoading from '@/shared/components/Loading/mount';
 import ThemeContext from '@/shared/ThemeContext';
 
 import styles from './style.less';
 
-function Task() {
+function Task(props) {
+  const { timestamp, setTimestamp } = props;
   const today = getToday();
   const [loading, setLoading] = useState(true);
   const [tasks, setTasks] = useState([]);
@@ -23,7 +24,6 @@ function Task() {
   const [taskVisible, setTaskVisible] = useState(false);
   const inputRef = useRef(null);
   const context = useContext(ThemeContext);
-  const [timestamp, setTimestamp] = useState(Date.now());
 
   const onShowModal = (taskId) => {
     setCurrTaskId(taskId);
@@ -32,6 +32,7 @@ function Task() {
 
   const setRecord = async (today, value, currTaskId) => {
     const currTask = tasks.find((task) => task._id === currTaskId);
+    const close = openLoading();
 
     const res = await recordApi.list({
       name: currTask.name,
@@ -60,14 +61,15 @@ function Task() {
     } else {
       throw new Error('查询到超过一条数据，无法定位到需要更新的数据');
     }
+
+    close();
+
     setTimestamp(Date.now());
   };
 
   const onConfirm = async () => {
     if (today && value && currTaskId) {
-      const close = open();
       await setRecord(today, value, currTaskId);
-      close();
       onCancel();
     }
   };
@@ -111,7 +113,7 @@ function Task() {
       await taskApi.remove({
         id,
       });
-      setTimestamp(Date.now())
+      setTimestamp(Date.now());
     }
   };
 
@@ -149,10 +151,14 @@ function Task() {
   }, [today, tasks]);
 
   useEffect(() => {
-    taskApi.list().then((res) => {
-      setTasks(res.data);
+    const fetchData = async () => {
+      setLoading(true);
+      const res = await taskApi.list();
+      const data = res.data ?? [];
+      setTasks(data);
       setLoading(false);
-    });
+    };
+    fetchData();
   }, [timestamp]);
 
   if (loading) {
