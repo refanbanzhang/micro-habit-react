@@ -23,12 +23,7 @@ function Task() {
   const [taskVisible, setTaskVisible] = useState(false);
   const inputRef = useRef(null);
   const context = useContext(ThemeContext);
-
-  const init = () =>
-    taskApi.list().then((res) => {
-      setTasks(res.data);
-      setLoading(false);
-    });
+  const [timestamp, setTimestamp] = useState(Date.now());
 
   const onShowModal = (taskId) => {
     setCurrTaskId(taskId);
@@ -52,10 +47,7 @@ function Task() {
         value: value,
         target: currTask.target,
       });
-      return;
-    }
-
-    if (records.length === 1) {
+    } else if (records.length === 1) {
       await recordApi.update({
         query: {
           date: today,
@@ -65,17 +57,16 @@ function Task() {
           value: records[0].value + value,
         },
       });
-      return;
+    } else {
+      throw new Error('查询到超过一条数据，无法定位到需要更新的数据');
     }
-
-    throw new Error('查询到超过一条数据，无法定位到需要更新的数据');
+    setTimestamp(Date.now());
   };
 
   const onConfirm = async () => {
     if (today && value && currTaskId) {
       const close = open();
       await setRecord(today, value, currTaskId);
-      await init();
       close();
       onCancel();
     }
@@ -102,7 +93,8 @@ function Task() {
       target: taskTarget,
     });
 
-    init();
+    setTimestamp(Date.now());
+
     onAddTaskCancel();
   };
 
@@ -119,7 +111,7 @@ function Task() {
       await taskApi.remove({
         id,
       });
-      await init();
+      setTimestamp(Date.now())
     }
   };
 
@@ -157,8 +149,11 @@ function Task() {
   }, [today, tasks]);
 
   useEffect(() => {
-    init();
-  }, []);
+    taskApi.list().then((res) => {
+      setTasks(res.data);
+      setLoading(false);
+    });
+  }, [timestamp]);
 
   if (loading) {
     return <Spin indicator={<IconLoading />} />;
