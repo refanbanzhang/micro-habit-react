@@ -42,7 +42,10 @@ function Year(props) {
         };
       });
 
-      setItems(list);
+      const firstValueBiggerThenZeroIndex = list.findIndex((item) => item.value > 0);
+      const nextList = list.slice(firstValueBiggerThenZeroIndex);
+
+      setItems(nextList);
       setLoading(false);
     };
 
