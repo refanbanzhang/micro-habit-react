@@ -34,6 +34,7 @@ function Duration(props) {
     return acc;
   }, {})
 
+  // 计算每天的总时长
   const values = Object.keys(obj).map((key) => {
     return {
       name: key,
@@ -43,6 +44,7 @@ function Duration(props) {
     }
   })
 
+  // 排序得到top3
   const nextValues = values.sort((prev, next) => next.value - prev.value).slice(0, 3)
 
   if (loading) {
