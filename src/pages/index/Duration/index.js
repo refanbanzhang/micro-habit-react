@@ -1,15 +1,15 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import classnames from 'classnames';
 import { Spin } from '@douyinfe/semi-ui';
 import { IconLoading } from '@douyinfe/semi-icons';
 import * as recordApi from '@/apis/record';
-import ThemeContext from '@/shared/ThemeContext';
+import useThemeContext from '@/shared/hooks/useThemeContext';
 
 import styles from './style.less';
 
 function Duration(props) {
   const { timestamp } = props;
-  const context = useContext(ThemeContext);
+  const themeContext = useThemeContext();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -48,7 +48,7 @@ function Duration(props) {
   }
 
   return (
-    <div className={classnames([styles.container, styles[context.state]])}>
+    <div className={classnames([styles[themeContext.state]])}>
       <div>时长top3</div>
       {nextValues.map((item) => (
         <div key={item.name}>

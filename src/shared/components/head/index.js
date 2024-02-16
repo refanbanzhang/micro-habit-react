@@ -1,16 +1,16 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import classnames from 'classnames';
 import { Button } from '@douyinfe/semi-ui';
 import { logout } from '@/shared/utils';
 import router from '@/router';
-import ThemeContext from '@/shared/ThemeContext';
+import useThemeContext from '@/shared/hooks/useThemeContext';
 
 import styles from './style.less';
 import classNames from 'classnames';
 
 function Head() {
-  const context = useContext(ThemeContext);
+  const themeContextcontext = useThemeContext();
   const [items] = useState([
     {
       name: '先完成一万小时再说吧',
@@ -33,12 +33,12 @@ function Head() {
   };
 
   const onChangeTheme = () => {
-    const nextTheme = context.state === 'light' ? 'dark' : 'light';
-    context.setState(nextTheme);
+    const nextTheme = themeContextcontext.state === 'light' ? 'dark' : 'light';
+    themeContextcontext.setState(nextTheme);
   };
 
   return (
-    <div className={classNames([styles.container, styles[context.state]])}>
+    <div className={classNames([styles.container, styles[themeContextcontext.state]])}>
       <div className={styles.box}>
         <ul className={styles.list}>
           {items.map((item) => (
@@ -61,7 +61,7 @@ function Head() {
             style={{ marginRight: 10 }}
             onClick={onChangeTheme}
           >
-            {context.state === 'light' ? '白天' : '夜晚'}模式
+            {themeContextcontext.state === 'light' ? '白天' : '夜晚'}模式
           </Button>
           <Button onClick={onLogout}>退出登录</Button>
         </div>

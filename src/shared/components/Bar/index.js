@@ -1,10 +1,10 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { Spin } from '@douyinfe/semi-ui';
 import classNames from 'classnames';
 import { IconLoading } from '@douyinfe/semi-icons';
 import * as taskApi from '@/apis/task';
 import * as recordApi from '@/apis/record';
-import ThemeContext from '@/shared/ThemeContext';
+import useThemeContext from '@/shared/hooks/useThemeContext';
 
 import styles from './style.less';
 
@@ -12,7 +12,7 @@ import styles from './style.less';
 const target = 10000 * 60;
 
 function Bar() {
-  const context = useContext(ThemeContext);
+  const themeContext = useThemeContext();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -41,7 +41,7 @@ function Bar() {
   }
 
   return (
-    <div className={classNames([styles.container, styles[context.state]])}>
+    <div className={classNames([styles.container, styles[themeContext.state]])}>
       {items.map((item) => (
         <div
           key={item.name}

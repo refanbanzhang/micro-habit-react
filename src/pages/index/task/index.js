@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useContext } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import classnames from 'classnames';
 import { Popconfirm, Card, Button, Modal, RadioGroup, Radio, Spin, Input } from '@douyinfe/semi-ui';
 import { IconPlus, IconLoading, IconDelete } from '@douyinfe/semi-icons';
@@ -6,7 +6,7 @@ import { getToday, getPercent, getLevelClassNew, isMobile } from '@/shared/utils
 import * as taskApi from '@/apis/task';
 import * as recordApi from '@/apis/record';
 import openLoading from '@/shared/components/Loading/mount';
-import ThemeContext from '@/shared/ThemeContext';
+import useThemeContext from '@/shared/hooks/useThemeContext';
 
 import styles from './style.less';
 
@@ -23,7 +23,7 @@ function Task(props) {
   const [taskTarget, setTaskTarget] = useState(5);
   const [taskVisible, setTaskVisible] = useState(false);
   const inputRef = useRef(null);
-  const context = useContext(ThemeContext);
+  const themeContext = useThemeContext();
 
   const onShowModal = (taskId) => {
     setCurrTaskId(taskId);
@@ -166,7 +166,7 @@ function Task(props) {
   }
 
   return (
-    <div className={classnames([styles.container, styles[context.state]])}>
+    <div className={classnames([styles.container, styles[themeContext.state]])}>
       <div className={styles.marginBottom}>
         <Button
           type="primary"
