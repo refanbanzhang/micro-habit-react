@@ -5,6 +5,7 @@ import Bar from '@/shared/components/Bar';
 
 import styles from './style.less';
 import Task from './Task';
+import Duration from './Duration'
 
 function Index() {
   const [timestamp, setTimestamp] = useState(Date.now());
@@ -22,6 +23,7 @@ function Index() {
         style={{ marginBottom: '20px' }}
       />
       <Bar />
+      <Duration />
     </div>
   );
 }
