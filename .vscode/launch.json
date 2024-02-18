@@ -21,6 +21,17 @@
       "sourceMapPathOverrides": {
         "webpack:///src/*": "${webRoot}/*"
       }
+    },
+    {
+      "name": "debug webpack",
+      "type": "node",
+      "request": "launch",
+      "stopOnEntry": true,
+      "program": "${workspaceFolder}/node_modules/react-app-rewired/bin/index.js",
+      "args": ["start"],
+      "env": {
+        "NODE_ENV": "development"
+      }
     }
   ]
 }
