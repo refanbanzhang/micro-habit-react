@@ -32,6 +32,17 @@
       "env": {
         "NODE_ENV": "development"
       }
+    },
+    {
+      "name": "debug craco",
+      "type": "node",
+      "request": "launch",
+      "stopOnEntry": true,
+      "program": "${workspaceFolder}/node_modules/@craco/craco/dist/bin/craco.js",
+      "args": ["start"],
+      "env": {
+        "NODE_ENV": "development"
+      }
     }
   ]
 }
