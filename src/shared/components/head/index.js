@@ -10,7 +10,7 @@ import styles from './style.less';
 import classNames from 'classnames';
 
 function Head() {
-  const themeContextcontext = useThemeContext();
+  const themeContext = useThemeContext();
   const [items] = useState([
     {
       name: '先完成一万小时再说吧',
@@ -33,12 +33,12 @@ function Head() {
   };
 
   const onChangeTheme = () => {
-    const nextTheme = themeContextcontext.state === 'light' ? 'dark' : 'light';
-    themeContextcontext.setState(nextTheme);
+    const nextTheme = themeContext.state === 'light' ? 'dark' : 'light';
+    themeContext.setState(nextTheme);
   };
 
   return (
-    <div className={classNames([styles.container, styles[themeContextcontext.state]])}>
+    <div className={classNames([styles.container, styles[themeContext.state]])}>
       <div className={styles.box}>
         <ul className={styles.list}>
           {items.map((item) => (
@@ -61,7 +61,7 @@ function Head() {
             style={{ marginRight: 10 }}
             onClick={onChangeTheme}
           >
-            {themeContextcontext.state === 'light' ? '白天' : '夜晚'}模式
+            {themeContext.state === 'light' ? '白天' : '夜晚'}模式
           </Button>
           <Button onClick={onLogout}>退出登录</Button>
         </div>
