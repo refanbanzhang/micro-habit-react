@@ -5,8 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import './index.less';
 import App from './App';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+ReactDOM.createRoot(document.getElementById('root')).render(
   <ContextProvider>
     <App />
   </ContextProvider>,
