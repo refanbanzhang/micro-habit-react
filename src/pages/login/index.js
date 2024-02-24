@@ -46,7 +46,6 @@ function Login() {
         ref={inputRef}
         className={styles.input}
         value={username}
-        onKeyUp={onSubmit}
         onChange={setUsername}
         placeholder="账号"
       />
