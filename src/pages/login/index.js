@@ -8,12 +8,14 @@ import styles from './style.less';
 const { Text } = Typography;
 
 function Login() {
-  const inputRef = useRef(null);
+  const usernameInputRef = useRef(null);
+  const passwordInputRef = useRef(null);
+
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const onSubmit = useCallback(async () => {
+  const login = useCallback(async () => {
     setLoading(true);
     const res = await userApi.login({ username, password });
     setLoading(false);
@@ -31,6 +33,22 @@ function Login() {
     }
   }, [username, password]);
 
+  const onSubmit = useCallback(() => {
+    if (!username) {
+      Toast.error('请输入用户名');
+      usernameInputRef.current?.focus();
+      return;
+    }
+
+    if (!password) {
+      Toast.error('请输入密码');
+      passwordInputRef.current?.focus();
+      return;
+    }
+
+    login()
+  }, [login, username, password])
+
   useEffect(() => {
     const onKeyup = (e) => {
       if (e.key === 'Enter') {
@@ -45,8 +63,8 @@ function Login() {
   }, [onSubmit])
 
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
+    if (usernameInputRef.current) {
+      usernameInputRef.current.focus();
     }
   }, []);
 
@@ -56,13 +74,14 @@ function Login() {
     <div className={styles.container}>
       <h1 className={styles.title}>微习惯</h1>
       <Input
-        ref={inputRef}
+        ref={usernameInputRef}
         className={styles.input}
         value={username}
         onChange={setUsername}
         placeholder="账号"
       />
       <Input
+        ref={passwordInputRef}
         className={styles.input}
         type="password"
         value={password}
