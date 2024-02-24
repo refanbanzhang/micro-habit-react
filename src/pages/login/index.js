@@ -13,7 +13,7 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const login = async () => {
+  const onSubmit = async () => {
     setLoading(true);
     const res = await userApi.login({ username, password });
     setLoading(false);
@@ -31,10 +31,6 @@ function Login() {
     }
   };
 
-  const onSubmit = () => {
-    login();
-  };
-
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -50,7 +46,7 @@ function Login() {
         ref={inputRef}
         className={styles.input}
         value={username}
-        onKeyUp={(e) => e.keyCode === 13 && onSubmit()}
+        onKeyUp={onSubmit}
         onChange={setUsername}
         placeholder="账号"
       />
