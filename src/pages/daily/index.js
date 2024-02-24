@@ -56,26 +56,26 @@ function Daily() {
     fetchData();
   }, [timestamp]);
 
-  const init = async () => {
-    const taskRes = await dailyTaskApi.list();
-    const dateRes = await dailyDateApi.list({
-      date: today,
-    });
-
-    // 将dates中的数据，融合到tasks中，实现初始化选中
-    const names = dateRes.data.map((item) => item.name);
-    setTasks(
-      taskRes.data.map((item) => ({
-        ...item,
-        checked: names.includes(item.name),
-      })),
-    );
-    setLoading(false);
-  };
-
   useEffect(() => {
-    init();
-  }, []);
+    const fetchData = async () => {
+      const taskRes = await dailyTaskApi.list();
+      const dateRes = await dailyDateApi.list({
+        date: today,
+      });
+
+      // 将dates中的数据，融合到tasks中，实现初始化选中
+      const names = dateRes.data.map((item) => item.name);
+      setTasks(
+        taskRes.data.map((item) => ({
+          ...item,
+          checked: names.includes(item.name),
+        })),
+      );
+      setLoading(false);
+    };
+
+    fetchData()
+  }, [timestamp]);
 
   const update = async (name, checked) => {
     if (checked) {
@@ -106,7 +106,7 @@ function Daily() {
     await dailyTaskApi.add({
       name: taskName,
     });
-    init();
+    setTimestamp(Date.now())
     onTaskNameModalCancel();
   };
 
@@ -119,7 +119,7 @@ function Daily() {
     await dailyTaskApi.del({
       id,
     });
-    init();
+    setTimestamp(Date.now())
   };
 
   const onEdit = (target) => {
@@ -135,7 +135,6 @@ function Daily() {
     setCurrentTask(null);
     setNewTaskName('');
     setTimestamp(Date.now())
-    init();
   }
 
   const onUpdateTaskOk = () => {
