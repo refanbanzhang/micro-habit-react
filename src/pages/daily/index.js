@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
-import { Input, Button, Checkbox, Modal, Spin, Popconfirm } from '@douyinfe/semi-ui';
-import { IconLoading, IconDelete } from '@douyinfe/semi-icons';
+import { Toast, Input, Button, Checkbox, Modal, Spin, Popconfirm } from '@douyinfe/semi-ui';
+import { IconLoading, IconDelete, IconEdit } from '@douyinfe/semi-icons';
 import classNames from 'classnames';
 import { getToday, isMobile } from '@/shared/utils';
 import * as dailyTaskApi from '@/apis/dailyTask';
@@ -21,9 +21,17 @@ const today = getToday();
 const getCount = (name, dates = []) => dates.filter((date) => date.name === name).length;
 
 function Daily() {
+  const [timestamp, setTimestamp] = useState(Date.now());
   const inputRef = useRef(null);
   const [tasks, setTasks] = useState([]);
   const [dates, setDates] = useState([]);
+
+  // update
+  const editInputRef = useRef(null);
+  const [currentTask, setCurrentTask] = useState(null);
+  const [editTaskModalVisible, setEditModalVisible] = useState(false);
+  const [newTaskName, setNewTaskName] = useState('');
+
   const [loading, setLoading] = useState(true);
   const [taskName, setTaskName] = useState('');
   const [visible, setVisible] = useState(false);
@@ -31,18 +39,22 @@ function Daily() {
 
   useEffect(() => {
     if (visible) {
-      inputRef.current.focus();
+      inputRef.current?.focus();
     }
-  }, [visible]);
+    if (editTaskModalVisible) {
+      editInputRef.current?.focus();
+    }
 
-  const loadDateData = async () => {
-    const res = await dailyDateApi.list();
-    setDates(res.data);
-  };
+  }, [visible, editTaskModalVisible]);
 
   useEffect(() => {
-    loadDateData();
-  }, []);
+    const fetchData = async () => {
+      const res = await dailyDateApi.list();
+      setDates(res.data);
+    };
+
+    fetchData();
+  }, [timestamp]);
 
   const init = async () => {
     const taskRes = await dailyTaskApi.list();
@@ -77,7 +89,7 @@ function Daily() {
         date: today,
       });
     }
-    await loadDateData();
+    setTimestamp(Date.now())
   };
 
   const onChange = (e) => {
@@ -110,6 +122,33 @@ function Daily() {
     init();
   };
 
+  const onEdit = (target) => {
+    setCurrentTask(target)
+    setNewTaskName(target.name)
+    setEditModalVisible(true)
+  }
+
+  const updateTask = async (id, name) => {
+    await dailyTaskApi.update({ id, name })
+
+    setEditModalVisible(false);
+    setCurrentTask(null);
+    setNewTaskName('');
+    setTimestamp(Date.now())
+    init();
+  }
+
+  const onUpdateTaskOk = () => {
+    const { _id } = currentTask;
+
+    if (newTaskName === currentTask.name) {
+      Toast.error('未检测到修改');
+      return;
+    }
+
+    updateTask(_id, newTaskName);
+  }
+
   return (
     <div className={classNames([styles.container, styles[themeContext.state]])}>
       <Head />
@@ -137,13 +176,16 @@ function Daily() {
             >
               <span className={styles.name}>{item.name}</span> 已打卡天数：{getCount(item.name, dates)}
             </Checkbox>
-            <Popconfirm
-              title="确认"
-              content="要删除该条记录吗？"
-              onConfirm={() => onDelTask(item._id)}
-            >
-              <IconDelete className={styles.delBtn} />
-            </Popconfirm>
+            <div>
+              <Popconfirm
+                title="确认"
+                content="要删除该条记录吗？"
+                onConfirm={() => onDelTask(item._id)}
+              >
+                <IconDelete className={styles.delBtn} />
+              </Popconfirm>
+              <IconEdit className={styles.delBtn} onClick={() => onEdit(item)} />
+            </div>
           </div>
         ))
       )}
@@ -160,6 +202,21 @@ function Daily() {
           ref={inputRef}
           value={taskName}
           onChange={setTaskName}
+        ></Input>
+      </Modal>
+
+      <Modal
+        title="修改任务名"
+        size={isMobile() ? 'full-width' : 'small'}
+        visible={editTaskModalVisible}
+        onOk={onUpdateTaskOk}
+        onCancel={() => setEditModalVisible(false)}
+        closeOnEsc={true}
+      >
+        <Input
+          ref={editInputRef}
+          value={newTaskName}
+          onChange={setNewTaskName}
         ></Input>
       </Modal>
     </div>

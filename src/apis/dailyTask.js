@@ -55,3 +55,16 @@ export const del = (data) => request({
   url: '/dailyTask/del',
   data,
 });
+
+/**
+ * 更新
+ * @param {Object} data
+ * @param {string} data.id
+ * @param {string} data.name
+ * @returns {ApiResponse}
+ */
+export const update = (data) => request({
+  method: 'post',
+  url: '/dailyTask/update',
+  data,
+});
