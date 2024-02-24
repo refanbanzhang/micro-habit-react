@@ -115,15 +115,6 @@ function Task(props) {
     setValue(e.target.value);
   };
 
-  const onDeleteTask = async (id) => {
-    if (id) {
-      await taskApi.remove({
-        id,
-      });
-      setTimestamp(Date.now());
-    }
-  };
-
   const onConfirmDeleteTaskConfirm = async () => {
     if (!confirmDeleteTaskName) {
       alert('请输入需要删除的任务名');
@@ -135,7 +126,10 @@ function Task(props) {
       return;
     }
 
-    await onDeleteTask(currentOperationTask._id)
+    await taskApi.remove({
+      id: currentOperationTask._id,
+    });
+    setTimestamp(Date.now());
     setConfirmDeleteTaskVisible(false);
     setConfirmDeleteTaskName('')
     setCurrentOperationTask(null)
@@ -151,6 +145,7 @@ function Task(props) {
   // 将记录合计到任务中
   useEffect(() => {
     if (!tasks.length) {
+      setItems([]);
       return;
     }
 
