@@ -13,26 +13,22 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const onSubmit = useCallback(() => {
-    const request = async () => {
-      setLoading(true);
-      const res = await userApi.login({ username, password });
-      setLoading(false);
+  const onSubmit = useCallback(async () => {
+    setLoading(true);
+    const res = await userApi.login({ username, password });
+    setLoading(false);
 
-      if (res.code !== 0) {
-        Toast.error('账号或密码错误');
-        return;
-      }
-
-      if (res.code === 0) {
-        localStorage.setItem('token', res.data);
-        // TODO: 接入token后，需要去掉username
-        localStorage.setItem('username', username);
-        router.navigate('/');
-      }
+    if (res.code !== 0) {
+      Toast.error('账号或密码错误');
+      return;
     }
 
-    request();
+    if (res.code === 0) {
+      localStorage.setItem('token', res.data);
+      // TODO: 接入token后，需要去掉username
+      localStorage.setItem('username', username);
+      router.navigate('/');
+    }
   }, [username, password]);
 
   useEffect(() => {
