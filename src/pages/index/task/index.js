@@ -22,6 +22,13 @@ function Task(props) {
   const [taskName, setTaskName] = useState('');
   const [taskTarget, setTaskTarget] = useState(5);
   const [taskVisible, setTaskVisible] = useState(false);
+
+  const confirmDeleteTaskNameInputRef = useRef(null);
+  const [confirmDeleteTaskName, setConfirmDeleteTaskName] = useState('')
+  const [confirmDeleteTaskVisible, setConfirmDeleteTaskVisible] = useState(false);
+  const [currentOperationTask, setCurrentOperationTask] = useState(null)
+
+
   const inputRef = useRef(null);
   const themeContext = useThemeContext();
 
@@ -117,6 +124,23 @@ function Task(props) {
     }
   };
 
+  const onConfirmDeleteTaskConfirm = async () => {
+    if (!confirmDeleteTaskName) {
+      alert('请输入需要删除的任务名');
+      return;
+    }
+
+    if (currentOperationTask.name !== confirmDeleteTaskName) {
+      alert('任务名不一致，请确认');
+      return;
+    }
+
+    await onDeleteTask(currentOperationTask._id)
+    setConfirmDeleteTaskVisible(false);
+    setConfirmDeleteTaskName('')
+    setCurrentOperationTask(null)
+  }
+
   // 新增任务弹层，input自动focus
   useEffect(() => {
     if (taskVisible) {
@@ -196,9 +220,13 @@ function Task(props) {
                   onClick={() => onShowModal(item._id)}
                 />
                 <Popconfirm
-                  title="确定是否要保存此修改？"
-                  content="此修改将不可逆"
-                  onConfirm={() => onDeleteTask(item._id)}
+                  title="确定要删除吗？"
+                  content="此操作将不可逆"
+                  onConfirm={() => {
+                    // 弹出一个输入框
+                    setConfirmDeleteTaskVisible(true);
+                    setCurrentOperationTask(item);
+                  }}
                 >
                   <Button icon={<IconDelete />} />
                 </Popconfirm>
@@ -239,6 +267,31 @@ function Task(props) {
             value={taskTarget}
             className={styles.input}
             onChange={setTaskTarget}
+          />
+        </div>
+      </Modal>
+
+      <Modal
+        title="删除确认"
+        size={isMobile() ? 'full-width' : 'small'}
+        visible={confirmDeleteTaskVisible}
+        onCancel={() => setConfirmDeleteTaskVisible(false)}
+        footer={
+          <Button
+            type="primary"
+            onClick={onConfirmDeleteTaskConfirm}
+          >
+            确定
+          </Button>
+        }
+      >
+        <div className={styles.box}>
+          <div className={styles.label}>请输入任务名：</div>
+          <Input
+            ref={confirmDeleteTaskNameInputRef}
+            value={confirmDeleteTaskName}
+            className={styles.input}
+            onChange={(value) => setConfirmDeleteTaskName(value)}
           />
         </div>
       </Modal>
