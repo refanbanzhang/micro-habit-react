@@ -135,12 +135,19 @@ function Task(props) {
     setCurrentOperationTask(null)
   }
 
-  // 新增任务弹层，input自动focus
+  // input自动focus
   useEffect(() => {
     if (taskVisible) {
+      // 为什么这里不需要setTimeout?
       inputRef.current?.focus();
     }
-  }, [taskVisible]);
+    if (confirmDeleteTaskVisible) {
+      // setTimeout是必要的吗？有更好的办法吗？
+      setTimeout(() => {
+        confirmDeleteTaskNameInputRef.current?.focus();
+      })
+    }
+  }, [taskVisible, confirmDeleteTaskVisible]);
 
   // 将记录合计到任务中
   useEffect(() => {
