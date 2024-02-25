@@ -17,7 +17,9 @@ function Register() {
     return res.data.length > 0;
   };
 
-  const login = ({ username }) => {
+  const login = async ({ username, password }) => {
+    const res = await userApi.login({ username, password });
+    localStorage.setItem('token', res.data);
     localStorage.setItem('username', username);
   };
 
