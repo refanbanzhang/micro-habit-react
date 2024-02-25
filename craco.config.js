@@ -3,6 +3,9 @@ const CracoLessPlugin = require('craco-less');
 
 module.exports = {
   webpack: {
+    configure: {
+      // cache: false,
+    },
     alias: {
       '@': path.resolve(__dirname, 'src'),
     },
