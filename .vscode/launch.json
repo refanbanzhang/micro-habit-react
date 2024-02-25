@@ -43,6 +43,15 @@
     },
     // 直接按照package.json的启动命令调试 比如下面的命令 相当于 npm start
     {
+      "name": "debugging craco simple",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      // 对应到你想调试package.json中的scripts脚本，比如想调试上面的start流程，就填start
+      "runtimeArgs": ["start"],
+    },
+    // 直接按照package.json的启动命令调试 比如下面的命令 相当于 npm start
+    {
       "name": "debugging customize-cra",
       "type": "node",
       "request": "launch",
