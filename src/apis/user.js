@@ -24,18 +24,18 @@ import request from '@/shared/request';
 
 /**
  * 查询用户列表
- * @param {Object} params
- * @param {string} [params._id]
- * @param {string} [params.username]
- * @param {string} [params.password]
- * @param {string} [params.phone]
- * @param {string} [params.email]
+ * @param {Object} data
+ * @param {string} [data._id]
+ * @param {string} [data.username]
+ * @param {string} [data.password]
+ * @param {string} [data.phone]
+ * @param {string} [data.email]
  * @returns {UserApiResponse}
  */
-export const list = (params) => request({
-  method: 'get',
+export const list = (data) => request({
+  method: 'post',
   url: '/user/list',
-  params,
+  data,
 });
 
 /**

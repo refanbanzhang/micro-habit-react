@@ -19,7 +19,6 @@ function Register() {
 
   const login = ({ username }) => {
     localStorage.setItem('username', username);
-    router.navigate('/')
   };
 
   const register = async (payload) => {
@@ -58,6 +57,10 @@ function Register() {
     } else {
       await register(params);
       await login(params);
+      Toast.success('注册成功');
+      setTimeout(() => {
+        router.navigate('/')
+      }, 2000)
     }
     setLoading(false);
   };
