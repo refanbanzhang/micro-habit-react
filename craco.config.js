@@ -10,6 +10,14 @@ module.exports = {
       '@': path.resolve(__dirname, 'src'),
     },
   },
+  // devServer: {
+  //   open: {
+  //     app: {
+  //       name: 'chrome',
+  //       arguments: ['--remote-debugging-port=9222']
+  //     }
+  //   }
+  // },
   plugins: [
     {
       plugin: CracoLessPlugin,

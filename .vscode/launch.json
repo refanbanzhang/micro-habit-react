@@ -15,12 +15,9 @@
       "name": "Attach to Chrome",
       "type": "chrome",
       "request": "attach",
-      "url": "http://localhost:3000",
       "port": 9222,
-      "webRoot": "${workspaceFolder}/src",
-      "sourceMapPathOverrides": {
-        "webpack:///src/*": "${webRoot}/*"
-      }
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/src"
     },
     {
       "name": "debug webpack",
