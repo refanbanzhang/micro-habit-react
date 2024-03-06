@@ -2,13 +2,31 @@ import { useRef, useState, useEffect } from 'react';
 import classnames from 'classnames';
 import { Popconfirm, Card, Button, Modal, RadioGroup, Radio, Spin, Input } from '@douyinfe/semi-ui';
 import { IconPlus, IconLoading, IconDelete } from '@douyinfe/semi-icons';
-import { getToday, getPercent, getLevelClassNew, isMobile } from '@/shared/utils';
+import { getToday, getPercent, getLevelClassNew, isMobile, getRandomInRange } from '@/shared/utils';
 import * as taskApi from '@/apis/task';
 import * as recordApi from '@/apis/record';
 import openLoading from '@/shared/components/Loading/mount';
 import useThemeContext from '@/shared/hooks/useThemeContext';
 
 import styles from './style.less';
+
+/** @type {string[]} */
+const sentences = [
+  '要有宇宙观',
+  '心智带宽被占用后，不要做决定',
+  '一次只做一件事（避免多线程）',
+  '将任务细分到傻瓜也能做的程度',
+  '不断反复的练习那些自己不会的、难的内容《刻意练习》',
+  '10%目标定律，尝试10次再说',
+  'one out one in《断舍离》',
+  'want better self-control? stop give youself bad options（不要让自己深处于诱惑的环境中）',
+  '学一个知识点时，带着问题去学习',
+  '费曼学习法，把学到的知识，用自己的语言写出来',
+  "You are here for a short visit. Don't hurry, don't worry. And be sure to smell the flowers along the way.",
+  '“倘若无法意识到无意识，它就会指挥你的生活，然后你会称之为命运。” -荣格​​',
+  'There is no reason to risk what you have and need for what you don’t have and don’t need. -The psychology of money',
+  'You can avoid reality, but you cannot avoid the consequences of avoiding reality.'
+];
 
 function Task(props) {
   const { timestamp, setTimestamp } = props;
@@ -28,6 +46,7 @@ function Task(props) {
   const [confirmDeleteTaskVisible, setConfirmDeleteTaskVisible] = useState(false);
   const [currentOperationTask, setCurrentOperationTask] = useState(null)
 
+  const [sentence, setSentence] = useState('');
 
   const inputRef = useRef(null);
   const themeContext = useThemeContext();
@@ -187,19 +206,26 @@ function Task(props) {
     fetchData();
   }, [timestamp]);
 
+  useEffect(() => {
+    const randomIndex = Math.floor(getRandomInRange(0, sentences.length - 1));
+    const sententce = sentences.find((_, index) => index === randomIndex);
+    setSentence(sententce);
+  }, [timestamp])
+
   if (loading) {
     return <Spin indicator={<IconLoading />} />;
   }
 
   return (
     <div className={classnames([styles.container, styles[themeContext.state]])}>
-      <div className={styles.marginBottom}>
+      <div className={`${styles.flex} ${styles.marginBottom} ${styles.alignCenter}`}>
         <Button
           type="primary"
           onClick={() => setTaskVisible(true)}
         >
           添加任务
         </Button>
+        <div className={styles.sentences}>{sentence}</div>
       </div>
       <div className={styles.items}>
         {items.map((item) => (

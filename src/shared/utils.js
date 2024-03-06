@@ -98,3 +98,13 @@ export function isLogged() {
 export function isMobile() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
+
+/**
+ * 传入指定范围，得到范围内的随机数
+ * @param {number} minValue
+ * @param {number} maxValue
+ * @returns {number}
+ */
+export function getRandomInRange(minValue, maxValue) {
+  return minValue + (maxValue - minValue) * Math.random();
+}
