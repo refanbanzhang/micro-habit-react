@@ -12,6 +12,7 @@ import styles from './style.less';
 
 /** @type {string[]} */
 const sentences = [
+  ...window.SENTENCES,
   '要有宇宙观',
   '心智带宽被占用后，不要做决定',
   '一次只做一件事（避免多线程）',

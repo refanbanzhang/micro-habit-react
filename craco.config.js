@@ -1,5 +1,10 @@
 const path = require('path');
 const CracoLessPlugin = require('craco-less');
+const webpack = require('webpack')
+const fs = require('fs');
+
+const plainSentences = fs.readFileSync("./sentences", 'utf8')
+const sentences = plainSentences.split('\r\n');
 
 module.exports = {
   webpack: {
@@ -9,6 +14,11 @@ module.exports = {
     alias: {
       '@': path.resolve(__dirname, 'src'),
     },
+    plugins: [
+      new webpack.DefinePlugin({
+        "window.SENTENCES": JSON.stringify(sentences)
+      })
+    ]
   },
   // devServer: {
   //   open: {
