@@ -7,6 +7,13 @@ const plainSentences = fs.readFileSync("./sentences", 'utf8')
 const sentences = plainSentences.split('\r\n');
 
 module.exports = {
+  eslint: {
+    configure: {
+      globals: {
+        SENTENCES: true
+      }
+    }
+  },
   webpack: {
     configure: {
       // cache: false,
@@ -14,11 +21,11 @@ module.exports = {
     alias: {
       '@': path.resolve(__dirname, 'src'),
     },
-    plugins: [
-      new webpack.DefinePlugin({
-        "window.SENTENCES": JSON.stringify(sentences)
-      })
-    ]
+    plugins: {
+      add: [new webpack.DefinePlugin({
+        "SENTENCES": JSON.stringify(sentences)
+      })]
+    }
   },
   // devServer: {
   //   open: {
