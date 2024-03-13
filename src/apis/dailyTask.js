@@ -4,6 +4,7 @@ import request from '@/shared/request';
  * @typedef {Object} DailyTask
  * @property {string} _id
  * @property {string} name
+ * @property {string} [link]
  * @property {string} username
  */
 
@@ -24,6 +25,7 @@ import request from '@/shared/request';
  * @param {Object} params
  * @param {string} [params._id]
  * @param {string} [params.name]
+ * @param {string} [params.link]
  * @returns {DailyTaskApiResponse}
  */
 export const list = (params) => request({
@@ -36,6 +38,7 @@ export const list = (params) => request({
  * 新增
  * @param {Object} data
  * @param {string} data.name
+ * @param {string} [data.link]
  * @returns {ApiResponse}
  */
 export const add = (data) => request({
@@ -61,6 +64,7 @@ export const del = (data) => request({
  * @param {Object} data
  * @param {string} data.id
  * @param {string} data.name
+ * @param {string} [data.link]
  * @returns {ApiResponse}
  */
 export const update = (data) => request({
