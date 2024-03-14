@@ -13,7 +13,7 @@ function Head() {
   const themeContext = useThemeContext();
   const [items] = useState([
     {
-      name: '先完成一万小时再说吧',
+      name: '一万小时',
       path: '/',
     },
     {

@@ -1,15 +1,30 @@
-import { useRef, useState, useEffect } from 'react';
-import classnames from 'classnames';
-import { Popconfirm, Card, Button, Modal, RadioGroup, Radio, Spin, Input } from '@douyinfe/semi-ui';
-import { IconPlus, IconLoading, IconDelete } from '@douyinfe/semi-icons';
-import { getToday, getPercent, getLevelClassNew, isMobile, getRandomInRange } from '@/shared/utils';
-import * as taskApi from '@/apis/task';
-import * as recordApi from '@/apis/record';
-import * as publickApi from '@/apis/public';
-import openLoading from '@/shared/components/Loading/mount';
-import useThemeContext from '@/shared/hooks/useThemeContext';
+import { useRef, useState, useEffect } from "react";
+import classnames from "classnames";
+import {
+  Popconfirm,
+  Card,
+  Button,
+  Modal,
+  RadioGroup,
+  Radio,
+  Spin,
+  Input,
+} from "@douyinfe/semi-ui";
+import { IconPlus, IconLoading, IconDelete } from "@douyinfe/semi-icons";
+import {
+  getToday,
+  getPercent,
+  getLevelClassNew,
+  isMobile,
+  getRandomInRange,
+} from "@/shared/utils";
+import * as taskApi from "@/apis/task";
+import * as recordApi from "@/apis/record";
+import * as publickApi from "@/apis/public";
+import openLoading from "@/shared/components/Loading/mount";
+import useThemeContext from "@/shared/hooks/useThemeContext";
 
-import styles from './style.less';
+import styles from "./style.less";
 
 function Task(props) {
   const { timestamp, setTimestamp } = props;
@@ -18,19 +33,20 @@ function Task(props) {
   const [tasks, setTasks] = useState([]);
   const [items, setItems] = useState([]);
   const [value, setValue] = useState(25);
-  const [currTaskId, setCurrTaskId] = useState('');
+  const [currTaskId, setCurrTaskId] = useState("");
   const [visible, setVisible] = useState(false);
-  const [taskName, setTaskName] = useState('');
+  const [taskName, setTaskName] = useState("");
   const [taskTarget, setTaskTarget] = useState(5);
   const [taskVisible, setTaskVisible] = useState(false);
 
   const confirmDeleteTaskNameInputRef = useRef(null);
-  const [confirmDeleteTaskName, setConfirmDeleteTaskName] = useState('')
-  const [confirmDeleteTaskVisible, setConfirmDeleteTaskVisible] = useState(false);
-  const [currentOperationTask, setCurrentOperationTask] = useState(null)
+  const [confirmDeleteTaskName, setConfirmDeleteTaskName] = useState("");
+  const [confirmDeleteTaskVisible, setConfirmDeleteTaskVisible] =
+    useState(false);
+  const [currentOperationTask, setCurrentOperationTask] = useState(null);
 
   const [sentences, setSentences] = useState([]);
-  const [sentence, setSentence] = useState('');
+  const [sentence, setSentence] = useState("");
 
   const inputRef = useRef(null);
   const themeContext = useThemeContext();
@@ -69,7 +85,7 @@ function Task(props) {
         },
       });
     } else {
-      throw new Error('查询到超过一条数据，无法定位到需要更新的数据');
+      throw new Error("查询到超过一条数据，无法定位到需要更新的数据");
     }
 
     close();
@@ -90,12 +106,12 @@ function Task(props) {
 
   const onAddTaskConfirm = async () => {
     if (!taskName) {
-      alert('请输入任务名称');
+      alert("请输入任务名称");
       return;
     }
 
     if (!taskTarget) {
-      alert('请输入目标时间');
+      alert("请输入目标时间");
       return;
     }
 
@@ -120,12 +136,12 @@ function Task(props) {
 
   const onConfirmDeleteTaskConfirm = async () => {
     if (!confirmDeleteTaskName) {
-      alert('请输入需要删除的任务名');
+      alert("请输入需要删除的任务名");
       return;
     }
 
     if (currentOperationTask.name !== confirmDeleteTaskName) {
-      alert('任务名不一致，请确认');
+      alert("任务名不一致，请确认");
       return;
     }
 
@@ -134,9 +150,9 @@ function Task(props) {
     });
     setTimestamp(Date.now());
     setConfirmDeleteTaskVisible(false);
-    setConfirmDeleteTaskName('')
-    setCurrentOperationTask(null)
-  }
+    setConfirmDeleteTaskName("");
+    setCurrentOperationTask(null);
+  };
 
   // input自动focus
   useEffect(() => {
@@ -148,7 +164,7 @@ function Task(props) {
       // setTimeout是必要的吗？有更好的办法吗？
       setTimeout(() => {
         confirmDeleteTaskNameInputRef.current?.focus();
-      })
+      });
     }
   }, [taskVisible, confirmDeleteTaskVisible]);
 
@@ -163,7 +179,7 @@ function Task(props) {
       recordApi.list({
         date: today,
         name: item.name,
-      }),
+      })
     );
     Promise.all(pros).then((reses) => {
       const records = reses.flatMap((res) => res.data);
@@ -194,20 +210,20 @@ function Task(props) {
     const randomIndex = Math.floor(getRandomInRange(0, sentences.length - 1));
     const sententce = sentences.find((_, index) => index === randomIndex);
     setSentence(sententce);
-  }, [timestamp, sentences])
+  }, [timestamp, sentences]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await publickApi.list({ name: 'sentences' });
+      const res = await publickApi.list({ name: "sentences" });
 
       const data = res.data ?? [];
       if (data.length) {
-        const sentences = data[0].content.split('\n').filter(Boolean)
+        const sentences = data[0].content.split("\n").filter(Boolean);
         setSentences(sentences);
       }
-    }
+    };
     fetchData();
-  }, [])
+  }, []);
 
   if (loading) {
     return <Spin indicator={<IconLoading />} />;
@@ -215,15 +231,7 @@ function Task(props) {
 
   return (
     <div className={classnames([styles.container, styles[themeContext.state]])}>
-      <div className={`${styles.flex} ${styles.marginBottom} ${styles.alignCenter}`}>
-        <Button
-          type="primary"
-          onClick={() => setTaskVisible(true)}
-        >
-          添加任务
-        </Button>
-        <div className={styles.sentences}>{sentence}</div>
-      </div>
+      <div className={styles.sentence} style={{ marginBottom: 15 }}>{sentence}</div>
       <div className={styles.items}>
         {items.map((item) => (
           <Card
@@ -236,7 +244,7 @@ function Task(props) {
                 [styles.finished]: item.value >= item.target,
               },
             ])}
-            style={{ maxWidth: '50%' }}
+            style={{ maxWidth: "50%" }}
             headerExtraContent={
               <>
                 <Button
@@ -265,16 +273,17 @@ function Task(props) {
         ))}
       </div>
 
+      <Button  style={{ marginBottom: 15 }} type="primary" onClick={() => setTaskVisible(true)}>
+        添加任务
+      </Button>
+
       <Modal
         title="创建任务"
-        size={isMobile() ? 'full-width' : 'small'}
+        size={isMobile() ? "full-width" : "small"}
         visible={taskVisible}
         onCancel={onAddTaskCancel}
         footer={
-          <Button
-            type="primary"
-            onClick={onAddTaskConfirm}
-          >
+          <Button type="primary" onClick={onAddTaskConfirm}>
             确定
           </Button>
         }
@@ -298,14 +307,11 @@ function Task(props) {
 
       <Modal
         title="删除确认"
-        size={isMobile() ? 'full-width' : 'small'}
+        size={isMobile() ? "full-width" : "small"}
         visible={confirmDeleteTaskVisible}
         onCancel={() => setConfirmDeleteTaskVisible(false)}
         footer={
-          <Button
-            type="primary"
-            onClick={onConfirmDeleteTaskConfirm}
-          >
+          <Button type="primary" onClick={onConfirmDeleteTaskConfirm}>
             确定
           </Button>
         }
@@ -323,23 +329,17 @@ function Task(props) {
 
       <Modal
         title="请选择需要添加的时间："
-        size={isMobile() ? 'full-width' : 'small'}
+        size={isMobile() ? "full-width" : "small"}
         visible={visible}
         onCancel={onCancel}
         footer={
-          <Button
-            type="primary"
-            onClick={onConfirm}
-          >
+          <Button type="primary" onClick={onConfirm}>
             确定
           </Button>
         }
       >
         <div className={styles.radios}>
-          <RadioGroup
-            onChange={onChange}
-            value={value}
-          >
+          <RadioGroup onChange={onChange} value={value}>
             <Radio value={5}>5分钟</Radio>
             <Radio value={10}>10分钟</Radio>
             <Radio value={15}>15分钟</Radio>
