@@ -20,7 +20,6 @@ import {
 import * as taskApi from "@/apis/task";
 import * as recordApi from "@/apis/record";
 import openLoading from "@/shared/components/Loading/mount";
-import Sentence from "@/shared/components/Sentence";
 import useThemeContext from "@/shared/hooks/useThemeContext";
 
 import styles from "./style.less";
@@ -208,7 +207,6 @@ function Task(props) {
 
   return (
     <div className={classnames([styles.container, styles[themeContext.state]])}>
-      <Sentence />
       <div className={styles.items}>
         {items.map((item) => (
           <Card

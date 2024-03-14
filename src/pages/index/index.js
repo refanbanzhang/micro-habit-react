@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Head from '@/shared/components/head';
 import Year from '@/shared/components/Year';
 import Bar from '@/shared/components/Bar';
+import Sentence from "@/shared/components/Sentence";
 
 import styles from './style.less';
 import Task from './task';
@@ -13,6 +14,7 @@ function Index() {
   return (
     <div className={styles.container}>
       <Head />
+      <Sentence />
       <Task
         timestamp={timestamp}
         setTimestamp={setTimestamp}
