@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import Head from '@/shared/components/Head';
+import Head from '@/shared/components/head';
 import Year from '@/shared/components/Year';
 import Bar from '@/shared/components/Bar';
 
 import styles from './style.less';
-import Task from './Task';
+import Task from './task';
 import Duration from './Duration'
 
 function Index() {

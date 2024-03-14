@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { getToday, isMobile } from '@/shared/utils';
 import * as dailyTaskApi from '@/apis/dailyTask';
 import * as dailyDateApi from '@/apis/dailyDate';
-import Head from '@/shared/components/Head';
+import Head from '@/shared/components/head';
 import useThemeContext from '@/shared/hooks/useThemeContext';
 
 import styles from './style.less';
@@ -26,6 +26,7 @@ function Daily() {
   const inputRef = useRef(null);
   const [tasks, setTasks] = useState([]);
   const [dates, setDates] = useState([]);
+  const [visibleFinished, setVisibleFinished] = useState(false);
 
   const [currentTask, setCurrentTask] = useState(null);
   const [editTaskModalVisible, setEditModalVisible] = useState(false);
@@ -167,46 +168,108 @@ function Daily() {
     setUpdateTaskLink('');
   }
 
+  const { unfinishedTasks, finishedTasks } = tasks.reduce(
+    (acc, task) => {
+      if (task.checked) {
+        acc.finishedTasks.push(task);
+      } else {
+        acc.unfinishedTasks.push(task);
+      }
+      return acc
+    },
+    { unfinishedTasks: [], finishedTasks: [] }
+  );
+
   return (
     <div className={classNames([styles.container, styles[themeContext.state]])}>
       <Head />
-      <Button
-        size="large"
-        className={styles.addBtn}
-        onClick={onAddTask}
+      <div
+        style={{ textAlign: 'right' }}
       >
-        创建打卡任务
-      </Button>
+        <Button
+          style={{ marginRight: 10 }}
+          size="large"
+          className={styles.addBtn}
+          onClick={onAddTask}
+        >
+          创建打卡任务
+        </Button>
+        <Button
+          size="large"
+          className={styles.addBtn}
+          onClick={() => setVisibleFinished((_state) => !_state)}
+          >
+          显示已完成
+        </Button>
+      </div>
 
       {loading ? (
         <Spin indicator={<IconLoading />} />
       ) : (
-        tasks.map((item) => (
-          <div
-            className={styles.item}
-            key={item._id}
-          >
-            <Checkbox
-              key={item._id}
-              value={item.name}
-              defaultChecked={item.checked}
-              onChange={onChange}
-            >
-              <span className={styles.name}>{item.name}</span> 已打卡天数：{getCount(item.name, dates)}
-            </Checkbox>
-            <Text link={{ href: item.link, target: "_blank" }}>{item.link}</Text>
-            <div>
-              <Popconfirm
-                title="确认"
-                content="要删除该条记录吗？"
-                onConfirm={() => onDelTask(item._id)}
+        <>
+          <div style={{ marginBottom: 10 }}>待完成</div>
+          {
+            unfinishedTasks.map((item) => (
+              <div
+                className={styles.item}
+                key={item._id}
               >
-                <IconDelete className={styles.delBtn} />
-              </Popconfirm>
-              <IconEdit className={styles.delBtn} onClick={() => onEdit(item)} />
-            </div>
+                <Checkbox
+                  key={item._id}
+                  value={item.name}
+                  defaultChecked={item.checked}
+                  onChange={onChange}
+                >
+                  <span className={styles.name}>{item.name}</span>
+                  <span style={{ display: 'none' }}>已打卡天数：{getCount(item.name, dates)}</span>
+                </Checkbox>
+                <Text link={{ href: item.link, target: "_blank" }}>{item.link}</Text>
+                <div>
+                  <Popconfirm
+                    title="确认"
+                    content="要删除该条记录吗？"
+                    onConfirm={() => onDelTask(item._id)}
+                  >
+                    <IconDelete className={styles.delBtn} />
+                  </Popconfirm>
+                  <IconEdit className={styles.delBtn} onClick={() => onEdit(item)} />
+                </div>
+              </div>
+            ))
+          }
+          <div style={{ display: visibleFinished ? 'block' : 'none' }}>
+            <div style={{ marginBottom: 10 }}>已完成</div>
+            {
+              finishedTasks.map((item) => (
+                <div
+                  className={styles.item}
+                  key={item._id}
+                >
+                  <Checkbox
+                    key={item._id}
+                    value={item.name}
+                    defaultChecked={item.checked}
+                    onChange={onChange}
+                  >
+                    <span className={styles.name}>{item.name}</span>
+                    <span style={{ display: 'none' }}>已打卡天数：{getCount(item.name, dates)}</span>
+                  </Checkbox>
+                  <Text link={{ href: item.link, target: "_blank" }}>{item.link}</Text>
+                  <div>
+                    <Popconfirm
+                      title="确认"
+                      content="要删除该条记录吗？"
+                      onConfirm={() => onDelTask(item._id)}
+                    >
+                      <IconDelete className={styles.delBtn} />
+                    </Popconfirm>
+                    <IconEdit className={styles.delBtn} onClick={() => onEdit(item)} />
+                  </div>
+                </div>
+              ))
+            }
           </div>
-        ))
+        </>
       )}
 
       <Modal
