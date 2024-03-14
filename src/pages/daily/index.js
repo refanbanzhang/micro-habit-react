@@ -219,20 +219,21 @@ function Daily() {
                   value={item.name}
                   defaultChecked={item.checked}
                   onChange={onChange}
-                >
+                />
+                <div className={styles.main}>
                   <span className={styles.name}>{item.name}</span>
                   <span style={{ display: 'none' }}>已打卡天数：{getCount(item.name, dates)}</span>
-                </Checkbox>
-                <Text link={{ href: item.link, target: "_blank" }}>{item.link}</Text>
-                <div>
-                  <Popconfirm
-                    title="确认"
-                    content="要删除该条记录吗？"
-                    onConfirm={() => onDelTask(item._id)}
-                  >
-                    <IconDelete className={styles.delBtn} />
-                  </Popconfirm>
-                  <IconEdit className={styles.delBtn} onClick={() => onEdit(item)} />
+                  <Text className={styles.link} link={{ href: item.link, target: "_blank" }}>{item.link}</Text>
+                  <div style={{ textAlign: 'right' }}>
+                    <Popconfirm
+                      title="确认"
+                      content="要删除该条记录吗？"
+                      onConfirm={() => onDelTask(item._id)}
+                    >
+                      <IconDelete className={styles.btn} />
+                    </Popconfirm>
+                    <IconEdit className={styles.btn} onClick={() => onEdit(item)} />
+                  </div>
                 </div>
               </div>
             ))
@@ -250,21 +251,22 @@ function Daily() {
                     value={item.name}
                     defaultChecked={item.checked}
                     onChange={onChange}
-                  >
-                    <span className={styles.name}>{item.name}</span>
-                    <span style={{ display: 'none' }}>已打卡天数：{getCount(item.name, dates)}</span>
-                  </Checkbox>
-                  <Text link={{ href: item.link, target: "_blank" }}>{item.link}</Text>
-                  <div>
+                  />
+                  <div className={styles.main}>
+                  <span className={styles.name}>{item.name}</span>
+                  <span style={{ display: 'none' }}>已打卡天数：{getCount(item.name, dates)}</span>
+                  <Text className={styles.link} link={{ href: item.link, target: "_blank" }}>{item.link}</Text>
+                  <div style={{ textAlign: 'right' }}>
                     <Popconfirm
                       title="确认"
                       content="要删除该条记录吗？"
                       onConfirm={() => onDelTask(item._id)}
                     >
-                      <IconDelete className={styles.delBtn} />
+                      <IconDelete className={styles.btn} />
                     </Popconfirm>
-                    <IconEdit className={styles.delBtn} onClick={() => onEdit(item)} />
+                    <IconEdit className={styles.btn} onClick={() => onEdit(item)} />
                   </div>
+                </div>
                 </div>
               ))
             }
