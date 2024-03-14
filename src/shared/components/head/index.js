@@ -58,12 +58,16 @@ function Head() {
         </ul>
         <div className={styles.btns}>
           <Button
-            style={{ marginRight: 10 }}
+            size="small"
+            className={styles.btn}
             onClick={onChangeTheme}
           >
-            {themeContext.state === 'light' ? '白天' : '夜晚'}模式
+            {themeContext.state === 'light' ? '白天' : '夜晚'}
           </Button>
-          <Button onClick={onLogout}>退出登录</Button>
+          <Button
+            size="small"
+            className={styles.btn}
+            onClick={onLogout}>退出登录</Button>
         </div>
       </div>
     </div>

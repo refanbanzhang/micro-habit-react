@@ -187,15 +187,15 @@ function Daily() {
         style={{ textAlign: 'right' }}
       >
         <Button
+          size="small"
           style={{ marginRight: 10 }}
-          size="large"
           className={styles.addBtn}
           onClick={onAddTask}
         >
           创建打卡任务
         </Button>
         <Button
-          size="large"
+          size="small"
           className={styles.addBtn}
           onClick={() => setVisibleFinished((_state) => !_state)}
           >
@@ -207,7 +207,7 @@ function Daily() {
         <Spin indicator={<IconLoading />} />
       ) : (
         <>
-          <div style={{ marginBottom: 10 }}>待完成</div>
+          <div className={styles.title} style={{ marginBottom: 10 }}>待完成</div>
           {
             unfinishedTasks.map((item) => (
               <div
@@ -239,7 +239,7 @@ function Daily() {
             ))
           }
           <div style={{ display: visibleFinished ? 'block' : 'none' }}>
-            <div style={{ marginBottom: 10 }}>已完成</div>
+            <div className={styles.title} style={{ marginBottom: 10 }}>已完成</div>
             {
               finishedTasks.map((item) => (
                 <div
