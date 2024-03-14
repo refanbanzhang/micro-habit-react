@@ -16,12 +16,11 @@ import {
   getPercent,
   getLevelClassNew,
   isMobile,
-  getRandomInRange,
 } from "@/shared/utils";
 import * as taskApi from "@/apis/task";
 import * as recordApi from "@/apis/record";
-import * as publickApi from "@/apis/public";
 import openLoading from "@/shared/components/Loading/mount";
+import Sentence from "@/shared/components/Sentence";
 import useThemeContext from "@/shared/hooks/useThemeContext";
 
 import styles from "./style.less";
@@ -44,9 +43,6 @@ function Task(props) {
   const [confirmDeleteTaskVisible, setConfirmDeleteTaskVisible] =
     useState(false);
   const [currentOperationTask, setCurrentOperationTask] = useState(null);
-
-  const [sentences, setSentences] = useState([]);
-  const [sentence, setSentence] = useState("");
 
   const inputRef = useRef(null);
   const themeContext = useThemeContext();
@@ -206,32 +202,13 @@ function Task(props) {
     fetchData();
   }, [timestamp]);
 
-  useEffect(() => {
-    const randomIndex = Math.floor(getRandomInRange(0, sentences.length - 1));
-    const sententce = sentences.find((_, index) => index === randomIndex);
-    setSentence(sententce);
-  }, [timestamp, sentences]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await publickApi.list({ name: "sentences" });
-
-      const data = res.data ?? [];
-      if (data.length) {
-        const sentences = data[0].content.split("\n").filter(Boolean);
-        setSentences(sentences);
-      }
-    };
-    fetchData();
-  }, []);
-
   if (loading) {
     return <Spin indicator={<IconLoading />} />;
   }
 
   return (
     <div className={classnames([styles.container, styles[themeContext.state]])}>
-      <div className={styles.sentence} style={{ marginBottom: 15 }}>{sentence}</div>
+      <Sentence />
       <div className={styles.items}>
         {items.map((item) => (
           <Card
