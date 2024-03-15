@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import classnames from "classnames";
 import {
-  Popconfirm,
   Button,
   Modal,
   RadioGroup,
@@ -9,7 +8,8 @@ import {
   Input,
   Skeleton,
 } from "@douyinfe/semi-ui";
-import { IconPlus, IconDelete } from "@douyinfe/semi-icons";
+import { Dropdown } from '@douyinfe/semi-ui';
+import { IconOverflow, IconHeart } from '@douyinfe/semi-icons-lab';
 import {
   getToday,
   getPercent,
@@ -35,7 +35,6 @@ function Task(props) {
   const [taskName, setTaskName] = useState("");
   const [taskTarget, setTaskTarget] = useState(5);
   const [taskVisible, setTaskVisible] = useState(false);
-
   const confirmDeleteTaskNameInputRef = useRef(null);
   const [confirmDeleteTaskName, setConfirmDeleteTaskName] = useState("");
   const [confirmDeleteTaskVisible, setConfirmDeleteTaskVisible] =
@@ -200,6 +199,19 @@ function Task(props) {
     fetchData();
   }, [timestamp]);
 
+  const onDelete = (item) => {
+    const config = {
+      title: '确定要删除吗？', content: '此操作将不可逆！', onOk: () => {
+        setConfirmDeleteTaskVisible(true);
+        setCurrentOperationTask(item);
+      }
+    };
+    if (isMobile()) {
+      config.width = '90%';
+    }
+    Modal.error(config);
+  }
+
   const placeholder = (
     <div>
       <Skeleton.Image style={{ height: 221 }} />
@@ -220,37 +232,44 @@ function Task(props) {
                   [styles.finished]: item.value >= item.target,
                 },
               ])}
-              headerExtraContent={
-                <>
-                  <Button
-                    style={{ marginRight: 10 }}
-                    icon={<IconPlus />}
-                    onClick={() => onShowModal(item._id)}
-                  />
-                  <Popconfirm
-                    title="确定要删除吗？"
-                    content="此操作将不可逆"
-                    onConfirm={() => {
-                      // 弹出一个输入框
-                      setConfirmDeleteTaskVisible(true);
-                      setCurrentOperationTask(item);
-                    }}
-                  >
-                    <Button icon={<IconDelete />} />
-                  </Popconfirm>
-                </>
-              }
             >
               <div className={styles.name}>{item.name}</div>
               <div>目标：{item.target}</div>
               <div>已完成：{item.value}</div>
               <div>进度：{getPercent(item.value, item.target)}%</div>
+
+              <div className={styles.fixed}>
+                <Dropdown
+                  trigger={'click'}
+                  clickToHide
+                  render={
+                    <Dropdown.Menu>
+                      <Dropdown.Item
+                      >
+                        编辑任务
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        onClick={() => onDelete(item)}
+                      >
+                        删除任务
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  }
+                >
+                  <IconOverflow />
+                </Dropdown>
+              </div>
+              <div className={styles.fixedBottom}>
+                <IconHeart
+                  onClick={() => onShowModal(item._id)}
+                />
+              </div>
             </div>
           ))}
         </div>
       </Skeleton>
 
-      <Button  style={{ marginBottom: 15, display: 'none' }} type="primary" onClick={() => setTaskVisible(true)}>
+      <Button style={{ marginBottom: 15, display: 'none' }} type="primary" onClick={() => setTaskVisible(true)}>
         添加任务
       </Button>
 
