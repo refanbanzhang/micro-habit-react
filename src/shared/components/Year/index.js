@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import classNames from 'classnames';
+import { useState, useEffect } from "react";
+import classNames from "classnames";
 import { Skeleton } from "@douyinfe/semi-ui";
-import { getYearDatesUntilToday, getLevelClass } from '@/shared/utils';
-import * as recordApi from '@/apis/record';
-import * as taskApi from '@/apis/task';
+import { getYearDatesUntilToday, getLevelClass } from "@/shared/utils";
+import * as recordApi from "@/apis/record";
+import * as taskApi from "@/apis/task";
 
-import styles from './style.less';
+import styles from "./style.less";
 
 const year = getYearDatesUntilToday();
 
@@ -22,7 +22,10 @@ function Year(props) {
       const tasks = taskRes.data;
       const dates = recordRes.data;
       // 得到当前用户没挺任务目标的总时间
-      const targetTotalAmount = tasks.reduce((acc, curr) => (acc += curr.target), 0);
+      const targetTotalAmount = tasks.reduce(
+        (acc, curr) => (acc += curr.target),
+        0
+      );
       const list = year.map((item) => {
         const dateData = dates.filter((date) => date.date === item.date);
         const value = dateData.reduce((acc, curr) => (acc += curr.value), 0);
@@ -41,7 +44,9 @@ function Year(props) {
         };
       });
 
-      const firstValueBiggerThenZeroIndex = list.findIndex((item) => item.value > 0);
+      const firstValueBiggerThenZeroIndex = list.findIndex(
+        (item) => item.value > 0
+      );
       const nextList = list.slice(firstValueBiggerThenZeroIndex);
 
       setItems(nextList);
@@ -58,19 +63,20 @@ function Year(props) {
   );
 
   return (
-    <div style={{ marginBottom: 15 }}>
-      <Skeleton placeholder={placeholder} loading={loading} active>
-        <ul className={styles.list}>
-          {items.map((item) => (
-            <li
-              key={item.date}
-              title={`${item.date} ${item.value}`}
-              className={classNames([styles.item, getLevelClass(item.value, item.target, item.allFinished)])}
-            ></li>
-          ))}
-        </ul>
-      </Skeleton>
-    </div>
+    <Skeleton placeholder={placeholder} loading={loading} active>
+      <ul className={styles.list}>
+        {items.map((item) => (
+          <li
+            key={item.date}
+            title={`${item.date} ${item.value}`}
+            className={classNames([
+              styles.item,
+              getLevelClass(item.value, item.target, item.allFinished),
+            ])}
+          ></li>
+        ))}
+      </ul>
+    </Skeleton>
   );
 }
 

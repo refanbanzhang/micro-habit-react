@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
-import classnames from 'classnames';
+import { useState, useEffect } from "react";
+import classnames from "classnames";
 import { Skeleton } from "@douyinfe/semi-ui";
-import * as recordApi from '@/apis/record';
-import useThemeContext from '@/shared/hooks/useThemeContext';
-
-import styles from './style.less';
+import * as recordApi from "@/apis/record";
+import useThemeContext from "@/shared/hooks/useThemeContext";
+import styles from "./style.less";
 
 function Duration(props) {
   const { timestamp } = props;
@@ -40,7 +39,9 @@ function Duration(props) {
   }));
 
   // 排序并提取top3
-  const nextValues = values.sort((prev, next) => next.value - prev.value).slice(0, 3);
+  const nextValues = values
+    .sort((prev, next) => next.value - prev.value)
+    .slice(0, 3);
 
   const placeholder = (
     <div>
@@ -49,10 +50,8 @@ function Duration(props) {
   );
 
   return (
-    <div style={{ marginBottom: 15 }} className={classnames([styles[themeContext.state]])}>
+    <div className={classnames([styles[themeContext.state]])}>
       <Skeleton placeholder={placeholder} loading={loading} active>
-
-        <div>时长top3</div>
         {nextValues.map((item) => (
           <div key={item.name}>
             {item.name}: {item.value}

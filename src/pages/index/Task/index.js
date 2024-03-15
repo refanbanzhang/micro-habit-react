@@ -8,8 +8,8 @@ import {
   Input,
   Skeleton,
 } from "@douyinfe/semi-ui";
-import { Dropdown } from '@douyinfe/semi-ui';
-import { IconOverflow, IconHeart } from '@douyinfe/semi-icons-lab';
+import { Dropdown } from "@douyinfe/semi-ui";
+import { IconOverflow, IconHeart } from "@douyinfe/semi-icons-lab";
 import {
   getToday,
   getPercent,
@@ -201,16 +201,18 @@ function Task(props) {
 
   const onDelete = (item) => {
     const config = {
-      title: '确定要删除吗？', content: '此操作将不可逆！', onOk: () => {
+      title: "确定要删除吗？",
+      content: "此操作将不可逆！",
+      onOk: () => {
         setConfirmDeleteTaskVisible(true);
         setCurrentOperationTask(item);
-      }
+      },
     };
     if (isMobile()) {
-      config.width = '90%';
+      config.width = "90%";
     }
     Modal.error(config);
-  }
+  };
 
   const placeholder = (
     <div>
@@ -219,7 +221,7 @@ function Task(props) {
   );
 
   return (
-    <div style={{ marginBottom: 15 }} className={styles[themeContext.state]}>
+    <div className={styles[themeContext.state]}>
       <Skeleton placeholder={placeholder} loading={loading} active>
         <div className={styles.items}>
           {items.map((item) => (
@@ -240,17 +242,12 @@ function Task(props) {
 
               <div className={styles.fixed}>
                 <Dropdown
-                  trigger={'click'}
+                  trigger={"click"}
                   clickToHide
                   render={
                     <Dropdown.Menu>
-                      <Dropdown.Item
-                      >
-                        编辑任务
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        onClick={() => onDelete(item)}
-                      >
+                      <Dropdown.Item>编辑任务</Dropdown.Item>
+                      <Dropdown.Item onClick={() => onDelete(item)}>
                         删除任务
                       </Dropdown.Item>
                     </Dropdown.Menu>
@@ -260,16 +257,18 @@ function Task(props) {
                 </Dropdown>
               </div>
               <div className={styles.fixedBottom}>
-                <IconHeart
-                  onClick={() => onShowModal(item._id)}
-                />
+                <IconHeart onClick={() => onShowModal(item._id)} />
               </div>
             </div>
           ))}
         </div>
       </Skeleton>
 
-      <Button style={{ marginBottom: 15, display: 'none' }} type="primary" onClick={() => setTaskVisible(true)}>
+      <Button
+        style={{ marginBottom: 15, display: "none" }}
+        type="primary"
+        onClick={() => setTaskVisible(true)}
+      >
         添加任务
       </Button>
 

@@ -40,11 +40,9 @@ function Sentence() {
   );
 
   return (
-    <div style={{ marginBottom: 15 }}>
-      <Skeleton placeholder={placeholder} loading={loading} active>
-        <div className={styles.container}>{sentence}</div>
-      </Skeleton>
-    </div>
+    <Skeleton placeholder={placeholder} loading={loading} active>
+      <div className={styles.container}>{sentence}</div>
+    </Skeleton>
   );
 }
 

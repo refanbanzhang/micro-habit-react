@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { Skeleton } from "@douyinfe/semi-ui";
-import * as taskApi from '@/apis/task';
-import * as recordApi from '@/apis/record';
-import useThemeContext from '@/shared/hooks/useThemeContext';
+import * as taskApi from "@/apis/task";
+import * as recordApi from "@/apis/record";
+import useThemeContext from "@/shared/hooks/useThemeContext";
 
-import styles from './style.less';
+import styles from "./style.less";
 
 // 将一万小时换算为分钟
 const target = 10000 * 60;
@@ -24,7 +24,7 @@ function Bar() {
         recordApi.totalValue({ name: task.name }).then((value) => ({
           name: task.name,
           value,
-        })),
+        }))
       );
       const resList = await Promise.all(pros);
       setItems(resList);
@@ -41,13 +41,10 @@ function Bar() {
   );
 
   return (
-    <div style={{ marginBottom: 15 }} className={styles[themeContext.state]}>
+    <div className={styles[themeContext.state]}>
       <Skeleton placeholder={placeholder} loading={loading} active>
         {items.map((item) => (
-          <div
-            key={item.name}
-            className={styles.item}
-          >
+          <div key={item.name} className={styles.item}>
             <div className={styles.title}>
               {item.name} 1万小时定律（{parseInt(item.value / 60)}/10000）
             </div>

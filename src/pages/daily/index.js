@@ -6,6 +6,7 @@ import * as dailyTaskApi from "@/apis/dailyTask";
 import * as dailyDateApi from "@/apis/dailyDate";
 import Head from "@/shared/components/Head";
 import useThemeContext from "@/shared/hooks/useThemeContext";
+import { IconDescriptions } from "@douyinfe/semi-icons-lab";
 
 import styles from "./style.less";
 import ListItem from "./ListItem";
@@ -212,46 +213,53 @@ function Daily() {
         </Button>
       </div>
 
-      <div className={styles.title} style={{ marginBottom: 10 }}>
-        待完成
-      </div>
-      <Skeleton placeholder={placeholder} loading={loading} active>
-        {unfinishedTasks.map((item) => (
-          <ListItem
-            key={item._id}
-            item={item}
-            dates={dates}
-            onEdit={onEdit}
-            onChange={onChange}
-            onDelTask={onDelTask}
-          />
-        ))}
-      </Skeleton>
+      <div style={{ padding: "0 15px 0 15px" }}>
+        <div style={{ marginBottom: 25 }}>
+          <div className={styles.title}>
+            <IconDescriptions size="large" className={styles.icon2} />
+            <span>待完成</span>
+          </div>
+          <Skeleton placeholder={placeholder} loading={loading} active>
+            {unfinishedTasks.map((item) => (
+              <ListItem
+                key={item._id}
+                item={item}
+                dates={dates}
+                onEdit={onEdit}
+                onChange={onChange}
+                onDelTask={onDelTask}
+              />
+            ))}
+          </Skeleton>
+        </div>
 
-      <div
-        className={styles.title}
-        style={{
-          marginBottom: 10,
-          display: visibleFinished ? "block" : "none",
-        }}
-      >
-        已完成
-      </div>
-      <div
-        style={{
-          display: visibleFinished ? "block" : "none",
-        }}
-      >
-        {finishedTasks.map((item) => (
-          <ListItem
-            key={item._id}
-            item={item}
-            dates={dates}
-            onEdit={onEdit}
-            onChange={onChange}
-            onDelTask={onDelTask}
-          />
-        ))}
+        <div style={{ marginBottom: 25 }}>
+          <div
+            className={styles.title}
+            style={{
+              display: visibleFinished ? "flex" : "none",
+            }}
+          >
+            <IconDescriptions size="large" className={styles.icon2} />
+            <span>已完成</span>
+          </div>
+          <div
+            style={{
+              display: visibleFinished ? "block" : "none",
+            }}
+          >
+            {finishedTasks.map((item) => (
+              <ListItem
+                key={item._id}
+                item={item}
+                dates={dates}
+                onEdit={onEdit}
+                onChange={onChange}
+                onDelTask={onDelTask}
+              />
+            ))}
+          </div>
+        </div>
       </div>
 
       <Modal
