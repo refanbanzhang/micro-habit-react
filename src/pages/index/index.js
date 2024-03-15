@@ -15,15 +15,8 @@ function Index() {
     <div className={styles.container}>
       <Head />
       <Sentence />
-      <Task
-        timestamp={timestamp}
-        setTimestamp={setTimestamp}
-        style={{ marginBottom: '20px' }}
-      />
-      <Year
-        timestamp={timestamp}
-        style={{ marginBottom: '20px' }}
-      />
+      <Task timestamp={timestamp} setTimestamp={setTimestamp} />
+      <Year timestamp={timestamp} />
       <Bar />
       <Duration />
     </div>
