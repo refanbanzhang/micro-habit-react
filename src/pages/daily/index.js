@@ -246,17 +246,23 @@ function Daily() {
       >
         已完成
       </div>
-      {finishedTasks.map((item) => (
-        <ListItem
-          key={item._id}
-          item={item}
-          dates={dates}
-          isEditing={isEditing}
-          onEdit={onEdit}
-          onChange={onChange}
-          onDelTask={onDelTask}
-        />
-      ))}
+      <div
+        style={{
+          display: visibleFinished ? "block" : "none",
+        }}
+      >
+        {finishedTasks.map((item) => (
+          <ListItem
+            key={item._id}
+            item={item}
+            dates={dates}
+            isEditing={isEditing}
+            onEdit={onEdit}
+            onChange={onChange}
+            onDelTask={onDelTask}
+          />
+        ))}
+      </div>
 
       <Modal
         title="请输入任务名"

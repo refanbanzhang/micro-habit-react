@@ -16,9 +16,8 @@ function ListItem(props) {
   const { item, dates, isEditing, onEdit, onChange, onDelTask } = props;
 
   return (
-    <div className={styles.item} key={item._id}>
+    <div className={styles.item}>
       <Checkbox
-        key={item._id}
         value={item.name}
         style={{ marginTop: 2 }}
         defaultChecked={item.checked}
