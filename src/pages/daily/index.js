@@ -18,7 +18,7 @@ import classNames from "classnames";
 import { getToday, isMobile } from "@/shared/utils";
 import * as dailyTaskApi from "@/apis/dailyTask";
 import * as dailyDateApi from "@/apis/dailyDate";
-import Head from "@/shared/components/head";
+import Head from "@/shared/components/Head";
 import useThemeContext from "@/shared/hooks/useThemeContext";
 
 import styles from "./style.less";

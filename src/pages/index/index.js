@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Head from '@/shared/components/head';
+import Head from '@/shared/components/Head';
 import Year from '@/shared/components/Year';
 import Bar from '@/shared/components/Bar';
 import Sentence from "@/shared/components/Sentence";
