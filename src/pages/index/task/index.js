@@ -244,7 +244,7 @@ function Task(props) {
               <div className={styles.name}>{item.name}</div>
               <div>目标：{item.target}</div>
               <div>已完成：{item.value}</div>
-              <div>进度：{getPercent(item.value, item.target)}</div>
+              <div>进度：{getPercent(item.value, item.target)}%</div>
             </div>
           ))}
         </div>

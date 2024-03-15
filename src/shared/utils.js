@@ -8,7 +8,7 @@ export function getToday() {
 
 export function getPercent(value, target) {
   const percent = value / target;
-  return (percent * 100).toFixed(2);
+  return (percent * 100).toFixed(0);
 }
 
 export function formatDate(date) {
