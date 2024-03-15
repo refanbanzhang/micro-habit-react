@@ -6,7 +6,7 @@ import Sentence from "@/shared/components/Sentence";
 import Duration from '@/shared/components/Duration'
 
 import styles from './style.less';
-import Task from './task';
+import Task from './Task';
 
 function Index() {
   const [timestamp, setTimestamp] = useState(Date.now());
