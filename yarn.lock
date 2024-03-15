@@ -1391,6 +1391,11 @@
     memoize-one "^5.2.1"
     scroll-into-view-if-needed "^2.2.24"
 
+"@douyinfe/semi-icons-lab@^2.54.1":
+  version "2.54.1"
+  resolved "http://172.16.8.10:8081/repository/npm-all/@douyinfe/semi-icons-lab/-/semi-icons-lab-2.54.1.tgz#726e9452879e0e954e3c064a04868354f7daecb2"
+  integrity sha512-dcwiabfm5QQ6NKncf//vTydH6Kb2tUoFWBBWyD+f9Aik2ZPEUqLQKDjMo8BD9HY/5hTZVeg6OSKY6x9y53lodA==
+
 "@douyinfe/semi-icons@2.49.1":
   version "2.49.1"
   resolved "https://registry.npmmirror.com/@douyinfe/semi-icons/-/semi-icons-2.49.1.tgz#1a33ea0ae40961931b8cbedeac11ed5d87e245f5"

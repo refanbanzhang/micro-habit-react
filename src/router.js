@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react';
 import { createHashRouter } from 'react-router-dom';
-import { Spin } from '@douyinfe/semi-ui';
-import { IconLoading } from '@douyinfe/semi-icons';
 import Auth from '@/shared/components/Auth';
+import FallbackLoading from './shared/components/FallbackLoading';
+
 const Index = React.lazy(() => import('@/pages/index'));
 const Login = React.lazy(() => import('@/pages/login'));
 const Register = React.lazy(() => import('@/pages/register'));
@@ -13,7 +13,7 @@ export default createHashRouter([
   {
     path: '/',
     element: (
-      <Suspense fallback={<Spin indicator={<IconLoading />} />}>
+      <Suspense fallback={<FallbackLoading />}>
         <Auth>
           <Index />
         </Auth>
@@ -23,7 +23,7 @@ export default createHashRouter([
   {
     path: '/login',
     element: (
-      <Suspense fallback={<Spin indicator={<IconLoading />} />}>
+      <Suspense fallback={<FallbackLoading />}>
         <Login />
       </Suspense>
     ),
@@ -31,7 +31,7 @@ export default createHashRouter([
   {
     path: '/register',
     element: (
-      <Suspense fallback={<Spin indicator={<IconLoading />} />}>
+      <Suspense fallback={<FallbackLoading />}>
         <Register />
       </Suspense>
     ),
@@ -39,7 +39,7 @@ export default createHashRouter([
   {
     path: '/daily',
     element: (
-      <Suspense fallback={<Spin indicator={<IconLoading />} />}>
+      <Suspense fallback={<FallbackLoading />}>
         <Auth>
           <Daily />
         </Auth>
@@ -49,7 +49,7 @@ export default createHashRouter([
   {
     path: '/insert',
     element: (
-      <Suspense fallback={<Spin indicator={<IconLoading />} />}>
+      <Suspense fallback={<FallbackLoading />}>
         <Auth>
           <Insert />
         </Auth>
