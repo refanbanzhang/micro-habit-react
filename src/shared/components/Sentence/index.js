@@ -35,7 +35,7 @@ function Sentence() {
 
   const placeholder = (
     <div>
-      <Skeleton.Image style={{ height: 80 }} />
+      <Skeleton.Image style={{ height: 100 }} />
     </div>
   );
 

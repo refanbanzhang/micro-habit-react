@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Spin } from '@douyinfe/semi-ui';
-import classNames from 'classnames';
-import { IconLoading } from '@douyinfe/semi-icons';
+import { Skeleton } from "@douyinfe/semi-ui";
 import * as taskApi from '@/apis/task';
 import * as recordApi from '@/apis/record';
 import useThemeContext from '@/shared/hooks/useThemeContext';
@@ -36,28 +34,32 @@ function Bar() {
     loadData();
   }, []);
 
-  if (loading) {
-    return <Spin indicator={<IconLoading />} />;
-  }
+  const placeholder = (
+    <div>
+      <Skeleton.Image style={{ height: 137 }} />
+    </div>
+  );
 
   return (
-    <div className={classNames([styles.container, styles[themeContext.state]])}>
-      {items.map((item) => (
-        <div
-          key={item.name}
-          className={styles.item}
-        >
-          <div className={styles.title}>
-            {item.name} 1万小时定律（{parseInt(item.value / 60)}/10000）
+    <div style={{ marginBottom: 15 }} className={styles[themeContext.state]}>
+      <Skeleton placeholder={placeholder} loading={loading} active>
+        {items.map((item) => (
+          <div
+            key={item.name}
+            className={styles.item}
+          >
+            <div className={styles.title}>
+              {item.name} 1万小时定律（{parseInt(item.value / 60)}/10000）
+            </div>
+            <div className={styles.barContainer}>
+              <div
+                className={styles.bar}
+                style={{ width: `${(item.value / target) * 100}%` }}
+              ></div>
+            </div>
           </div>
-          <div className={styles.barContainer}>
-            <div
-              className={styles.bar}
-              style={{ width: `${(item.value / target) * 100}%` }}
-            ></div>
-          </div>
-        </div>
-      ))}
+        ))}
+      </Skeleton>
     </div>
   );
 }

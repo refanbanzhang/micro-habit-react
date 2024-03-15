@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import classNames from 'classnames';
-import { Spin } from '@douyinfe/semi-ui';
-import { IconLoading } from '@douyinfe/semi-icons';
+import { Skeleton } from "@douyinfe/semi-ui";
 import { getYearDatesUntilToday, getLevelClass } from '@/shared/utils';
 import * as recordApi from '@/apis/record';
 import * as taskApi from '@/apis/task';
@@ -52,21 +51,25 @@ function Year(props) {
     loadData();
   }, [timestamp]);
 
-  if (loading) {
-    return <Spin indicator={<IconLoading />} />;
-  }
+  const placeholder = (
+    <div>
+      <Skeleton.Image style={{ height: 126 }} />
+    </div>
+  );
 
   return (
-    <div className={styles.container}>
-      <ul className={styles.list}>
-        {items.map((item) => (
-          <li
-            key={item.date}
-            title={`${item.date} ${item.value}`}
-            className={classNames([styles.item, getLevelClass(item.value, item.target, item.allFinished)])}
-          ></li>
-        ))}
-      </ul>
+    <div style={{ marginBottom: 15 }}>
+      <Skeleton placeholder={placeholder} loading={loading} active>
+        <ul className={styles.list}>
+          {items.map((item) => (
+            <li
+              key={item.date}
+              title={`${item.date} ${item.value}`}
+              className={classNames([styles.item, getLevelClass(item.value, item.target, item.allFinished)])}
+            ></li>
+          ))}
+        </ul>
+      </Skeleton>
     </div>
   );
 }

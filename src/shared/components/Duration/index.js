@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import classnames from 'classnames';
-import { Spin } from '@douyinfe/semi-ui';
-import { IconLoading } from '@douyinfe/semi-icons';
+import { Skeleton } from "@douyinfe/semi-ui";
 import * as recordApi from '@/apis/record';
 import useThemeContext from '@/shared/hooks/useThemeContext';
 
@@ -43,18 +42,23 @@ function Duration(props) {
   // 排序并提取top3
   const nextValues = values.sort((prev, next) => next.value - prev.value).slice(0, 3);
 
-  if (loading) {
-    return <Spin indicator={<IconLoading />} />;
-  }
+  const placeholder = (
+    <div>
+      <Skeleton.Image style={{ height: 84 }} />
+    </div>
+  );
 
   return (
-    <div className={classnames([styles[themeContext.state]])}>
-      <div>时长top3</div>
-      {nextValues.map((item) => (
-        <div key={item.name}>
-          {item.name}: {item.value}
-        </div>
-      ))}
+    <div style={{ marginBottom: 15 }} className={classnames([styles[themeContext.state]])}>
+      <Skeleton placeholder={placeholder} loading={loading} active>
+
+        <div>时长top3</div>
+        {nextValues.map((item) => (
+          <div key={item.name}>
+            {item.name}: {item.value}
+          </div>
+        ))}
+      </Skeleton>
     </div>
   );
 }

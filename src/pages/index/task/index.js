@@ -2,15 +2,14 @@ import { useRef, useState, useEffect } from "react";
 import classnames from "classnames";
 import {
   Popconfirm,
-  Card,
   Button,
   Modal,
   RadioGroup,
   Radio,
-  Spin,
   Input,
+  Skeleton,
 } from "@douyinfe/semi-ui";
-import { IconPlus, IconLoading, IconDelete } from "@douyinfe/semi-icons";
+import { IconPlus, IconDelete } from "@douyinfe/semi-icons";
 import {
   getToday,
   getPercent,
@@ -201,54 +200,57 @@ function Task(props) {
     fetchData();
   }, [timestamp]);
 
-  if (loading) {
-    return <Spin indicator={<IconLoading />} />;
-  }
+  const placeholder = (
+    <div>
+      <Skeleton.Image style={{ height: 221 }} />
+    </div>
+  );
 
   return (
-    <div className={classnames([styles.container, styles[themeContext.state]])}>
-      <div className={styles.items}>
-        {items.map((item) => (
-          <Card
-            key={item._id}
-            title={item.name}
-            className={classnames([
-              styles.card,
-              getLevelClassNew(item.value, item.target),
-              {
-                [styles.finished]: item.value >= item.target,
-              },
-            ])}
-            style={{ maxWidth: "50%" }}
-            headerExtraContent={
-              <>
-                <Button
-                  style={{ marginRight: 10 }}
-                  icon={<IconPlus />}
-                  onClick={() => onShowModal(item._id)}
-                />
-                <Popconfirm
-                  title="确定要删除吗？"
-                  content="此操作将不可逆"
-                  onConfirm={() => {
-                    // 弹出一个输入框
-                    setConfirmDeleteTaskVisible(true);
-                    setCurrentOperationTask(item);
-                  }}
-                >
-                  <Button icon={<IconDelete />} />
-                </Popconfirm>
-              </>
-            }
-          >
-            <div>目标：{item.target}</div>
-            <div>已完成：{item.value}</div>
-            <div>进度：{getPercent(item.value, item.target)}</div>
-          </Card>
-        ))}
-      </div>
+    <div style={{ marginBottom: 15 }} className={styles[themeContext.state]}>
+      <Skeleton placeholder={placeholder} loading={loading} active>
+        <div className={styles.items}>
+          {items.map((item) => (
+            <div
+              key={item._id}
+              className={classnames([
+                styles.item,
+                getLevelClassNew(item.value, item.target),
+                {
+                  [styles.finished]: item.value >= item.target,
+                },
+              ])}
+              headerExtraContent={
+                <>
+                  <Button
+                    style={{ marginRight: 10 }}
+                    icon={<IconPlus />}
+                    onClick={() => onShowModal(item._id)}
+                  />
+                  <Popconfirm
+                    title="确定要删除吗？"
+                    content="此操作将不可逆"
+                    onConfirm={() => {
+                      // 弹出一个输入框
+                      setConfirmDeleteTaskVisible(true);
+                      setCurrentOperationTask(item);
+                    }}
+                  >
+                    <Button icon={<IconDelete />} />
+                  </Popconfirm>
+                </>
+              }
+            >
+              <div className={styles.name}>{item.name}</div>
+              <div>目标：{item.target}</div>
+              <div>已完成：{item.value}</div>
+              <div>进度：{getPercent(item.value, item.target)}</div>
+            </div>
+          ))}
+        </div>
+      </Skeleton>
 
-      <Button  style={{ marginBottom: 15 }} type="primary" onClick={() => setTaskVisible(true)}>
+      <Button  style={{ marginBottom: 15, display: 'none' }} type="primary" onClick={() => setTaskVisible(true)}>
         添加任务
       </Button>
 

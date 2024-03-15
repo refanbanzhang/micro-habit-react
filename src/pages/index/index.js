@@ -3,10 +3,10 @@ import Head from '@/shared/components/Head';
 import Year from '@/shared/components/Year';
 import Bar from '@/shared/components/Bar';
 import Sentence from "@/shared/components/Sentence";
+import Duration from '@/shared/components/Duration'
 
 import styles from './style.less';
 import Task from './task';
-import Duration from './Duration'
 
 function Index() {
   const [timestamp, setTimestamp] = useState(Date.now());

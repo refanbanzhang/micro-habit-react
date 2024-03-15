@@ -1,19 +1,22 @@
-.container {
+.items {
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
   flex-direction: column;
 }
 
-.items {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+.item {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 3px;
+  font-size: 14px;
+
+  &:first-child {
+    margin-top: 0;
+  }
 }
 
-.card {
-  width: calc(50% - 10px);
-  margin-bottom: 20px;
+.name {
+  margin-bottom: 5px;
+  font-size: 16px;
 }
 
 .radios {
@@ -26,6 +29,7 @@
 
 .finished {
   :global {
+
     h6,
     .semi-card-body {
       color: #fff;
