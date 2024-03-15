@@ -1,18 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import {
-  Toast,
-  Input,
-  Button,
-  Checkbox,
-  Modal,
-  Popconfirm,
-  Skeleton
-} from "@douyinfe/semi-ui";
-import {
-  IconDelete,
-  IconEdit,
-  IconLink,
-} from "@douyinfe/semi-icons";
+import { Toast, Input, Button, Modal, Skeleton } from "@douyinfe/semi-ui";
 import classNames from "classnames";
 import { getToday, isMobile } from "@/shared/utils";
 import * as dailyTaskApi from "@/apis/dailyTask";
@@ -21,17 +8,9 @@ import Head from "@/shared/components/Head";
 import useThemeContext from "@/shared/hooks/useThemeContext";
 
 import styles from "./style.less";
+import ListItem from "./ListItem";
 
 const today = getToday();
-
-/**
- * 获取任务的完成次数
- * @param {string} name
- * @param {Record[]} dates
- * @returns {boolean}
- */
-const getCount = (name, dates = []) =>
-  dates.filter((date) => date.name === name).length;
 
 function Daily() {
   const [timestamp, setTimestamp] = useState(Date.now());
@@ -195,57 +174,20 @@ function Daily() {
     { unfinishedTasks: [], finishedTasks: [] }
   );
 
-  const renderItem = (item) => (
-    <div className={styles.item} key={item._id}>
-      <Checkbox
-        key={item._id}
-        value={item.name}
-        style={{ marginTop: 2 }}
-        defaultChecked={item.checked}
-        onChange={onChange}
-      />
-      <div className={styles.main}>
-        <span className={styles.name}>{item.name}</span>
-        <span style={{ display: "none" }}>
-          已打卡天数：{getCount(item.name, dates)}
-        </span>
-        <div className={styles.fixedRight}>
-          <Popconfirm
-            title="确认"
-            content="要删除该条记录吗？"
-            onConfirm={() => onDelTask(item._id)}
-          >
-            <IconDelete
-              style={{
-                display: isEditing ? "block" : "none",
-              }}
-              className={styles.btn}
-            />
-          </Popconfirm>
-          <IconEdit
-            style={{
-              display: isEditing ? "block" : "none",
-            }}
-            className={styles.btn}
-            onClick={() => onEdit(item)}
-          />
-          {item.link && (
-            <IconLink
-              className={styles.btn}
-              onClick={() => window.open(item.link)}
-            />
-          )}
-        </div>
-      </div>
-    </div>
-  );
-
   const placeholder = (
     <div>
-      <Skeleton.Button style={{ width: '100%', height: 42, marginBottom: 10 }} />
-      <Skeleton.Button style={{ width: '100%', height: 42, marginBottom: 10 }} />
-      <Skeleton.Button style={{ width: '100%', height: 42, marginBottom: 10 }} />
-      <Skeleton.Button style={{ width: '100%', height: 42, marginBottom: 10 }} />
+      <Skeleton.Button
+        style={{ width: "100%", height: 42, marginBottom: 10 }}
+      />
+      <Skeleton.Button
+        style={{ width: "100%", height: 42, marginBottom: 10 }}
+      />
+      <Skeleton.Button
+        style={{ width: "100%", height: 42, marginBottom: 10 }}
+      />
+      <Skeleton.Button
+        style={{ width: "100%", height: 42, marginBottom: 10 }}
+      />
     </div>
   );
 
@@ -282,15 +224,39 @@ function Daily() {
         待完成
       </div>
       <Skeleton placeholder={placeholder} loading={loading} active>
-        {unfinishedTasks.map(renderItem)}
+        {unfinishedTasks.map((item) => (
+          <ListItem
+            key={item._id}
+            item={item}
+            dates={dates}
+            isEditing={isEditing}
+            onEdit={onEdit}
+            onChange={onChange}
+            onDelTask={onDelTask}
+          />
+        ))}
       </Skeleton>
 
-      <div style={{ display: visibleFinished ? "block" : "none" }}>
-        <div className={styles.title} style={{ marginBottom: 10 }}>
-          已完成
-        </div>
-        {finishedTasks.map(renderItem)}
+      <div
+        className={styles.title}
+        style={{
+          marginBottom: 10,
+          display: visibleFinished ? "block" : "none",
+        }}
+      >
+        已完成
       </div>
+      {finishedTasks.map((item) => (
+        <ListItem
+          key={item._id}
+          item={item}
+          dates={dates}
+          isEditing={isEditing}
+          onEdit={onEdit}
+          onChange={onChange}
+          onDelTask={onDelTask}
+        />
+      ))}
 
       <Modal
         title="请输入任务名"
