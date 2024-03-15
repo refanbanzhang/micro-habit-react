@@ -18,7 +18,6 @@ function Daily() {
   const [tasks, setTasks] = useState([]);
   const [dates, setDates] = useState([]);
   const [visibleFinished, setVisibleFinished] = useState(false);
-  const [isEditing, setIsEdting] = useState(false);
 
   const [currentTask, setCurrentTask] = useState(null);
   const [editTaskModalVisible, setEditModalVisible] = useState(false);
@@ -211,13 +210,6 @@ function Daily() {
         >
           显示已完成
         </Button>
-        <Button
-          size="small"
-          className={styles.addBtn}
-          onClick={() => setIsEdting((_state) => !_state)}
-        >
-          编辑
-        </Button>
       </div>
 
       <div className={styles.title} style={{ marginBottom: 10 }}>
@@ -229,7 +221,6 @@ function Daily() {
             key={item._id}
             item={item}
             dates={dates}
-            isEditing={isEditing}
             onEdit={onEdit}
             onChange={onChange}
             onDelTask={onDelTask}
@@ -256,7 +247,6 @@ function Daily() {
             key={item._id}
             item={item}
             dates={dates}
-            isEditing={isEditing}
             onEdit={onEdit}
             onChange={onChange}
             onDelTask={onDelTask}

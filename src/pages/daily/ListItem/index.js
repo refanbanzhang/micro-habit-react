@@ -1,5 +1,5 @@
-import { Checkbox, Popconfirm } from "@douyinfe/semi-ui";
-import { IconDelete, IconEdit, IconLink } from "@douyinfe/semi-icons";
+import { Checkbox, Popconfirm, Dropdown } from "@douyinfe/semi-ui";
+import { IconOverflow } from "@douyinfe/semi-icons-lab";
 
 import styles from "./style.less";
 
@@ -13,13 +13,12 @@ const getCount = (name, dates = []) =>
   dates.filter((date) => date.name === name).length;
 
 function ListItem(props) {
-  const { item, dates, isEditing, onEdit, onChange, onDelTask } = props;
+  const { item, dates, onEdit, onChange, onDelTask } = props;
 
   return (
     <div className={styles.item}>
       <Checkbox
         value={item.name}
-        style={{ marginTop: 2 }}
         defaultChecked={item.checked}
         onChange={onChange}
       />
@@ -29,31 +28,32 @@ function ListItem(props) {
           已打卡天数：{getCount(item.name, dates)}
         </span>
         <div className={styles.fixedRight}>
-          <Popconfirm
-            title="确认"
-            content="要删除该条记录吗？"
-            onConfirm={() => onDelTask(item._id)}
+          <Dropdown
+            clickToHide
+            trigger="click"
+            render={
+              <Dropdown.Menu>
+                <Dropdown.Item>
+                  <Popconfirm
+                    title="确认"
+                    content="要删除该条记录吗？"
+                    onConfirm={() => onDelTask(item._id)}
+                  >
+                    删除
+                  </Popconfirm>
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => onEdit(item)}>编辑</Dropdown.Item>
+                <Dropdown.Item
+                  disabled={!item.link}
+                  onClick={() => window.open(item.link)}
+                >
+                  跳转
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            }
           >
-            <IconDelete
-              style={{
-                display: isEditing ? "block" : "none",
-              }}
-              className={styles.btn}
-            />
-          </Popconfirm>
-          <IconEdit
-            style={{
-              display: isEditing ? "block" : "none",
-            }}
-            className={styles.btn}
-            onClick={() => onEdit(item)}
-          />
-          {item.link && (
-            <IconLink
-              className={styles.btn}
-              onClick={() => window.open(item.link)}
-            />
-          )}
+            <IconOverflow className={styles.btn} />
+          </Dropdown>
         </div>
       </div>
     </div>
