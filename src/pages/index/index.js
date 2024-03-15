@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import Head from '@/shared/components/Head';
-import Year from '@/shared/components/Year';
-import Bar from '@/shared/components/Bar';
+import { useState } from "react";
+import Head from "@/shared/components/Head";
+import Year from "@/shared/components/Year";
+import Bar from "@/shared/components/Bar";
 import Sentence from "@/shared/components/Sentence";
-import Duration from '@/shared/components/Duration'
+import Duration from "@/shared/components/Duration";
 
-import styles from './style.less';
-import Task from './Task';
+import styles from "./style.less";
+import Task from "./Task";
 
 function Index() {
   const [timestamp, setTimestamp] = useState(Date.now());
@@ -14,11 +14,21 @@ function Index() {
   return (
     <div className={styles.container}>
       <Head />
-      <Sentence />
-      <Task timestamp={timestamp} setTimestamp={setTimestamp} />
-      <Year timestamp={timestamp} />
-      <Bar />
-      <Duration />
+      <div style={{ margin: "0 15px 0 15px" }}>
+        <Sentence />
+      </div>
+      <div style={{ margin: "0 15px 0 15px" }}>
+        <Task timestamp={timestamp} setTimestamp={setTimestamp} />
+      </div>
+      <div style={{ margin: "0 15px 0 15px" }}>
+        <Year timestamp={timestamp} />
+      </div>
+      <div style={{ margin: "0 15px 0 15px" }}>
+        <Bar />
+      </div>
+      <div style={{ margin: "0 15px 0 15px" }}>
+        <Duration />
+      </div>
     </div>
   );
 }
