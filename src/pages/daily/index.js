@@ -5,11 +5,10 @@ import {
   Button,
   Checkbox,
   Modal,
-  Spin,
   Popconfirm,
+  Skeleton
 } from "@douyinfe/semi-ui";
 import {
-  IconLoading,
   IconDelete,
   IconEdit,
   IconLink,
@@ -241,6 +240,15 @@ function Daily() {
     </div>
   );
 
+  const placeholder = (
+    <div>
+      <Skeleton.Button style={{ width: '100%', height: 42, marginBottom: 10 }} />
+      <Skeleton.Button style={{ width: '100%', height: 42, marginBottom: 10 }} />
+      <Skeleton.Button style={{ width: '100%', height: 42, marginBottom: 10 }} />
+      <Skeleton.Button style={{ width: '100%', height: 42, marginBottom: 10 }} />
+    </div>
+  );
+
   return (
     <div className={classNames([styles.container, styles[themeContext.state]])}>
       <Head />
@@ -270,22 +278,19 @@ function Daily() {
         </Button>
       </div>
 
-      {loading ? (
-        <Spin indicator={<IconLoading />} />
-      ) : (
-        <>
-          <div className={styles.title} style={{ marginBottom: 10 }}>
-            待完成
-          </div>
-          {unfinishedTasks.map(renderItem)}
-          <div style={{ display: visibleFinished ? "block" : "none" }}>
-            <div className={styles.title} style={{ marginBottom: 10 }}>
-              已完成
-            </div>
-            {finishedTasks.map(renderItem)}
-          </div>
-        </>
-      )}
+      <div className={styles.title} style={{ marginBottom: 10 }}>
+        待完成
+      </div>
+      <Skeleton placeholder={placeholder} loading={loading} active>
+        {unfinishedTasks.map(renderItem)}
+      </Skeleton>
+
+      <div style={{ display: visibleFinished ? "block" : "none" }}>
+        <div className={styles.title} style={{ marginBottom: 10 }}>
+          已完成
+        </div>
+        {finishedTasks.map(renderItem)}
+      </div>
 
       <Modal
         title="请输入任务名"
