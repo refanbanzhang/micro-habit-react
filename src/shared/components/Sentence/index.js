@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Skeleton } from "@douyinfe/semi-ui";
+import { IconRefresh } from "@douyinfe/semi-icons";
 import { getRandomInRange } from "@/shared/utils";
 import * as publickApi from "@/apis/public";
 
@@ -9,6 +10,7 @@ function Sentence() {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
   const [sentence, setSentence] = useState("");
+  const [timestamp, setTimestamp] = useState(Date.now());
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +33,11 @@ function Sentence() {
     const randomIndex = Math.floor(getRandomInRange(0, items.length - 1));
     const sententce = items.find((_, index) => index === randomIndex);
     setSentence(sententce);
-  }, [items]);
+  }, [items, timestamp]);
+
+  const onRefresh = () => {
+    setTimestamp(Date.now());
+  };
 
   const placeholder = (
     <div>
@@ -41,7 +47,14 @@ function Sentence() {
 
   return (
     <Skeleton placeholder={placeholder} loading={loading} active>
-      <div className={styles.container}>{sentence}</div>
+      <div className={styles.container}>
+        <IconRefresh
+          className={styles.fixed}
+          onClick={onRefresh}
+          style={{ color: "rgba(var(--semi-grey-5), 1)" }}
+        />
+        {sentence}
+      </div>
     </Skeleton>
   );
 }
