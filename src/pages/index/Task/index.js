@@ -24,7 +24,7 @@ import useThemeContext from "@/shared/hooks/useThemeContext";
 import styles from "./style.less";
 
 function Task(props) {
-  const { timestamp, setTimestamp } = props;
+  const { timestamp, setTimestamp, taskVisible, setTaskVisible } = props;
   const today = getToday();
   const [loading, setLoading] = useState(true);
   const [tasks, setTasks] = useState([]);
@@ -34,7 +34,6 @@ function Task(props) {
   const [visible, setVisible] = useState(false);
   const [taskName, setTaskName] = useState("");
   const [taskTarget, setTaskTarget] = useState(5);
-  const [taskVisible, setTaskVisible] = useState(false);
   const confirmDeleteTaskNameInputRef = useRef(null);
   const [confirmDeleteTaskName, setConfirmDeleteTaskName] = useState("");
   const [confirmDeleteTaskVisible, setConfirmDeleteTaskVisible] =
@@ -263,14 +262,6 @@ function Task(props) {
           ))}
         </div>
       </Skeleton>
-
-      <Button
-        style={{ marginBottom: 15, display: "none" }}
-        type="primary"
-        onClick={() => setTaskVisible(true)}
-      >
-        添加任务
-      </Button>
 
       <Modal
         title="创建任务"
