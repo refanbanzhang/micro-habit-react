@@ -49,6 +49,8 @@ function Insert() {
     }
   }, [items]);
 
+  const changed = items[0]?.content === content;
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -69,7 +71,7 @@ function Insert() {
           theme="solid"
           type="primary"
           loading={loading}
-          disabled={!content.trim()}
+          disabled={!content.trim() || changed}
           onClick={onSubmit}
         >
           提交
