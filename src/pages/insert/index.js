@@ -12,6 +12,7 @@ function Insert() {
 
   const onSubmit = async () => {
     setLoading(true);
+
     if (items.length) {
       await publicApi.update({
         name: "sentences",
@@ -23,16 +24,20 @@ function Insert() {
         content,
       });
     }
+
     setLoading(false);
   };
 
   useEffect(() => {
     const fetchData = async () => {
       setInitLoading(true);
+
       const res = await publicApi.list({ name: "sentences" });
+
       if (res.data) {
         setItems(res.data);
       }
+
       setInitLoading(false);
     };
     fetchData();
@@ -46,17 +51,19 @@ function Insert() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>数据录入</h1>
-      <TextArea
-        autosize
-        rows={10}
-        className={styles.textarea}
-        value={content}
-        disabled={initLoading}
-        onChange={setContent}
-        placeholder="请输入"
-      />
-      <div>
+      <div className={styles.header}>
+        <h1 className={styles.title}>数据录入</h1>
+      </div>
+      <div className={styles.content}>
+        <TextArea
+          className={styles.textarea}
+          value={content}
+          disabled={initLoading}
+          onChange={setContent}
+          placeholder="请输入"
+        />
+      </div>
+      <div className={styles.footer}>
         <Button
           block
           theme="solid"
