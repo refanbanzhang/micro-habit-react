@@ -16,7 +16,7 @@ function ListItem(props) {
   const { item, dates, onEdit, onChange, onDelTask } = props;
 
   return (
-    <div className={styles.item}>
+    <div className={styles.container}>
       <Checkbox
         value={item.name}
         defaultChecked={item.checked}
@@ -27,7 +27,7 @@ function ListItem(props) {
         <span style={{ display: "none" }}>
           已打卡天数：{getCount(item.name, dates)}
         </span>
-        <div className={styles.fixedRight}>
+        <div className={styles.fixed}>
           <Dropdown
             clickToHide
             trigger="click"

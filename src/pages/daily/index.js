@@ -216,7 +216,7 @@ function Daily() {
       <div style={{ padding: "0 15px 0 15px" }}>
         <div style={{ marginBottom: 25 }}>
           <div className={styles.title}>
-            <IconDescriptions size="large" className={styles.icon2} />
+            <IconDescriptions size="large" className={styles.icon} />
             <span>待完成</span>
           </div>
           <Skeleton placeholder={placeholder} loading={loading} active>
@@ -240,7 +240,7 @@ function Daily() {
               display: visibleFinished ? "flex" : "none",
             }}
           >
-            <IconDescriptions size="large" className={styles.icon2} />
+            <IconDescriptions size="large" className={styles.icon} />
             <span>已完成</span>
           </div>
           <div
