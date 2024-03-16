@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
 import { Skeleton } from "@douyinfe/semi-ui";
 import { getYearDatesUntilToday, getLevelClass } from "@/shared/utils";
@@ -11,6 +11,7 @@ const year = getYearDatesUntilToday(371);
 
 function Year(props) {
   const { timestamp } = props;
+  const containerRef = useRef(null);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -67,9 +68,20 @@ function Year(props) {
     return acc;
   }, []);
 
+  useEffect(() => {
+    if (!items.length) {
+      return;
+    }
+
+    if (containerRef.current) {
+      // TODO: 去掉常量
+      containerRef.current.scrollLeft = 10000;
+    }
+  }, [items]);
+
   return (
     <Skeleton placeholder={placeholder} loading={loading} active>
-      <div className={styles.container}>
+      <div className={styles.container} ref={containerRef}>
         {nextItems.map((item, index) => (
           <ul className={styles.list} key={index}>
             {item.map((_item) => (
