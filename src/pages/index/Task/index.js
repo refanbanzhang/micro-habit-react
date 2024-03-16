@@ -167,6 +167,8 @@ function Task(props) {
       return;
     }
 
+    setLoading(true);
+
     const pros = tasks.map((item) =>
       recordApi.list({
         date: today,
@@ -184,6 +186,7 @@ function Task(props) {
       });
 
       setItems(nextTasks);
+      setLoading(false);
     });
   }, [today, tasks]);
 
@@ -215,7 +218,7 @@ function Task(props) {
 
   const placeholder = (
     <div>
-      <Skeleton.Image style={{ height: 221 }} />
+      <Skeleton.Image style={{ height: 220 }} />
     </div>
   );
 
