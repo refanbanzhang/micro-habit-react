@@ -17,17 +17,17 @@ function Index() {
   return (
     <div className={styles.container}>
       <Head />
-      <div style={{ margin: "0 15px 25px 15px" }}>
-        <div className={styles.title}>
-          <IconDescriptions size="large" className={styles.icon} />
+      <div className={styles.margin}>
+        <div className={`${styles.border} ${styles.flex2} ${styles.title}`}>
+          <IconDescriptions size="large" className={styles.marginRight5} />
           <span>警醒</span>
         </div>
         <Sentence />
       </div>
-      <div style={{ margin: "0 15px 25px 15px" }}>
-        <div className={styles.header}>
-          <div className={styles.title}>
-            <IconDescriptions size="large" className={styles.icon} />
+      <div className={styles.margin}>
+        <div className={`${styles.border} ${styles.flex}`}>
+          <div className={`${styles.title} ${styles.flex}`}>
+            <IconDescriptions size="large" className={styles.marginRight5} />
             <span>任务</span>
           </div>
           <IconCopyAdd
@@ -42,23 +42,23 @@ function Index() {
           setTimestamp={setTimestamp}
         />
       </div>
-      <div style={{ margin: "0 15px 25px 15px" }}>
-        <div className={styles.title}>
-          <IconDescriptions size="large" className={styles.icon} />
+      <div className={styles.margin}>
+        <div className={`${styles.border} ${styles.title} ${styles.flex2}`}>
+          <IconDescriptions size="large" className={styles.marginRight5} />
           <span>日期块</span>
         </div>
         <Year timestamp={timestamp} />
       </div>
-      <div style={{ margin: "0 15px 25px 15px" }}>
-        <div className={styles.title}>
-          <IconDescriptions size="large" className={styles.icon} />
+      <div className={styles.margin}>
+        <div className={`${styles.border} ${styles.title} ${styles.flex2}`}>
+          <IconDescriptions size="large" className={styles.marginRight5} />
           <span>进度条</span>
         </div>
         <Bar />
       </div>
-      <div style={{ margin: "0 15px 25px 15px" }}>
-        <div className={styles.title}>
-          <IconDescriptions size="large" className={styles.icon} />
+      <div className={styles.margin}>
+        <div className={`${styles.border} ${styles.title} ${styles.flex2}`}>
+          <IconDescriptions size="large" className={styles.marginRight5} />
           <span>时长top3</span>
         </div>
         <Duration />
