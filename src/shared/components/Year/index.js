@@ -7,7 +7,7 @@ import * as taskApi from "@/apis/task";
 
 import styles from "./style.less";
 
-const year = getYearDatesUntilToday();
+const year = getYearDatesUntilToday(371);
 
 function Year(props) {
   const { timestamp } = props;
@@ -43,13 +43,7 @@ function Year(props) {
           target: targetTotalAmount,
         };
       });
-
-      const firstValueBiggerThenZeroIndex = list.findIndex(
-        (item) => item.value > 0
-      );
-      const nextList = list.slice(firstValueBiggerThenZeroIndex);
-
-      setItems(nextList);
+      setItems(list);
       setLoading(false);
     };
 
@@ -62,20 +56,35 @@ function Year(props) {
     </div>
   );
 
+  const per = Math.ceil(items.length / 7);
+  const nextItems = items.reduce((acc, currValue, currIndex) => {
+    const index = Math.floor(currIndex / per);
+    if (acc[index]) {
+      acc[index].push(currValue);
+    } else {
+      acc[index] = [currValue];
+    }
+    return acc;
+  }, []);
+
   return (
     <Skeleton placeholder={placeholder} loading={loading} active>
-      <ul className={styles.list}>
-        {items.map((item) => (
-          <li
-            key={item.date}
-            title={`${item.date} ${item.value}`}
-            className={classNames([
-              styles.item,
-              getLevelClass(item.value, item.target, item.allFinished),
-            ])}
-          ></li>
+      <div className={styles.container}>
+        {nextItems.map((item, index) => (
+          <ul className={styles.list} key={index}>
+            {item.map((_item) => (
+              <li
+                key={_item.date}
+                title={`${_item.date} ${_item.value}`}
+                className={classNames([
+                  styles.item,
+                  getLevelClass(_item.value, _item.target, _item.allFinished),
+                ])}
+              ></li>
+            ))}
+          </ul>
         ))}
-      </ul>
+      </div>
     </Skeleton>
   );
 }

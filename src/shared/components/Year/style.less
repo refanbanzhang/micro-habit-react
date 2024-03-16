@@ -1,6 +1,11 @@
+.container {
+  overflow: auto;
+}
+
 .list {
   display: flex;
-  flex-wrap: wrap;
+  width: 951px;
+  margin: 0 auto;
 }
 
 .item {
@@ -12,4 +17,8 @@
   background: #ebedf0;
   outline: 1px solid rgba(27, 31, 35, 0.06);
   outline-offset: -1px;
+
+  &:last-child {
+    margin-right: 0;
+  }
 }

@@ -21,16 +21,22 @@ export function formatDate(date) {
   return `${year}-${month}-${day}`;
 }
 
-export function getYearDatesUntilToday(date) {
-  const today = date ? new Date(date) : new Date();
-  const firstDayOfYear = new Date(today.setFullYear(today.getFullYear() - 1));
+/**
+ * 获取指定长度的过去日期
+ * @param {number} days
+ * @returns
+ */
+export function getYearDatesUntilToday(days) {
+  const len = days - 1;
   const now = new Date();
+  const firstDate = new Date();
+  firstDate.setDate(firstDate.getDate() - len);
 
   const dates = [];
 
-  while (firstDayOfYear <= now) {
-    dates.push(formatDate(firstDayOfYear));
-    firstDayOfYear.setDate(firstDayOfYear.getDate() + 1);
+  while (firstDate <= now) {
+    dates.push(formatDate(firstDate));
+    firstDate.setDate(firstDate.getDate() + 1);
   }
 
   return dates.map((date) => ({ date }));
