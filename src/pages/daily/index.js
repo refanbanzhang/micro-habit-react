@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
-import { Toast, Input, Button, Modal, Skeleton } from "@douyinfe/semi-ui";
+import { Toast, Input, Modal, Skeleton, Dropdown } from "@douyinfe/semi-ui";
+import { IconOverflow } from "@douyinfe/semi-icons-lab";
 import classNames from "classnames";
 import { getToday, isMobile } from "@/shared/utils";
 import * as dailyTaskApi from "@/apis/dailyTask";
@@ -194,30 +195,32 @@ function Daily() {
   return (
     <div className={classNames([styles.container, styles[themeContext.state]])}>
       <Head />
-      <div style={{ textAlign: "right" }}>
-        <Button
-          size="small"
-          style={{ marginRight: 10 }}
-          className={styles.addBtn}
-          onClick={onAddTask}
-        >
-          创建打卡任务
-        </Button>
-        <Button
-          size="small"
-          style={{ marginRight: 10 }}
-          className={styles.addBtn}
-          onClick={() => setVisibleFinished((_state) => !_state)}
-        >
-          显示已完成
-        </Button>
-      </div>
+      <div style={{ textAlign: "right" }}></div>
 
       <div style={{ padding: "0 15px 0 15px" }}>
         <div style={{ marginBottom: 25 }}>
-          <div className={styles.title}>
-            <IconDescriptions size="large" className={styles.icon} />
-            <span>待完成</span>
+          <div className={`${styles.flex} ${styles.border}`}>
+            <div className={`${styles.title} ${styles.flex2}`}>
+              <IconDescriptions size="large" className={styles.icon} />
+              <span>待完成</span>
+            </div>
+
+            <Dropdown
+              clickToHide
+              trigger="click"
+              render={
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    onClick={() => setVisibleFinished((_state) => !_state)}
+                  >
+                    显示已完成
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={onAddTask}>添加打卡</Dropdown.Item>
+                </Dropdown.Menu>
+              }
+            >
+              <IconOverflow className={styles.btn} />
+            </Dropdown>
           </div>
           <Skeleton placeholder={placeholder} loading={loading} active>
             {unfinishedTasks.map((item) => (
@@ -235,7 +238,7 @@ function Daily() {
 
         <div style={{ marginBottom: 25 }}>
           <div
-            className={styles.title}
+            className={`${styles.border} ${styles.title}`}
             style={{
               display: visibleFinished ? "flex" : "none",
             }}
