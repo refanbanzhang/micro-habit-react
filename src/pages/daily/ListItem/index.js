@@ -3,17 +3,8 @@ import { IconOverflow } from "@douyinfe/semi-icons-lab";
 
 import styles from "./style.less";
 
-/**
- * 获取任务的完成次数
- * @param {string} name
- * @param {Record[]} dates
- * @returns {boolean}
- */
-const getCount = (name, dates = []) =>
-  dates.filter((date) => date.name === name).length;
-
 function ListItem(props) {
-  const { item, dates, onEdit, onChange, onDelTask } = props;
+  const { item, onEdit, onChange, onDelTask } = props;
 
   return (
     <div className={styles.container}>
@@ -24,9 +15,6 @@ function ListItem(props) {
       />
       <div className={styles.main}>
         <span className={styles.name}>{item.name}</span>
-        <span style={{ display: "none" }}>
-          已打卡天数：{getCount(item.name, dates)}
-        </span>
         <div className={styles.fixed}>
           <Dropdown
             clickToHide

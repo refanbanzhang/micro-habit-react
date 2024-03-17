@@ -11,69 +11,31 @@ import { IconDescriptions } from "@douyinfe/semi-icons-lab";
 
 import styles from "./style.less";
 import ListItem from "./ListItem";
+import placeholder from "./Placeholder";
 
 const today = getToday();
 
 function Daily() {
-  const [timestamp, setTimestamp] = useState(Date.now());
+  const themeContext = useThemeContext();
   const inputRef = useRef(null);
+  const editInputRef = useRef(null);
   const [tasks, setTasks] = useState([]);
-  const [dates, setDates] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [timestamp, setTimestamp] = useState(Date.now());
   const [visibleFinished, setVisibleFinished] = useState(false);
 
   const [currentTask, setCurrentTask] = useState(null);
-  const [editTaskModalVisible, setEditModalVisible] = useState(false);
-  const [loading, setLoading] = useState(true);
+
   // 新增表单字段
   const [taskName, setTaskName] = useState("");
   const [taskLink, setTaskLink] = useState("");
+
   // 编辑表单字段
   const [updateTaskName, setUpdateTaskName] = useState("");
   const [updateTaskLink, setUpdateTaskLink] = useState("");
-  // update
-  const editInputRef = useRef(null);
 
   const [visible, setVisible] = useState(false);
-  const themeContext = useThemeContext();
-
-  useEffect(() => {
-    if (visible) {
-      inputRef.current?.focus();
-    }
-    if (editTaskModalVisible) {
-      editInputRef.current?.focus();
-    }
-  }, [visible, editTaskModalVisible]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await dailyDateApi.list();
-      setDates(res.data);
-    };
-
-    fetchData();
-  }, [timestamp]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const taskRes = await dailyTaskApi.list();
-      const dateRes = await dailyDateApi.list({
-        date: today,
-      });
-
-      // 将dates中的数据，融合到tasks中，实现初始化选中
-      const names = dateRes.data.map((item) => item.name);
-      setTasks(
-        taskRes.data.map((item) => ({
-          ...item,
-          checked: names.includes(item.name),
-        }))
-      );
-      setLoading(false);
-    };
-
-    fetchData();
-  }, [timestamp]);
+  const [editVisible, setEditVisible] = useState(false);
 
   const update = async (name, checked) => {
     if (checked) {
@@ -94,10 +56,6 @@ function Daily() {
     const { value, checked } = e.target;
 
     update(value, !checked);
-  };
-
-  const onAddTask = () => {
-    setVisible(true);
   };
 
   const onTaskNameModalOk = async () => {
@@ -133,13 +91,13 @@ function Daily() {
     setUpdateTaskName(target.name);
     setUpdateTaskLink(target.link);
 
-    setEditModalVisible(true);
+    setEditVisible(true);
   };
 
   const updateTask = async (id, name, link) => {
     await dailyTaskApi.update({ id, name, link });
 
-    setEditModalVisible(false);
+    setEditVisible(false);
     setCurrentTask(null);
     setUpdateTaskName("");
     setTimestamp(Date.now());
@@ -163,6 +121,37 @@ function Daily() {
     setUpdateTaskLink("");
   };
 
+  // input focus
+  useEffect(() => {
+    visible && inputRef.current?.focus();
+    editVisible && editInputRef.current?.focus();
+  }, [visible, editVisible]);
+
+  // get punch-in data
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+
+      const taskRes = await dailyTaskApi.list();
+      const dateRes = await dailyDateApi.list({
+        date: today,
+      });
+
+      // 将dates中的数据，融合到tasks中，实现初始化选中
+      const names = dateRes.data.map((item) => item.name);
+      setTasks(
+        taskRes.data.map((item) => ({
+          ...item,
+          checked: names.includes(item.name),
+        }))
+      );
+
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [timestamp]);
+
   const { unfinishedTasks, finishedTasks } = tasks.reduce(
     (acc, task) => {
       if (task.checked) {
@@ -175,22 +164,7 @@ function Daily() {
     { unfinishedTasks: [], finishedTasks: [] }
   );
 
-  const placeholder = (
-    <div>
-      <Skeleton.Button
-        style={{ width: "100%", height: 42, marginBottom: 10 }}
-      />
-      <Skeleton.Button
-        style={{ width: "100%", height: 42, marginBottom: 10 }}
-      />
-      <Skeleton.Button
-        style={{ width: "100%", height: 42, marginBottom: 10 }}
-      />
-      <Skeleton.Button
-        style={{ width: "100%", height: 42, marginBottom: 10 }}
-      />
-    </div>
-  );
+  const size = isMobile() ? "full-width" : "small";
 
   return (
     <div className={classNames([styles.container, styles[themeContext.state]])}>
@@ -204,7 +178,6 @@ function Daily() {
               <IconDescriptions size="large" className={styles.icon} />
               <span>待完成</span>
             </div>
-
             <Dropdown
               clickToHide
               trigger="click"
@@ -215,7 +188,9 @@ function Daily() {
                   >
                     显示已完成
                   </Dropdown.Item>
-                  <Dropdown.Item onClick={onAddTask}>添加打卡</Dropdown.Item>
+                  <Dropdown.Item onClick={() => setVisible(true)}>
+                    添加打卡
+                  </Dropdown.Item>
                 </Dropdown.Menu>
               }
             >
@@ -227,7 +202,6 @@ function Daily() {
               <ListItem
                 key={item._id}
                 item={item}
-                dates={dates}
                 onEdit={onEdit}
                 onChange={onChange}
                 onDelTask={onDelTask}
@@ -255,7 +229,6 @@ function Daily() {
               <ListItem
                 key={item._id}
                 item={item}
-                dates={dates}
                 onEdit={onEdit}
                 onChange={onChange}
                 onDelTask={onDelTask}
@@ -267,7 +240,7 @@ function Daily() {
 
       <Modal
         title="请输入任务名"
-        size={isMobile() ? "full-width" : "small"}
+        size={size}
         visible={visible}
         onOk={onTaskNameModalOk}
         onCancel={onTaskNameModalCancel}
@@ -283,10 +256,10 @@ function Daily() {
 
       <Modal
         title="修改任务名"
-        size={isMobile() ? "full-width" : "small"}
-        visible={editTaskModalVisible}
+        size={size}
+        visible={editVisible}
         onOk={onUpdateTaskOk}
-        onCancel={() => setEditModalVisible(false)}
+        onCancel={() => setEditVisible(false)}
         closeOnEsc={true}
       >
         <Input
