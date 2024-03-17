@@ -78,11 +78,17 @@ function Daily() {
     setTaskName("");
   };
 
-  const onDelTask = async (id) => {
-    await dailyTaskApi.del({
-      id,
+  const onRemove = (id) => {
+    Modal.error({
+      title: "确认删除吗？",
+      content: "该操作将不可逆！",
+      async onOk() {
+        await dailyTaskApi.del({
+          id,
+        });
+        setTimestamp(Date.now());
+      },
     });
-    setTimestamp(Date.now());
   };
 
   const onEdit = (target) => {
@@ -166,6 +172,20 @@ function Daily() {
 
   const size = isMobile() ? "full-width" : "small";
 
+  const renderPipe = (next) => {
+    if (!tasks.length) {
+      return <div className={styles.tips}>暂无数据</div>;
+    }
+
+    if (finishedTasks.length && !unfinishedTasks.length) {
+      return (
+        <div className={styles.tips}>恭喜你，今天所有的任务都完成了！</div>
+      );
+    }
+
+    return next();
+  };
+
   return (
     <div className={classNames([styles.container, styles[themeContext.state]])}>
       <Head />
@@ -186,7 +206,7 @@ function Daily() {
                   <Dropdown.Item
                     onClick={() => setVisibleFinished((_state) => !_state)}
                   >
-                    显示已完成
+                    {visibleFinished ? "隐藏" : "显示"}已完成
                   </Dropdown.Item>
                   <Dropdown.Item onClick={() => setVisible(true)}>
                     添加打卡
@@ -198,15 +218,17 @@ function Daily() {
             </Dropdown>
           </div>
           <Skeleton placeholder={placeholder} loading={loading} active>
-            {unfinishedTasks.map((item) => (
-              <ListItem
-                key={item._id}
-                item={item}
-                onEdit={onEdit}
-                onChange={onChange}
-                onDelTask={onDelTask}
-              />
-            ))}
+            {renderPipe(() =>
+              unfinishedTasks.map((item) => (
+                <ListItem
+                  key={item._id}
+                  item={item}
+                  onEdit={() => onEdit(item)}
+                  onChange={onChange}
+                  onRemove={() => onRemove(item._id)}
+                />
+              ))
+            )}
           </Skeleton>
         </div>
 
@@ -231,7 +253,7 @@ function Daily() {
                 item={item}
                 onEdit={onEdit}
                 onChange={onChange}
-                onDelTask={onDelTask}
+                onRemove={() => onRemove(item._id)}
               />
             ))}
           </div>

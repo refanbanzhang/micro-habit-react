@@ -1,10 +1,10 @@
-import { Checkbox, Popconfirm, Dropdown } from "@douyinfe/semi-ui";
+import { Checkbox, Dropdown } from "@douyinfe/semi-ui";
 import { IconOverflow } from "@douyinfe/semi-icons-lab";
 
 import styles from "./style.less";
 
 function ListItem(props) {
-  const { item, onEdit, onChange, onDelTask } = props;
+  const { item, onEdit, onChange, onRemove } = props;
 
   return (
     <div className={styles.container}>
@@ -21,16 +21,8 @@ function ListItem(props) {
             trigger="click"
             render={
               <Dropdown.Menu>
-                <Dropdown.Item>
-                  <Popconfirm
-                    title="确认"
-                    content="要删除该条记录吗？"
-                    onConfirm={() => onDelTask(item._id)}
-                  >
-                    删除
-                  </Popconfirm>
-                </Dropdown.Item>
-                <Dropdown.Item onClick={() => onEdit(item)}>编辑</Dropdown.Item>
+                <Dropdown.Item onClick={onRemove}>删除</Dropdown.Item>
+                <Dropdown.Item onClick={onEdit}>编辑</Dropdown.Item>
                 <Dropdown.Item
                   disabled={!item.link}
                   onClick={() => window.open(item.link)}
