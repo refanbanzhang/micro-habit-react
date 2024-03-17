@@ -25,7 +25,6 @@ import styles from "./style.less";
 
 function Task(props) {
   const { timestamp, setTimestamp, taskVisible, setTaskVisible } = props;
-  const today = getToday();
   const [loading, setLoading] = useState(true);
   const [tasks, setTasks] = useState([]);
   const [items, setItems] = useState([]);
@@ -42,11 +41,6 @@ function Task(props) {
 
   const inputRef = useRef(null);
   const themeContext = useThemeContext();
-
-  const onShowModal = (taskId) => {
-    setCurrTaskId(taskId);
-    setVisible(true);
-  };
 
   const setRecord = async (today, value, currTaskId) => {
     const currTask = tasks.find((task) => task._id === currTaskId);
@@ -85,7 +79,14 @@ function Task(props) {
     setTimestamp(Date.now());
   };
 
+  const onShowModal = (taskId) => {
+    setCurrTaskId(taskId);
+    setVisible(true);
+  };
+
   const onConfirm = async () => {
+    const today = getToday();
+
     if (today && value && currTaskId) {
       await setRecord(today, value, currTaskId);
       onCancel();
@@ -122,8 +123,17 @@ function Task(props) {
     setVisible(false);
   };
 
-  const onChange = (e) => {
-    setValue(e.target.value);
+  const onDelete = (item) => {
+    const config = {
+      title: "确定要删除吗？",
+      content: "此操作将不可逆！",
+      ...(isMobile() ? {} : { width: "90%" }),
+      onOk: () => {
+        setConfirmDeleteTaskVisible(true);
+        setCurrentOperationTask(item);
+      },
+    };
+    Modal.error(config);
   };
 
   const onConfirmDeleteTaskConfirm = async () => {
@@ -140,6 +150,7 @@ function Task(props) {
     await taskApi.remove({
       id: currentOperationTask._id,
     });
+
     setTimestamp(Date.now());
     setConfirmDeleteTaskVisible(false);
     setConfirmDeleteTaskName("");
@@ -160,61 +171,44 @@ function Task(props) {
     }
   }, [taskVisible, confirmDeleteTaskVisible]);
 
-  // 将记录合计到任务中
-  useEffect(() => {
-    if (!tasks.length) {
-      setItems([]);
-      return;
-    }
-
-    setLoading(true);
-
-    const pros = tasks.map((item) =>
-      recordApi.list({
-        date: today,
-        name: item.name,
-      })
-    );
-    Promise.all(pros).then((reses) => {
-      const records = reses.flatMap((res) => res.data);
-      const nextTasks = tasks.map((task) => {
-        const date = records.find((date) => task.name === date.name);
-        return {
-          ...task,
-          value: date?.value ?? 0,
-        };
-      });
-
-      setItems(nextTasks);
-      setLoading(false);
-    });
-  }, [today, tasks]);
-
+  // 获取tasks
   useEffect(() => {
     const fetchData = async () => {
+      const today = getToday();
+
       setLoading(true);
       const res = await taskApi.list();
-      const data = res.data ?? [];
-      setTasks(data);
-      setLoading(false);
+      const tasks = res.data ?? [];
+
+      if (!tasks.length) {
+        setLoading(false);
+        return;
+      }
+
+      const pros = tasks.map((item) =>
+        recordApi.list({
+          date: today,
+          name: item.name,
+        })
+      );
+      Promise.all(pros).then((reses) => {
+        const records = reses.flatMap((res) => res.data);
+        // 往tasks里面塞了一个投入时间的字段value
+        const nextTasks = tasks.map((task) => {
+          const record = records.find((record) => task.name === record.name);
+          return {
+            ...task,
+            value: record?.value ?? 0,
+          };
+        });
+
+        setItems(nextTasks);
+        setTasks(tasks);
+        setLoading(false);
+      });
     };
     fetchData();
   }, [timestamp]);
-
-  const onDelete = (item) => {
-    const config = {
-      title: "确定要删除吗？",
-      content: "此操作将不可逆！",
-      onOk: () => {
-        setConfirmDeleteTaskVisible(true);
-        setCurrentOperationTask(item);
-      },
-    };
-    if (isMobile()) {
-      config.width = "90%";
-    }
-    Modal.error(config);
-  };
 
   const placeholder = (
     <div>
@@ -328,7 +322,7 @@ function Task(props) {
         }
       >
         <div className={styles.radios}>
-          <RadioGroup onChange={onChange} value={value}>
+          <RadioGroup onChange={(e) => setValue(e.target.value)} value={value}>
             <Radio value={5}>5分钟</Radio>
             <Radio value={10}>10分钟</Radio>
             <Radio value={15}>15分钟</Radio>
