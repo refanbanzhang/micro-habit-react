@@ -1,5 +1,4 @@
 import { useRef, useState, useEffect } from "react";
-import classnames from "classnames";
 import {
   Button,
   Modal,
@@ -8,20 +7,14 @@ import {
   Input,
   Skeleton,
 } from "@douyinfe/semi-ui";
-import { Dropdown } from "@douyinfe/semi-ui";
-import { IconOverflow, IconHeart } from "@douyinfe/semi-icons-lab";
-import {
-  getToday,
-  getPercent,
-  getLevelClassNew,
-  isMobile,
-} from "@/shared/utils";
+import { getToday, isMobile } from "@/shared/utils";
 import * as taskApi from "@/apis/task";
 import * as recordApi from "@/apis/record";
 import openLoading from "@/shared/components/Loading/mount";
 import useThemeContext from "@/shared/hooks/useThemeContext";
 
 import styles from "./style.less";
+import ListItem from "./ListItem";
 
 function Task(props) {
   const { timestamp, setTimestamp, taskVisible, setTaskVisible } = props;
@@ -216,53 +209,26 @@ function Task(props) {
     </div>
   );
 
+  const size = isMobile() ? "full-width" : "small";
+
   return (
     <div className={styles[themeContext.state]}>
       <Skeleton placeholder={placeholder} loading={loading} active>
         <div className={styles.items}>
           {items.map((item) => (
-            <div
+            <ListItem
               key={item._id}
-              className={classnames([
-                styles.item,
-                getLevelClassNew(item.value, item.target),
-                {
-                  [styles.finished]: item.value >= item.target,
-                },
-              ])}
-            >
-              <div className={styles.name}>{item.name}</div>
-              <div>目标：{item.target}</div>
-              <div>已完成：{item.value}</div>
-              <div>进度：{getPercent(item.value, item.target)}%</div>
-
-              <div className={styles.fixed}>
-                <Dropdown
-                  trigger={"click"}
-                  clickToHide
-                  render={
-                    <Dropdown.Menu>
-                      <Dropdown.Item>编辑任务</Dropdown.Item>
-                      <Dropdown.Item onClick={() => onDelete(item)}>
-                        删除任务
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  }
-                >
-                  <IconOverflow />
-                </Dropdown>
-              </div>
-              <div className={styles.fixedBottom}>
-                <IconHeart onClick={() => onShowModal(item._id)} />
-              </div>
-            </div>
+              item={item}
+              onShowModal={onShowModal}
+              onDelete={onDelete}
+            />
           ))}
         </div>
       </Skeleton>
 
       <Modal
         title="创建任务"
-        size={isMobile() ? "full-width" : "small"}
+        size={size}
         visible={taskVisible}
         onCancel={onAddTaskCancel}
         footer={
@@ -290,7 +256,7 @@ function Task(props) {
 
       <Modal
         title="删除确认"
-        size={isMobile() ? "full-width" : "small"}
+        size={size}
         visible={confirmDeleteTaskVisible}
         onCancel={() => setConfirmDeleteTaskVisible(false)}
         footer={
@@ -312,7 +278,7 @@ function Task(props) {
 
       <Modal
         title="请选择需要添加的时间："
-        size={isMobile() ? "full-width" : "small"}
+        size={size}
         visible={visible}
         onCancel={onCancel}
         footer={
