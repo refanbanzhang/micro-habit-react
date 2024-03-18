@@ -8,6 +8,7 @@ import * as dailyDateApi from "@/apis/dailyDate";
 import Head from "@/shared/components/Head";
 import useThemeContext from "@/shared/hooks/useThemeContext";
 import { IconDescriptions } from "@douyinfe/semi-icons-lab";
+import openLoading from "@/shared/components/Loading/mount";
 
 import styles from "./style.less";
 import ListItem from "./ListItem";
@@ -52,10 +53,12 @@ function Daily() {
     setTimestamp(Date.now());
   };
 
-  const onChange = (e) => {
+  const onChange = async (e) => {
     const { value, checked } = e.target;
 
-    update(value, !checked);
+    const close = openLoading();
+    await update(value, !checked);
+    close()
   };
 
   const onTaskNameModalOk = async () => {
