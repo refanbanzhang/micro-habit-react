@@ -6,6 +6,7 @@ import Year from "@/shared/components/Year";
 import Bar from "@/shared/components/Bar";
 import Sentence from "@/shared/components/Sentence";
 import Duration from "@/shared/components/Duration";
+import Fixed from "@/shared/components/Fixed";
 
 import styles from "./style.less";
 import Task from "./Task";
@@ -16,7 +17,9 @@ function Index() {
 
   return (
     <div className={styles.container}>
-      <Head />
+      <Fixed>
+        <Head />
+      </Fixed>
       <div className={styles.margin}>
         <div className={`${styles.border} ${styles.flex2} ${styles.title}`}>
           <IconDescriptions size="large" className={styles.marginRight5} />

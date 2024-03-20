@@ -9,6 +9,7 @@ import Head from "@/shared/components/Head";
 import useThemeContext from "@/shared/hooks/useThemeContext";
 import { IconDescriptions } from "@douyinfe/semi-icons-lab";
 import openLoading from "@/shared/components/Loading/mount";
+import Fixed from "@/shared/components/Fixed";
 
 import styles from "./style.less";
 import ListItem from "./ListItem";
@@ -191,7 +192,9 @@ function Daily() {
 
   return (
     <div className={classNames([styles.container, styles[themeContext.state]])}>
-      <Head />
+      <Fixed>
+        <Head />
+      </Fixed>
       <div style={{ textAlign: "right" }}></div>
 
       <div style={{ padding: "0 15px 0 15px" }}>
