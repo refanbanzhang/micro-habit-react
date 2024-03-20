@@ -14,7 +14,7 @@ function Head() {
   const themeContext = useThemeContext();
   const [items] = useState([
     {
-      name: "一万小时",
+      name: "时间",
       path: "/",
     },
     {

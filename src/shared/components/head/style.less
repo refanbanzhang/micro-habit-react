@@ -27,7 +27,18 @@
 }
 
 .active {
+  position: relative;
   font-weight: bold;
+
+  &:after {
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    right: 0;
+    content: '';
+    width: 100%;
+    border-bottom: 1px solid #666;
+  }
 }
 
 .btn {
