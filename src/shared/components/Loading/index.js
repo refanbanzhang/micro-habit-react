@@ -2,7 +2,7 @@ import React from 'react';
 import { Spin } from '@douyinfe/semi-ui';
 import { IconLoading } from '@douyinfe/semi-icons';
 
-import styles from './style.less';
+import styles from './style.module.less';
 
 function Loading() {
   return (

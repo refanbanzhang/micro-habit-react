@@ -11,7 +11,7 @@ import { IconDescriptions } from "@douyinfe/semi-icons-lab";
 import openLoading from "@/shared/components/Loading/mount";
 import Fixed from "@/shared/components/Fixed";
 
-import styles from "./style.less";
+import styles from "./style.module.less";
 import ListItem from "./ListItem";
 import placeholder from "./Placeholder";
 

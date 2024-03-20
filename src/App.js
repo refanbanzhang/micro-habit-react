@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import router from '@/router';
 import useThemeContext from '@/shared/hooks/useThemeContext';
 
-import styles from './App.less';
+import styles from './App.module.less';
 
 function App() {
   const themeContext = useThemeContext();

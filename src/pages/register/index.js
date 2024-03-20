@@ -3,7 +3,7 @@ import { Button, Input, Toast } from '@douyinfe/semi-ui';
 import * as userApi from '@/apis/user';
 import router from '@/router';
 
-import styles from './style.less';
+import styles from './style.module.less';
 
 function Register() {
   const [loading, setLoading] = useState(false);

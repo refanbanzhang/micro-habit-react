@@ -4,7 +4,7 @@ import { IconRefresh } from "@douyinfe/semi-icons";
 import { getRandomInRange } from "@/shared/utils";
 import * as publickApi from "@/apis/public";
 
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 function Sentence() {
   const [loading, setLoading] = useState(true);

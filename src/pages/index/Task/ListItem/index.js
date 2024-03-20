@@ -3,7 +3,7 @@ import { Dropdown } from "@douyinfe/semi-ui";
 import { IconOverflow, IconHeart } from "@douyinfe/semi-icons-lab";
 import { getPercent, getLevelClassNew } from "@/shared/utils";
 
-import style from "./style.less";
+import style from "./style.module.less";
 
 function ListItem({ item, onShowModal, onDelete }) {
   return (

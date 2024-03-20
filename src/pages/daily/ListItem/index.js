@@ -2,7 +2,7 @@ import { Checkbox, Dropdown } from "@douyinfe/semi-ui";
 import { IconLink } from "@douyinfe/semi-icons";
 import { IconOverflow } from "@douyinfe/semi-icons-lab";
 
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 function ListItem(props) {
   const { item, onEdit, onChange, onRemove } = props;

@@ -8,7 +8,7 @@ import Sentence from "@/shared/components/Sentence";
 import Duration from "@/shared/components/Duration";
 import Fixed from "@/shared/components/Fixed";
 
-import styles from "./style.less";
+import styles from "./style.module.less";
 import Task from "./Task";
 
 function Index() {

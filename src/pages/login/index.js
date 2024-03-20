@@ -3,7 +3,7 @@ import { Button, Input, Typography, Toast } from '@douyinfe/semi-ui';
 import * as userApi from '@/apis/user';
 import router from '@/router';
 
-import styles from './style.less';
+import styles from './style.module.less';
 
 const { Text } = Typography;
 

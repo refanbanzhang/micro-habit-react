@@ -4,7 +4,7 @@ import * as taskApi from "@/apis/task";
 import * as recordApi from "@/apis/record";
 import useThemeContext from "@/shared/hooks/useThemeContext";
 
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 // 将一万小时换算为分钟
 const target = 10000 * 60;

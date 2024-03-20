@@ -3,7 +3,7 @@ import classnames from "classnames";
 import { Skeleton } from "@douyinfe/semi-ui";
 import * as recordApi from "@/apis/record";
 import useThemeContext from "@/shared/hooks/useThemeContext";
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 function Duration(props) {
   const { timestamp } = props;

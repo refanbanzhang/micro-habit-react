@@ -5,7 +5,7 @@ import { getYearDatesUntilToday, getLevelClass } from "@/shared/utils";
 import * as recordApi from "@/apis/record";
 import * as taskApi from "@/apis/task";
 
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 const year = getYearDatesUntilToday(371);
 

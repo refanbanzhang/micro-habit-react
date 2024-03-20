@@ -1,4 +1,4 @@
-import style from "./style.less";
+import style from "./style.module.less";
 
 function Fixed(props) {
   const { children } = props

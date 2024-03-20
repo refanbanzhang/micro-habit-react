@@ -7,8 +7,7 @@ import { logout } from "@/shared/utils";
 import router from "@/router";
 import useThemeContext from "@/shared/hooks/useThemeContext";
 
-import styles from "./style.less";
-import classNames from "classnames";
+import styles from "./style.module.less";
 
 function Head() {
   const themeContext = useThemeContext();
@@ -39,7 +38,7 @@ function Head() {
   };
 
   return (
-    <div className={classNames([styles.container, styles[themeContext.state]])}>
+    <div className={classnames([styles.container, styles[themeContext.state]])}>
       <div className={styles.box}>
         <ul className={styles.list}>
           {items.map((item) => (

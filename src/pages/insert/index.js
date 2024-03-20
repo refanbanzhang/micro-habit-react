@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, TextArea } from "@douyinfe/semi-ui";
 import * as publicApi from "@/apis/public";
 
-import styles from "./style.less";
+import styles from "./style.module.less";
 
 function Insert() {
   const [loading, setLoading] = useState(false);

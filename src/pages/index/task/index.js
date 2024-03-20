@@ -13,7 +13,7 @@ import * as recordApi from "@/apis/record";
 import openLoading from "@/shared/components/Loading/mount";
 import useThemeContext from "@/shared/hooks/useThemeContext";
 
-import styles from "./style.less";
+import styles from "./style.module.less";
 import ListItem from "./ListItem";
 
 function Task(props) {
