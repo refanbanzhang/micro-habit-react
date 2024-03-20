@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { Toast, Input, Modal, Skeleton, Dropdown } from "@douyinfe/semi-ui";
-import { IconOverflow } from "@douyinfe/semi-icons-lab";
+import { IconOverflow, IconEmpty, IconToast } from "@douyinfe/semi-icons-lab";
 import classNames from "classnames";
 import { getToday, isMobile } from "@/shared/utils";
 import * as dailyTaskApi from "@/apis/dailyTask";
@@ -178,12 +178,18 @@ function Daily() {
 
   const renderPipe = (next) => {
     if (!tasks.length) {
-      return <div className={styles.tips}>暂无数据</div>;
+      return <div className={styles.tips}>
+        <IconEmpty style={{ fontSize: 50, marginBottom: 20 }} />
+        <div>暂无数据</div>
+      </div>;
     }
 
     if (finishedTasks.length && !unfinishedTasks.length) {
       return (
-        <div className={styles.tips}>恭喜你，今天所有的任务都完成了！</div>
+        <div className={styles.tips}>
+          <IconToast style={{ fontSize: 50, marginBottom: 20 }} />
+          <div>恭喜你，今天所有的任务都完成了！</div>
+        </div>
       );
     }
 
