@@ -3,8 +3,6 @@ import { Button, Input, Typography, Toast } from '@douyinfe/semi-ui';
 import * as userApi from '@/apis/user';
 import router from '@/router';
 
-import styles from './style.module.less';
-
 const { Text } = Typography;
 
 function Login() {
@@ -71,18 +69,18 @@ function Login() {
   const isDisabled = !username.trim();
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>微习惯</h1>
+    <div className="mx-auto px-[20px] pt-[120px] pb-[20px]">
+      <h1 className="mb-[20px] text-[16px] text-center tracking-[5px]">微习惯</h1>
       <Input
         ref={usernameInputRef}
-        className={styles.input}
+        className="mb-[15px]"
         value={username}
         onChange={setUsername}
         placeholder="账号"
       />
       <Input
         ref={passwordInputRef}
-        className={styles.input}
+        className="mb-[15px]"
         type="password"
         value={password}
         onChange={setPassword}

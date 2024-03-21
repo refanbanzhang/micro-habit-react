@@ -3,8 +3,6 @@ import { Button, Input, Toast } from '@douyinfe/semi-ui';
 import * as userApi from '@/apis/user';
 import router from '@/router';
 
-import styles from './style.module.less';
-
 function Register() {
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState('');
@@ -68,24 +66,24 @@ function Register() {
   };
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>账号注册</h1>
+    <div className="mx-auto px-[20px] pt-[120px] pb-[20px]">
+      <h1 className="mb-[20px] text-[16px] text-center tracking-[5px]">账号注册</h1>
       <Input
-        className={styles.input}
+        className="mb-[15px]"
         value={username}
         onKeyUp={(e) => e.keyCode === 13 && onSubmit()}
         onChange={setUsername}
         placeholder="账号"
       />
       <Input
-        className={styles.input}
+        className="mb-[15px]"
         type="password"
         value={password}
         onChange={setPassword}
         placeholder="密码"
       />
       <Input
-        className={styles.input}
+        className="mb-[15px]"
         type="password"
         value={confirmPassword}
         onChange={setConfirmPassword}

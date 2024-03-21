@@ -13,7 +13,6 @@ import * as recordApi from "@/apis/record";
 import openLoading from "@/shared/components/Loading/mount";
 import useThemeContext from "@/shared/hooks/useThemeContext";
 
-import styles from "./style.module.less";
 import ListItem from "./ListItem";
 
 function Task(props) {
@@ -212,9 +211,9 @@ function Task(props) {
   const size = isMobile() ? "full-width" : "small";
 
   return (
-    <div className={styles[themeContext.state]}>
+    <>
       <Skeleton placeholder={placeholder} loading={loading} active>
-        <div className={styles.items}>
+        <div className="flex flex-col">
           {items.map((item) => (
             <ListItem
               key={item._id}
@@ -237,21 +236,19 @@ function Task(props) {
           </Button>
         }
       >
-        <div className={styles.box}>
-          <div className={styles.label}>任务名：</div>
-          <Input
-            ref={inputRef}
-            value={taskName}
-            className={styles.input}
-            onChange={setTaskName}
-          />
-          <div className={styles.label}>任务目标（分钟）：</div>
-          <Input
-            value={taskTarget}
-            className={styles.input}
-            onChange={setTaskTarget}
-          />
-        </div>
+        <div className="mb-[10px]">任务名：</div>
+        <Input
+          ref={inputRef}
+          value={taskName}
+          className="mb-[20px]"
+          onChange={setTaskName}
+        />
+        <div className="mb-[10px]">任务目标（分钟）：</div>
+        <Input
+          value={taskTarget}
+          className="mb-[20px]"
+          onChange={setTaskTarget}
+        />
       </Modal>
 
       <Modal
@@ -265,15 +262,13 @@ function Task(props) {
           </Button>
         }
       >
-        <div className={styles.box}>
-          <div className={styles.label}>请输入任务名：</div>
-          <Input
-            ref={confirmDeleteTaskNameInputRef}
-            value={confirmDeleteTaskName}
-            className={styles.input}
-            onChange={(value) => setConfirmDeleteTaskName(value)}
-          />
-        </div>
+        <div className="mb-[10px]">请输入任务名：</div>
+        <Input
+          ref={confirmDeleteTaskNameInputRef}
+          value={confirmDeleteTaskName}
+          className="mb-[20px]"
+          onChange={(value) => setConfirmDeleteTaskName(value)}
+        />
       </Modal>
 
       <Modal
@@ -287,7 +282,7 @@ function Task(props) {
           </Button>
         }
       >
-        <div className={styles.radios}>
+        <div className="text-right">
           <RadioGroup onChange={(e) => setValue(e.target.value)} value={value}>
             <Radio value={5}>5分钟</Radio>
             <Radio value={10}>10分钟</Radio>
@@ -298,7 +293,7 @@ function Task(props) {
           </RadioGroup>
         </div>
       </Modal>
-    </div>
+    </>
   );
 }
 

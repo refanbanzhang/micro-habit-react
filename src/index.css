@@ -36,3 +36,8 @@ ul {
 .l4-bg {
   background: #216e39 !important;
 }
+
+.semi-input-textarea {
+  padding: 0;
+  height: 100%;
+}

@@ -2,21 +2,20 @@ import { Checkbox, Dropdown } from "@douyinfe/semi-ui";
 import { IconLink } from "@douyinfe/semi-icons";
 import { IconOverflow } from "@douyinfe/semi-icons-lab";
 
-import styles from "./style.module.less";
-
 function ListItem(props) {
   const { item, onEdit, onChange, onRemove } = props;
 
   return (
-    <div className={styles.container}>
+    <div className="relative flex items-center mb-[10px] p-[10px] rounded-[3px] bg-[#f1f1f1]">
       <Checkbox
         value={item.name}
+        className="mr-[10px]"
         defaultChecked={item.checked}
         onChange={onChange}
       />
-      <div className={styles.main}>
-        <span className={styles.name}>{item.name}</span>
-        <div className={styles.fixed}>
+      <div className="flex flex-1 justify-center flex-col mr-[10px]">
+        <span>{item.name}</span>
+        <div className="absolute flex right-[10px]">
           {item.link && (
             <IconLink
               style={{ color: 'rgb(0, 100, 250)' }}
@@ -33,7 +32,7 @@ function ListItem(props) {
               </Dropdown.Menu>
             }
           >
-            <IconOverflow className={styles.btn} />
+            <IconOverflow className="ml-[10px] cursor-pointer" />
           </Dropdown>
         </div>
       </div>

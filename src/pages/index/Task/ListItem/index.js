@@ -3,24 +3,19 @@ import { Dropdown } from "@douyinfe/semi-ui";
 import { IconOverflow, IconHeart } from "@douyinfe/semi-icons-lab";
 import { getPercent, getLevelClassNew } from "@/shared/utils";
 
-import style from "./style.module.less";
-
 function ListItem({ item, onShowModal, onDelete }) {
   return (
     <div
       className={classnames([
-        style.item,
+        'relative mb-[15px] p-[10px] rounded-[3px] text-[14px] last:mb-0',
         getLevelClassNew(item.value, item.target),
-        {
-          [style.finished]: item.value >= item.target,
-        },
       ])}
     >
-      <div className={style.name}>{item.name}</div>
+      <div className="mb-[5px] text-[16px]">{item.name}</div>
       <div>目标：{item.target}</div>
       <div>已完成：{item.value}</div>
       <div>进度：{getPercent(item.value, item.target)}%</div>
-      <div className={style.fixed}>
+      <div className="absolute top-[10px] right-[10px]">
         <Dropdown
           trigger={"click"}
           clickToHide
@@ -36,7 +31,7 @@ function ListItem({ item, onShowModal, onDelete }) {
           <IconOverflow />
         </Dropdown>
       </div>
-      <div className={style.fixedBottom}>
+      <div className="absolute bottom-[10px] right-[10px]">
         <IconHeart onClick={() => onShowModal(item._id)} />
       </div>
     </div>

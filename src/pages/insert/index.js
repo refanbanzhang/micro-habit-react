@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Button, TextArea } from "@douyinfe/semi-ui";
 import * as publicApi from "@/apis/public";
 
-import styles from "./style.module.less";
-
 function Insert() {
   const [loading, setLoading] = useState(false);
   const [initLoading, setInitLoading] = useState(false);
@@ -52,20 +50,20 @@ function Insert() {
   const changed = items[0]?.content === content;
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h1 className={styles.title}>数据录入</h1>
+    <div className="flex flex-col h-[100vh] ">
+      <div className="flex items-center justify-center h-[50px]">
+        <h1 className="text-[16px] text-center">数据录入</h1>
       </div>
-      <div className={styles.content}>
+      <div className="flex-1 overflow-auto">
         <TextArea
-          className={styles.textarea}
+          className="h-full p-[15px]"
           value={content}
           disabled={initLoading}
           onChange={setContent}
           placeholder="请输入"
         />
       </div>
-      <div className={styles.footer}>
+      <div className=" p-[15px]">
         <Button
           block
           theme="solid"

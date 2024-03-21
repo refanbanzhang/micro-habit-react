@@ -8,7 +8,6 @@ import Sentence from "@/shared/components/Sentence";
 import Duration from "@/shared/components/Duration";
 import Fixed from "@/shared/components/Fixed";
 
-import styles from "./style.module.less";
 import Task from "./Task";
 
 function Index() {
@@ -16,23 +15,23 @@ function Index() {
   const [taskVisible, setTaskVisible] = useState(false);
 
   return (
-    <div className={styles.container}>
+    <div className="flex flex-col">
       <div className="mb-[15px]">
         <Fixed>
           <Head />
         </Fixed>
       </div>
-      <div className={styles.margin}>
-        <div className={`${styles.border} ${styles.flex2} ${styles.title}`}>
-          <IconDescriptions className={styles.marginRight5} />
+      <div className="mx-[15px] mb-[25px]">
+        <div className="mb-[15px] flex items-center text-[14px] font-bold">
+          <IconDescriptions className="mr-[5px]" />
           <span>警醒</span>
         </div>
         <Sentence />
       </div>
-      <div className={styles.margin}>
-        <div className={`${styles.border} ${styles.flex}`}>
-          <div className={`${styles.title} ${styles.flex}`}>
-            <IconDescriptions className={styles.marginRight5} />
+      <div className="mx-[15px] mb-[25px]">
+        <div className="mb-[15px] flex items-center justify-between">
+          <div className="text-[14px] font-bold flex items-center justify-between">
+            <IconDescriptions className="mr-[5px]" />
             <span>任务</span>
           </div>
           <IconCopyAdd
@@ -47,23 +46,23 @@ function Index() {
           setTimestamp={setTimestamp}
         />
       </div>
-      <div className={styles.margin}>
-        <div className={`${styles.border} ${styles.title} ${styles.flex2}`}>
-          <IconDescriptions className={styles.marginRight5} />
+      <div className="mx-[15px] mb-[25px]">
+        <div className="mb-[15px] text-[14px] font-bold flex items-center">
+          <IconDescriptions className="mr-[5px]" />
           <span>日期块</span>
         </div>
         <Year timestamp={timestamp} />
       </div>
-      <div className={styles.margin}>
-        <div className={`${styles.border} ${styles.title} ${styles.flex2}`}>
-          <IconDescriptions className={styles.marginRight5} />
+      <div className="mx-[15px] mb-[25px]">
+        <div className="mb-[15px] text-[14px] font-bold flex items-center">
+          <IconDescriptions className="mr-[5px]" />
           <span>进度条</span>
         </div>
         <Bar />
       </div>
-      <div className={styles.margin}>
-        <div className={`${styles.border} ${styles.title} ${styles.flex2}`}>
-          <IconDescriptions className={styles.marginRight5} />
+      <div className="mx-[15px] mb-[25px]">
+        <div className="mb-[15px] text-[14px] font-bold flex items-center">
+          <IconDescriptions className="mr-[5px]" />
           <span>时长top3</span>
         </div>
         <Duration />
