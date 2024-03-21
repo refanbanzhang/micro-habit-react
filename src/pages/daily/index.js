@@ -35,8 +35,8 @@ function Daily() {
   const [visible, setVisible] = useState(false);
   const [editVisible, setEditVisible] = useState(false);
 
-  const update = async (name, checked) => {
-    if (checked) {
+  const update = async ({ name, checked }) => {
+    if (!checked) {
       await dailyDateApi.del({
         name,
         date: today,
@@ -47,14 +47,17 @@ function Daily() {
         date: today,
       });
     }
-    setTimestamp(Date.now());
+    const nextTasks = tasks.map(item => ({
+      ...item,
+      checked: item.name === name ? checked : item.checked
+    }))
+    // 更新前端，不请求后端数据
+    setTasks(nextTasks);
   };
 
-  const onChange = async (e) => {
-    const { value, checked } = e.target;
-
+  const onChange = async (query) => {
     const close = openLoading();
-    await update(value, !checked);
+    await update(query);
     close()
   };
 
@@ -233,7 +236,10 @@ function Daily() {
                   key={item._id}
                   item={item}
                   onEdit={() => onEdit(item)}
-                  onChange={onChange}
+                  onChange={(e) => onChange({
+                    name: item.name,
+                    checked: e.target.checked,
+                  })}
                   onRemove={() => onRemove(item._id)}
                 />
               ))
@@ -261,7 +267,10 @@ function Daily() {
                 key={item._id}
                 item={item}
                 onEdit={onEdit}
-                onChange={onChange}
+                onChange={(e) => onChange({
+                  name: item.name,
+                  checked: e.target.checked,
+                })}
                 onRemove={() => onRemove(item._id)}
               />
             ))}

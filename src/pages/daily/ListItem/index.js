@@ -8,7 +8,6 @@ function ListItem(props) {
   return (
     <div className="relative flex items-center mb-[10px] p-[10px] rounded-[3px] bg-[#f1f1f1]">
       <Checkbox
-        value={item.name}
         className="mr-[10px]"
         defaultChecked={item.checked}
         onChange={onChange}
