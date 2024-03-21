@@ -5,7 +5,7 @@ import { getToday, isMobile } from "@/shared/utils";
 import * as dailyTaskApi from "@/apis/dailyTask";
 import * as dailyDateApi from "@/apis/dailyDate";
 import Head from "@/shared/components/Head";
-import { IconDescriptions } from "@douyinfe/semi-icons-lab";
+import { IconDescriptions, IconOverflow } from "@douyinfe/semi-icons-lab";
 import openLoading from "@/shared/components/Loading/mount";
 import Fixed from "@/shared/components/Fixed";
 
@@ -223,7 +223,7 @@ function Daily() {
                 </Dropdown.Menu>
               }
             >
-              <IconDescriptions className="ml-[5px]" />
+              <IconOverflow className="ml-[5px]" />
             </Dropdown>
           </div>
           <Skeleton placeholder={placeholder} loading={loading} active>
