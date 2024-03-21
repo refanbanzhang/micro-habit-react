@@ -1,13 +1,9 @@
 import { useState, useEffect } from "react";
-import classnames from "classnames";
 import { Skeleton } from "@douyinfe/semi-ui";
 import * as recordApi from "@/apis/record";
-import useThemeContext from "@/shared/hooks/useThemeContext";
-import styles from "./style.module.less";
 
 function Duration(props) {
   const { timestamp } = props;
-  const themeContext = useThemeContext();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -50,15 +46,13 @@ function Duration(props) {
   );
 
   return (
-    <div className={classnames([styles[themeContext.state]])}>
-      <Skeleton placeholder={placeholder} loading={loading} active>
-        {nextValues.map((item) => (
-          <div key={item.name}>
-            {item.name}: {item.value}
-          </div>
-        ))}
-      </Skeleton>
-    </div>
+    <Skeleton placeholder={placeholder} loading={loading} active>
+      {nextValues.map((item) => (
+        <div key={item.name}>
+          {item.name}: {item.value}
+        </div>
+      ))}
+    </Skeleton>
   );
 }
 

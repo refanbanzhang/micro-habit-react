@@ -1,24 +1,20 @@
 import { useRef, useState, useEffect } from "react";
 import { Toast, Input, Modal, Skeleton, Dropdown } from "@douyinfe/semi-ui";
-import { IconOverflow, IconEmpty, IconToast } from "@douyinfe/semi-icons-lab";
-import classNames from "classnames";
+import { IconEmpty, IconToast } from "@douyinfe/semi-icons-lab";
 import { getToday, isMobile } from "@/shared/utils";
 import * as dailyTaskApi from "@/apis/dailyTask";
 import * as dailyDateApi from "@/apis/dailyDate";
 import Head from "@/shared/components/Head";
-import useThemeContext from "@/shared/hooks/useThemeContext";
 import { IconDescriptions } from "@douyinfe/semi-icons-lab";
 import openLoading from "@/shared/components/Loading/mount";
 import Fixed from "@/shared/components/Fixed";
 
-import styles from "./style.module.less";
 import ListItem from "./ListItem";
 import placeholder from "./Placeholder";
 
 const today = getToday();
 
 function Daily() {
-  const themeContext = useThemeContext();
   const inputRef = useRef(null);
   const editInputRef = useRef(null);
   const [tasks, setTasks] = useState([]);
@@ -175,10 +171,11 @@ function Daily() {
   );
 
   const size = isMobile() ? "full-width" : "small";
+  const textClassName = 'flex flex-col justify-center items-center text-[14px] h-[200px] text-[#999]';
 
   const renderPipe = (next) => {
     if (!tasks.length) {
-      return <div className={styles.tips}>
+      return <div className={textClassName}>
         <IconEmpty style={{ fontSize: 50, marginBottom: 20 }} />
         <div>暂无数据</div>
       </div>;
@@ -186,7 +183,7 @@ function Daily() {
 
     if (finishedTasks.length && !unfinishedTasks.length) {
       return (
-        <div className={styles.tips}>
+        <div className={textClassName}>
           <IconToast style={{ fontSize: 50, marginBottom: 20 }} />
           <div>恭喜你，今天所有的任务都完成了！</div>
         </div>
@@ -197,18 +194,18 @@ function Daily() {
   };
 
   return (
-    <div className={classNames([styles.container, styles[themeContext.state]])}>
-      <Fixed>
-        <Head />
-      </Fixed>
-      <div style={{ textAlign: "right" }}></div>
-
-      <div style={{ padding: "0 15px 0 15px" }}>
-        <div style={{ marginBottom: 25 }}>
-          <div className={`${styles.flex} ${styles.border}`}>
-            <div className={`${styles.title} ${styles.flex2}`}>
-              <IconDescriptions size="large" className={styles.icon} />
-              <span>待完成</span>
+    <div className="flex flex-col">
+      <div className="mb-[15px]">
+        <Fixed>
+          <Head />
+        </Fixed>
+      </div>
+      <div className="px-[15px]">
+        <div className="pb-[5px]">
+          <div className="flex items-center justify-between mb-[15px] font-bold">
+            <div className="flex items-center">
+              <IconDescriptions className="mr-[5px]" />
+              <span className="text-[14px]">待完成</span>
             </div>
             <Dropdown
               clickToHide
@@ -226,7 +223,7 @@ function Daily() {
                 </Dropdown.Menu>
               }
             >
-              <IconOverflow className={styles.btn} />
+              <IconDescriptions className="ml-[5px]" />
             </Dropdown>
           </div>
           <Skeleton placeholder={placeholder} loading={loading} active>
@@ -246,13 +243,13 @@ function Daily() {
 
         <div style={{ marginBottom: 25 }}>
           <div
-            className={`${styles.border} ${styles.title}`}
+            className="flex items-center mb-[15px] font-bold"
             style={{
               display: visibleFinished ? "flex" : "none",
             }}
           >
-            <IconDescriptions size="large" className={styles.icon} />
-            <span>已完成</span>
+            <IconDescriptions className="mr-[5px]" />
+            <span className="text-[14px]">已完成</span>
           </div>
           <div
             style={{

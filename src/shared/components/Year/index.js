@@ -5,8 +5,6 @@ import { getYearDatesUntilToday, getLevelClass } from "@/shared/utils";
 import * as recordApi from "@/apis/record";
 import * as taskApi from "@/apis/task";
 
-import styles from "./style.module.less";
-
 const year = getYearDatesUntilToday(371);
 
 function Year(props) {
@@ -81,15 +79,15 @@ function Year(props) {
 
   return (
     <Skeleton placeholder={placeholder} loading={loading} active>
-      <div className={styles.container} ref={containerRef}>
+      <div className="overflow-auto" ref={containerRef}>
         {nextItems.map((item, index) => (
-          <ul className={styles.list} key={index}>
+          <ul className="flex w-[951px] mx-auto" key={index}>
             {item.map((_item) => (
               <li
                 key={_item.date}
                 title={`${_item.date} ${_item.value}`}
                 className={classNames([
-                  styles.item,
+                  'w-[15px] h-[15px] mr-[3px] mb-[3px]  bg-[#ebedf0]  last:mr-0',
                   getLevelClass(_item.value, _item.target, _item.allFinished),
                 ])}
               ></li>

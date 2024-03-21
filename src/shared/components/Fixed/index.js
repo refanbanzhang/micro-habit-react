@@ -1,13 +1,11 @@
-import style from "./style.module.less";
-
 function Fixed(props) {
   const { children } = props
 
   return <>
-    <div className={style.container}>
+    <div className="fixed top-0 right-0 left-0 z-10">
       {children}
     </div>
-    <div className={style.padding}></div>
+    <div className="h-[51px]"></div>
   </>;
 }
 

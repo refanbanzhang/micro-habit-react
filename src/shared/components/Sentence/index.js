@@ -4,8 +4,6 @@ import { IconRefresh } from "@douyinfe/semi-icons";
 import { getRandomInRange } from "@/shared/utils";
 import * as publickApi from "@/apis/public";
 
-import styles from "./style.module.less";
-
 function Sentence() {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
@@ -47,9 +45,9 @@ function Sentence() {
 
   return (
     <Skeleton placeholder={placeholder} loading={loading} active>
-      <div className={styles.container}>
+      <div className="relative flex items-center justify-center min-h-[100px] p-[10px] rounded-[3px] bg-[#eaeaea]">
         <IconRefresh
-          className={styles.fixed}
+          className="absolute top-[10px] right-[10px] cursor-pointer"
           onClick={onRefresh}
           style={{ color: "rgba(var(--semi-grey-5), 1)" }}
         />

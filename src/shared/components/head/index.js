@@ -7,10 +7,8 @@ import { logout } from "@/shared/utils";
 import router from "@/router";
 import useThemeContext from "@/shared/hooks/useThemeContext";
 
-import styles from "./style.module.less";
-
 function Head() {
-  const themeContext = useThemeContext();
+  const { state: theme, setState } = useThemeContext();
   const [items] = useState([
     {
       name: "时间",
@@ -33,21 +31,21 @@ function Head() {
   };
 
   const onChangeTheme = () => {
-    const nextTheme = themeContext.state === "light" ? "dark" : "light";
-    themeContext.setState(nextTheme);
+    const nextTheme = theme === "light" ? "dark" : "light";
+    setState(nextTheme);
   };
 
   return (
-    <div className={classnames([styles.container, styles[themeContext.state]])}>
-      <div className={styles.box}>
-        <ul className={styles.list}>
+    <div className={classnames(['p-[15px]', 'bg-[#efefef]', 'max-w-[500px]', 'mx-auto'])}>
+      <div className="flex items-start justify-between">
+        <ul className="flex shrink-0">
           {items.map((item) => (
             <li
               key={item.path}
               className={classnames([
-                styles.item,
+                'mr-[10px] cursor-pointer',
                 {
-                  [styles.active]: pathname === item.path,
+                  'font-bold underline underline-offset-[10px]': pathname === item.path,
                 },
               ])}
               onClick={() => onClick(item.path)}
@@ -62,7 +60,7 @@ function Head() {
           render={
             <Dropdown.Menu>
               <Dropdown.Item onClick={onChangeTheme}>
-                {themeContext.state === "light" ? "白天" : "夜晚"}
+                {theme === "light" ? "白天" : "夜晚"}
               </Dropdown.Item>
               <Dropdown.Item onClick={onLogout}>退出登录</Dropdown.Item>
             </Dropdown.Menu>

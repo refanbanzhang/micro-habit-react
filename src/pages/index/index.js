@@ -17,12 +17,14 @@ function Index() {
 
   return (
     <div className={styles.container}>
-      <Fixed>
-        <Head />
-      </Fixed>
+      <div className="mb-[15px]">
+        <Fixed>
+          <Head />
+        </Fixed>
+      </div>
       <div className={styles.margin}>
         <div className={`${styles.border} ${styles.flex2} ${styles.title}`}>
-          <IconDescriptions size="large" className={styles.marginRight5} />
+          <IconDescriptions className={styles.marginRight5} />
           <span>警醒</span>
         </div>
         <Sentence />
@@ -30,7 +32,7 @@ function Index() {
       <div className={styles.margin}>
         <div className={`${styles.border} ${styles.flex}`}>
           <div className={`${styles.title} ${styles.flex}`}>
-            <IconDescriptions size="large" className={styles.marginRight5} />
+            <IconDescriptions className={styles.marginRight5} />
             <span>任务</span>
           </div>
           <IconCopyAdd
@@ -47,21 +49,21 @@ function Index() {
       </div>
       <div className={styles.margin}>
         <div className={`${styles.border} ${styles.title} ${styles.flex2}`}>
-          <IconDescriptions size="large" className={styles.marginRight5} />
+          <IconDescriptions className={styles.marginRight5} />
           <span>日期块</span>
         </div>
         <Year timestamp={timestamp} />
       </div>
       <div className={styles.margin}>
         <div className={`${styles.border} ${styles.title} ${styles.flex2}`}>
-          <IconDescriptions size="large" className={styles.marginRight5} />
+          <IconDescriptions className={styles.marginRight5} />
           <span>进度条</span>
         </div>
         <Bar />
       </div>
       <div className={styles.margin}>
         <div className={`${styles.border} ${styles.title} ${styles.flex2}`}>
-          <IconDescriptions size="large" className={styles.marginRight5} />
+          <IconDescriptions className={styles.marginRight5} />
           <span>时长top3</span>
         </div>
         <Duration />
