@@ -215,11 +215,13 @@ function Daily() {
               trigger="click"
               render={
                 <Dropdown.Menu>
-                  <Dropdown.Item
-                    onClick={() => setVisibleFinished((_state) => !_state)}
-                  >
-                    {visibleFinished ? "隐藏" : "显示"}已完成
-                  </Dropdown.Item>
+                  {
+                    tasks.length > 0 && (<Dropdown.Item
+                      onClick={() => setVisibleFinished((_state) => !_state)}
+                    >
+                      {visibleFinished ? "隐藏" : "显示"}已完成
+                    </Dropdown.Item>)
+                  }
                   <Dropdown.Item onClick={() => setVisible(true)}>
                     添加打卡
                   </Dropdown.Item>
