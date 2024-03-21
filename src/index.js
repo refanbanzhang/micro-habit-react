@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import ContextProvider from '@/shared/ContextProvider';
 import reportWebVitals from './reportWebVitals';
-import './index.less';
+import './index.css';
 import App from './App';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
