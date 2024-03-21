@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import classnames from "classnames";
 import { Dropdown } from "@douyinfe/semi-ui";
-import { IconConfig } from "@douyinfe/semi-icons-lab";
+import { IconAvatar } from "@douyinfe/semi-icons-lab";
 import { logout } from "@/shared/utils";
 import router from "@/router";
 import useThemeContext from "@/shared/hooks/useThemeContext";
@@ -66,7 +66,7 @@ function Head() {
             </Dropdown.Menu>
           }
         >
-          <IconConfig />
+          <IconAvatar size="extra-large" />
         </Dropdown>
       </div>
     </div>
