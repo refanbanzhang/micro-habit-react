@@ -50,16 +50,16 @@ export const update = (data = {}) =>
 
 /**
  * 任务列表
- * @param {Object} params
- * @param {string} [params.name]
- * @param {string} [params.target]
+ * @param {Object} data
+ * @param {string} [data.name]
+ * @param {string} [data.target]
  * @returns {TaskApiResponse}
  */
-export const list = (params = {}) =>
+export const list = (data = {}) =>
   request({
-    method: 'get',
+    method: 'post',
     url: '/task/list',
-    params,
+    data,
   });
 
 /**
