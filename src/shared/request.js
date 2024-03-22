@@ -12,6 +12,10 @@ const request = (query) => {
     headers: {
       token,
     },
+    data: {
+      token,
+      ...query.data
+    },
     params: {
       token,
       ...query.params,
