@@ -11,7 +11,6 @@ import { getToday, isMobile } from "@/shared/utils";
 import * as taskApi from "@/apis/task";
 import * as recordApi from "@/apis/record";
 import openLoading from "@/shared/components/Loading/mount";
-import useThemeContext from "@/shared/hooks/useThemeContext";
 
 import ListItem from "./ListItem";
 
@@ -32,7 +31,6 @@ function Task(props) {
   const [currentOperationTask, setCurrentOperationTask] = useState(null);
 
   const inputRef = useRef(null);
-  const themeContext = useThemeContext();
 
   const setRecord = async (today, value, currTaskId) => {
     const currTask = tasks.find((task) => task._id === currTaskId);
