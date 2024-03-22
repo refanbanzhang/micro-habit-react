@@ -24,7 +24,7 @@ function Index() {
       <div className="mx-[15px] mb-[15px]">
         <div className="mb-[15px] flex items-center text-[14px] font-bold">
           <IconDescriptions className="mr-[5px]" />
-          <span>警醒</span>
+          <span>信条</span>
         </div>
         <Sentence />
       </div>

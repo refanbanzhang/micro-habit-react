@@ -49,7 +49,7 @@ function Head() {
             <li
               key={item.path}
               className={classnames([
-                'mr-[10px] cursor-pointer',
+                'mr-[15px] tracking-[3px] cursor-pointer',
                 {
                   'font-bold underline underline-offset-[10px]': pathname === item.path,
                 },
