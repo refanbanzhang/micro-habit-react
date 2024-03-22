@@ -63,7 +63,7 @@ function Insert() {
           placeholder="请输入"
         />
       </div>
-      <div className=" p-[15px]">
+      <div className="p-[15px]">
         <Button
           block
           theme="solid"

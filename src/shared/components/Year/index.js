@@ -51,7 +51,7 @@ function Year(props) {
 
   const placeholder = (
     <div>
-      <Skeleton.Image style={{ height: 126 }} />
+      <Skeleton.Image className="h-[126px]"/>
     </div>
   );
 
@@ -86,10 +86,7 @@ function Year(props) {
               <li
                 key={_item.date}
                 title={`${_item.date} ${_item.value}`}
-                className={classNames([
-                  'w-[15px] h-[15px] mr-[3px] mb-[3px]  bg-[#ebedf0]  last:mr-0',
-                  getLevelClass(_item.value, _item.target, _item.allFinished),
-                ])}
+                className={`w-[15px] h-[15px] mr-[3px] mb-[3px] bg-[#ebedf0] last:mr-0 ${getLevelClass(_item.value, _item.target, _item.allFinished)}`}
               ></li>
             ))}
           </ul>

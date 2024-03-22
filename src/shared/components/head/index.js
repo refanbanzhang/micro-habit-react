@@ -36,7 +36,7 @@ function Head() {
   };
 
   return (
-    <div className={classnames(['p-[15px]', 'bg-[#efefef]', 'max-w-[500px]', 'mx-auto'])}>
+    <div className="p-[15px] bg-[#efefef] max-w-[500px] mx-auto">
       <div className="flex items-start justify-between">
         <ul className="flex shrink-0">
           {items.map((item) => (
@@ -69,7 +69,7 @@ function Head() {
           <IconAvatar size="extra-large" />
         </Dropdown>
       </div>
-    </div>
+    </div >
   );
 }
 

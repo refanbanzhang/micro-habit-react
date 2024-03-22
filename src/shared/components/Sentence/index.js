@@ -29,8 +29,8 @@ function Sentence() {
 
   useEffect(() => {
     const randomIndex = Math.floor(getRandomInRange(0, items.length - 1));
-    const sententce = items.find((_, index) => index === randomIndex);
-    setSentence(sententce);
+    const sentence = items.find((_, index) => index === randomIndex);
+    setSentence(sentence);
   }, [items, timestamp]);
 
   const onRefresh = () => {
