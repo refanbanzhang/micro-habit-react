@@ -5,7 +5,10 @@ const useFocus = ({ visible }) => {
 
   useEffect(() => {
     if (visible) {
-      ref.current?.focus();
+      // TODO: 搞清楚为什么要加定时器
+      setTimeout(() => {
+        ref.current?.focus();
+      })
     }
   }, [visible])
 

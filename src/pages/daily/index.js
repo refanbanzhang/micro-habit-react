@@ -1,165 +1,72 @@
-import { useRef, useState, useEffect } from "react";
-import { Toast, Input, Modal, Skeleton, Dropdown } from "@douyinfe/semi-ui";
+import { useState } from "react";
+import { Input, Modal, Skeleton, Dropdown } from "@douyinfe/semi-ui";
 import { IconEmpty, IconToast } from "@douyinfe/semi-icons-lab";
-import { getToday, isMobile } from "@/shared/utils";
-import * as dailyTaskApi from "@/apis/dailyTask";
-import * as dailyDateApi from "@/apis/dailyDate";
+import { isMobile } from "@/shared/utils";
 import Head from "@/shared/components/Head";
 import { IconDescriptions, IconOverflow } from "@douyinfe/semi-icons-lab";
 import openLoading from "@/shared/components/Loading/mount";
 import Fixed from "@/shared/components/Fixed";
+import useFocus from "@/shared/hooks/useFocus";
 
 import ListItem from "./ListItem";
 import placeholder from "./Placeholder";
-
-const today = getToday();
+import useAdd from "./useAdd";
+import useData from "./useData";
+import useUpdate from "./useUpdate";
 
 function Daily() {
-  const inputRef = useRef(null);
-  const editInputRef = useRef(null);
-  const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [timestamp, setTimestamp] = useState(Date.now());
   const [visibleFinished, setVisibleFinished] = useState(false);
 
-  const [currentTask, setCurrentTask] = useState(null);
+  const { loading, tasks, setTasks, onRemove } = useData({
+    timestamp,
+    onDone() {
+      setTimestamp(Date.now());
+    },
+  });
+  const {
+    visible,
+    setVisible,
+    taskName,
+    setTaskName,
+    taskLink,
+    setTaskLink,
+    onCancel: onTaskNameModalCancel,
+    onOk: onTaskNameModalOk,
+  } = useAdd({
+    onDone() {
+      setTimestamp(Date.now());
+    },
+  });
+  const {
+    editVisible,
+    setEditVisible,
+    updateTaskName,
+    setUpdateTaskName,
+    updateTaskLink,
+    setUpdateTaskLink,
+    updateChecked,
+    onEdit,
+    onUpdateTaskOk,
+  } = useUpdate({
+    onDone({ name, checked }) {
+      const nextTasks = tasks.map((item) => ({
+        ...item,
+        checked: item.name === name ? checked : item.checked,
+      }));
+      // 更新前端，不请求后端数据
+      setTasks(nextTasks);
+    },
+  });
 
-  // 新增表单字段
-  const [taskName, setTaskName] = useState("");
-  const [taskLink, setTaskLink] = useState("");
-
-  // 编辑表单字段
-  const [updateTaskName, setUpdateTaskName] = useState("");
-  const [updateTaskLink, setUpdateTaskLink] = useState("");
-
-  const [visible, setVisible] = useState(false);
-  const [editVisible, setEditVisible] = useState(false);
-
-  const update = async ({ name, checked }) => {
-    if (!checked) {
-      await dailyDateApi.del({
-        name,
-        date: today,
-      });
-    } else {
-      await dailyDateApi.add({
-        name,
-        date: today,
-      });
-    }
-    const nextTasks = tasks.map(item => ({
-      ...item,
-      checked: item.name === name ? checked : item.checked
-    }))
-    // 更新前端，不请求后端数据
-    setTasks(nextTasks);
-  };
+  const { ref: inputRef } = useFocus({ visible });
+  const { ref: editInputRef } = useFocus({ visible: editVisible });
 
   const onChange = async (query) => {
     const close = openLoading();
-    await update(query);
-    close()
+    await updateChecked(query);
+    close();
   };
-
-  const onTaskNameModalOk = async () => {
-    if (!taskName) {
-      Toast.error("请输入打卡名");
-      inputRef.current?.focus();
-      return;
-    }
-
-    await dailyTaskApi.add({
-      name: taskName,
-      link: taskLink,
-    });
-    setTimestamp(Date.now());
-    onTaskNameModalCancel();
-  };
-
-  const onTaskNameModalCancel = () => {
-    setVisible(false);
-    setTaskName("");
-  };
-
-  const onRemove = (id) => {
-    Modal.error({
-      title: "确认删除吗？",
-      content: "该操作将不可逆！",
-      async onOk() {
-        await dailyTaskApi.del({
-          id,
-        });
-        setTimestamp(Date.now());
-      },
-    });
-  };
-
-  const onEdit = (target) => {
-    setCurrentTask(target);
-
-    setUpdateTaskName(target.name);
-    setUpdateTaskLink(target.link);
-
-    setEditVisible(true);
-  };
-
-  const updateTask = async (id, name, link) => {
-    await dailyTaskApi.update({ id, name, link });
-
-    setEditVisible(false);
-    setCurrentTask(null);
-    setUpdateTaskName("");
-    setTimestamp(Date.now());
-  };
-
-  const onUpdateTaskOk = () => {
-    const { _id } = currentTask;
-
-    if (
-      updateTaskName === currentTask.name &&
-      updateTaskLink === currentTask.link
-    ) {
-      Toast.error("未检测到修改");
-      return;
-    }
-
-    updateTask(_id, updateTaskName, updateTaskLink);
-
-    // cleanup
-    setUpdateTaskName("");
-    setUpdateTaskLink("");
-  };
-
-  // input focus
-  useEffect(() => {
-    visible && inputRef.current?.focus();
-    editVisible && editInputRef.current?.focus();
-  }, [visible, editVisible]);
-
-  // get punch-in data
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-
-      const taskRes = await dailyTaskApi.list();
-      const dateRes = await dailyDateApi.list({
-        date: today,
-      });
-
-      // 将dates中的数据，融合到tasks中，实现初始化选中
-      const names = dateRes.data.map((item) => item.name);
-      setTasks(
-        taskRes.data.map((item) => ({
-          ...item,
-          checked: names.includes(item.name),
-        }))
-      );
-
-      setLoading(false);
-    };
-
-    fetchData();
-  }, [timestamp]);
 
   const { unfinishedTasks, finishedTasks } = tasks.reduce(
     (acc, task) => {
@@ -174,14 +81,20 @@ function Daily() {
   );
 
   const size = isMobile() ? "full-width" : "small";
-  const textClassName = 'flex flex-col justify-center items-center text-[14px] h-[200px] text-[#999]';
+  const textClassName =
+    "flex flex-col justify-center items-center text-[14px] h-[200px] text-[#999]";
 
   const renderPipe = (next) => {
     if (!tasks.length) {
-      return <div className={textClassName}>
-        <IconEmpty className="text-[50px] mb-[20px]" style={{ fontSize: 50 }} />
-        <div>暂无数据</div>
-      </div>;
+      return (
+        <div className={textClassName}>
+          <IconEmpty
+            className="text-[50px] mb-[20px]"
+            style={{ fontSize: 50 }}
+          />
+          <div>暂无数据</div>
+        </div>
+      );
     }
 
     if (finishedTasks.length && !unfinishedTasks.length) {
@@ -215,13 +128,13 @@ function Daily() {
               trigger="click"
               render={
                 <Dropdown.Menu>
-                  {
-                    tasks.length > 0 && (<Dropdown.Item
+                  {tasks.length > 0 && (
+                    <Dropdown.Item
                       onClick={() => setVisibleFinished((_state) => !_state)}
                     >
                       {visibleFinished ? "隐藏" : "显示"}已完成
-                    </Dropdown.Item>)
-                  }
+                    </Dropdown.Item>
+                  )}
                   <Dropdown.Item onClick={() => setVisible(true)}>
                     添加打卡
                   </Dropdown.Item>
@@ -238,10 +151,12 @@ function Daily() {
                   key={item._id}
                   item={item}
                   onEdit={() => onEdit(item)}
-                  onChange={(e) => onChange({
-                    name: item.name,
-                    checked: e.target.checked,
-                  })}
+                  onChange={(e) =>
+                    onChange({
+                      name: item.name,
+                      checked: e.target.checked,
+                    })
+                  }
                   onRemove={() => onRemove(item._id)}
                 />
               ))
@@ -268,11 +183,13 @@ function Daily() {
               <ListItem
                 key={item._id}
                 item={item}
-                onEdit={onEdit}
-                onChange={(e) => onChange({
-                  name: item.name,
-                  checked: e.target.checked,
-                })}
+                onEdit={() => onEdit(item)}
+                onChange={(e) =>
+                  onChange({
+                    name: item.name,
+                    checked: e.target.checked,
+                  })
+                }
                 onRemove={() => onRemove(item._id)}
               />
             ))}
@@ -288,12 +205,8 @@ function Daily() {
         onCancel={onTaskNameModalCancel}
         closeOnEsc={true}
       >
-        <Input ref={inputRef} value={taskName} onChange={setTaskName}></Input>
-        <Input
-          className="mt-[20px]"
-          value={taskLink}
-          onChange={setTaskLink}
-        ></Input>
+        <Input ref={inputRef} value={taskName} onChange={setTaskName} />
+        <Input className="mt-[20px]" value={taskLink} onChange={setTaskLink} />
       </Modal>
 
       <Modal
