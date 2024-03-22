@@ -2,9 +2,6 @@ import { useRef, useState, useEffect } from "react";
 import {
   Button,
   Modal,
-  RadioGroup,
-  Radio,
-  Input,
   Skeleton,
 } from "@douyinfe/semi-ui";
 import { getToday, isMobile } from "@/shared/utils";
@@ -13,6 +10,9 @@ import * as recordApi from "@/apis/record";
 import openLoading from "@/shared/components/Loading/mount";
 
 import ListItem from "./ListItem";
+import CreateForm from './CreateForm';
+import RemoveForm from './RemoveForm';
+import AddTimeForm from './AddTimeForm';
 
 function Task(props) {
   const { timestamp, setTimestamp, taskVisible, setTaskVisible } = props;
@@ -201,9 +201,7 @@ function Task(props) {
   }, [timestamp]);
 
   const placeholder = (
-    <div>
-      <Skeleton.Image style={{ height: 220 }} />
-    </div>
+    <Skeleton.Image style={{ height: 220 }} />
   );
 
   const size = isMobile() ? "full-width" : "small";
@@ -234,18 +232,12 @@ function Task(props) {
           </Button>
         }
       >
-        <div className="mb-[10px]">任务名：</div>
-        <Input
-          ref={inputRef}
-          value={taskName}
-          className="mb-[20px]"
-          onChange={setTaskName}
-        />
-        <div className="mb-[10px]">任务目标（分钟）：</div>
-        <Input
-          value={taskTarget}
-          className="mb-[20px]"
-          onChange={setTaskTarget}
+        <CreateForm
+          inputRef={inputRef}
+          taskName={taskName}
+          setTaskName={setTaskName}
+          taskTarget={taskTarget}
+          setTaskTarget={setTaskTarget}
         />
       </Modal>
 
@@ -260,13 +252,7 @@ function Task(props) {
           </Button>
         }
       >
-        <div className="mb-[10px]">请输入任务名：</div>
-        <Input
-          ref={confirmDeleteTaskNameInputRef}
-          value={confirmDeleteTaskName}
-          className="mb-[20px]"
-          onChange={(value) => setConfirmDeleteTaskName(value)}
-        />
+        <RemoveForm />
       </Modal>
 
       <Modal
@@ -280,16 +266,7 @@ function Task(props) {
           </Button>
         }
       >
-        <div className="text-right">
-          <RadioGroup onChange={(e) => setValue(e.target.value)} value={value}>
-            <Radio value={5}>5分钟</Radio>
-            <Radio value={10}>10分钟</Radio>
-            <Radio value={15}>15分钟</Radio>
-            <Radio value={25}>25分钟</Radio>
-            <Radio value={50}>50分钟</Radio>
-            <Radio value={100}>100分钟</Radio>
-          </RadioGroup>
-        </div>
+        <AddTimeForm value={value} setValue={setValue} />
       </Modal>
     </>
   );
