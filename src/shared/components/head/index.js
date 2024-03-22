@@ -18,6 +18,10 @@ function Head() {
       name: "打卡",
       path: "/daily",
     },
+    {
+      name: "信条",
+      path: "/insert",
+    },
   ]);
   const { pathname } = useLocation();
 

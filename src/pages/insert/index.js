@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, TextArea } from "@douyinfe/semi-ui";
 import * as publicApi from "@/apis/public";
+import Fixed from "@/shared/components/Fixed";
+import Head from "@/shared/components/Head";
 
 function Insert() {
   const [loading, setLoading] = useState(false);
@@ -50,30 +52,33 @@ function Insert() {
   const changed = items[0]?.content === content;
 
   return (
-    <div className="flex flex-col h-[100vh] ">
-      <div className="flex items-center justify-center h-[50px]">
-        <h1 className="text-[16px] text-center">数据录入</h1>
-      </div>
-      <div className="flex-1 overflow-auto">
-        <TextArea
-          className="h-full p-[15px]"
-          value={content}
-          disabled={initLoading}
-          onChange={setContent}
-          placeholder="请输入"
-        />
-      </div>
-      <div className="p-[15px]">
-        <Button
-          block
-          theme="solid"
-          type="primary"
-          loading={loading}
-          disabled={!content.trim() || changed}
-          onClick={onSubmit}
-        >
-          提交
-        </Button>
+    <div>
+      <div className="flex flex-col h-[100vh] ">
+        <Fixed>
+          <Head />
+        </Fixed>
+        <div className="flex-1 overflow-auto">
+          <TextArea
+            className="h-full p-[15px]"
+            style={{ backgroundColor: '#fff' }}
+            value={content}
+            disabled={initLoading}
+            onChange={setContent}
+            placeholder="请输入"
+          />
+        </div>
+        <div className="p-[15px]">
+          <Button
+            block
+            theme="solid"
+            type="primary"
+            loading={loading}
+            disabled={!content.trim() || changed}
+            onClick={onSubmit}
+          >
+            提交
+          </Button>
+        </div>
       </div>
     </div>
   );
