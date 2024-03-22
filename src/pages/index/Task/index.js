@@ -1,18 +1,16 @@
-import { useRef, useState, useEffect } from "react";
-import {
-  Button,
-  Modal,
-  Skeleton,
-} from "@douyinfe/semi-ui";
+import { useState, useEffect } from "react";
+import { Button, Modal, Skeleton } from "@douyinfe/semi-ui";
 import { getToday, isMobile } from "@/shared/utils";
 import * as taskApi from "@/apis/task";
 import * as recordApi from "@/apis/record";
 import openLoading from "@/shared/components/Loading/mount";
+import useFocus from '@/shared/hooks/useFocus';
 
 import ListItem from "./ListItem";
 import CreateForm from './CreateForm';
 import RemoveForm from './RemoveForm';
 import AddTimeForm from './AddTimeForm';
+import useRemove from './hooks/useRemove';
 
 function Task(props) {
   const { timestamp, setTimestamp, taskVisible, setTaskVisible } = props;
@@ -24,13 +22,22 @@ function Task(props) {
   const [visible, setVisible] = useState(false);
   const [taskName, setTaskName] = useState("");
   const [taskTarget, setTaskTarget] = useState(5);
-  const confirmDeleteTaskNameInputRef = useRef(null);
-  const [confirmDeleteTaskName, setConfirmDeleteTaskName] = useState("");
-  const [confirmDeleteTaskVisible, setConfirmDeleteTaskVisible] =
-    useState(false);
-  const [currentOperationTask, setCurrentOperationTask] = useState(null);
 
-  const inputRef = useRef(null);
+  const {
+    visible: confirmDeleteTaskVisible,
+    setVisible: setConfirmDeleteTaskVisible,
+    confirmDeleteTaskName,
+    setConfirmDeleteTaskName,
+    setCurrentOperationTask,
+    onConfirmDeleteTaskConfirm,
+  } = useRemove({
+    onDone: () => {
+      setTimestamp(Date.now());
+    }
+  });
+  const size = isMobile() ? "full-width" : "small";
+  const { ref: inputRef } = useFocus({ visible: taskVisible });
+  const { ref: confirmDeleteTaskNameInputRef } = useFocus({ visible: confirmDeleteTaskVisible });
 
   const setRecord = async (today, value, currTaskId) => {
     const currTask = tasks.find((task) => task._id === currTaskId);
@@ -115,6 +122,7 @@ function Task(props) {
 
   const onDelete = (item) => {
     const config = {
+      size,
       title: "确定要删除吗？",
       content: "此操作将不可逆！",
       ...(isMobile() ? {} : { width: "90%" }),
@@ -125,41 +133,6 @@ function Task(props) {
     };
     Modal.error(config);
   };
-
-  const onConfirmDeleteTaskConfirm = async () => {
-    if (!confirmDeleteTaskName) {
-      alert("请输入需要删除的任务名");
-      return;
-    }
-
-    if (currentOperationTask.name !== confirmDeleteTaskName) {
-      alert("任务名不一致，请确认");
-      return;
-    }
-
-    await taskApi.remove({
-      id: currentOperationTask._id,
-    });
-
-    setTimestamp(Date.now());
-    setConfirmDeleteTaskVisible(false);
-    setConfirmDeleteTaskName("");
-    setCurrentOperationTask(null);
-  };
-
-  // input自动focus
-  useEffect(() => {
-    if (taskVisible) {
-      // 为什么这里不需要setTimeout?
-      inputRef.current?.focus();
-    }
-    if (confirmDeleteTaskVisible) {
-      // setTimeout是必要的吗？有更好的办法吗？
-      setTimeout(() => {
-        confirmDeleteTaskNameInputRef.current?.focus();
-      });
-    }
-  }, [taskVisible, confirmDeleteTaskVisible]);
 
   // 获取tasks
   useEffect(() => {
@@ -203,8 +176,6 @@ function Task(props) {
   const placeholder = (
     <Skeleton.Image style={{ height: 220 }} />
   );
-
-  const size = isMobile() ? "full-width" : "small";
 
   return (
     <>
@@ -252,7 +223,11 @@ function Task(props) {
           </Button>
         }
       >
-        <RemoveForm />
+        <RemoveForm
+          confirmDeleteTaskNameInputRef={confirmDeleteTaskNameInputRef}
+          confirmDeleteTaskName={confirmDeleteTaskName}
+          setConfirmDeleteTaskName={setConfirmDeleteTaskName}
+        />
       </Modal>
 
       <Modal
