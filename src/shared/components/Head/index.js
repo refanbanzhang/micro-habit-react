@@ -35,6 +35,8 @@ function Head() {
     setState(nextTheme);
   };
 
+  const username = localStorage.getItem('username');
+
   return (
     <div className="p-[15px] bg-[#efefef] max-w-[500px] mx-auto">
       <div className="flex items-start justify-between">
@@ -59,6 +61,9 @@ function Head() {
           clickToHide
           render={
             <Dropdown.Menu>
+              <Dropdown.Item disabled>
+                {username}
+              </Dropdown.Item>
               <Dropdown.Item onClick={onChangeTheme}>
                 {theme === "light" ? "白天" : "夜晚"}
               </Dropdown.Item>
