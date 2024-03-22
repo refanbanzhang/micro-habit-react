@@ -3,7 +3,6 @@ import { Button, Modal, Skeleton } from "@douyinfe/semi-ui";
 import { getToday, isMobile } from "@/shared/utils";
 import * as taskApi from "@/apis/task";
 import * as recordApi from "@/apis/record";
-import openLoading from "@/shared/components/Loading/mount";
 import useFocus from '@/shared/hooks/useFocus';
 
 import ListItem from "./ListItem";
@@ -11,17 +10,21 @@ import CreateForm from './CreateForm';
 import RemoveForm from './RemoveForm';
 import AddTimeForm from './AddTimeForm';
 import useRemove from './hooks/useRemove';
+import useAddTime from './hooks/useAddTime';
 
 function Task(props) {
   const { timestamp, setTimestamp, taskVisible, setTaskVisible } = props;
   const [loading, setLoading] = useState(true);
   const [tasks, setTasks] = useState([]);
   const [items, setItems] = useState([]);
-  const [value, setValue] = useState(25);
-  const [currTaskId, setCurrTaskId] = useState("");
-  const [visible, setVisible] = useState(false);
   const [taskName, setTaskName] = useState("");
   const [taskTarget, setTaskTarget] = useState(5);
+  const { value, setValue, visible, onShowModal, onCancel, onConfirm } = useAddTime({
+    tasks,
+    onDone: () => {
+      setTimestamp(Date.now());
+    }
+  });
 
   const {
     visible: confirmDeleteTaskVisible,
@@ -38,57 +41,6 @@ function Task(props) {
   const size = isMobile() ? "full-width" : "small";
   const { ref: inputRef } = useFocus({ visible: taskVisible });
   const { ref: confirmDeleteTaskNameInputRef } = useFocus({ visible: confirmDeleteTaskVisible });
-
-  const setRecord = async (today, value, currTaskId) => {
-    const currTask = tasks.find((task) => task._id === currTaskId);
-    const close = openLoading();
-
-    const res = await recordApi.list({
-      name: currTask.name,
-      date: today,
-    });
-
-    const records = res.data;
-
-    if (records.length === 0) {
-      await recordApi.add({
-        date: today,
-        name: currTask.name,
-        value: value,
-        target: currTask.target,
-      });
-    } else if (records.length === 1) {
-      await recordApi.update({
-        query: {
-          date: today,
-          name: currTask.name,
-        },
-        payload: {
-          value: records[0].value + value,
-        },
-      });
-    } else {
-      throw new Error("查询到超过一条数据，无法定位到需要更新的数据");
-    }
-
-    close();
-
-    setTimestamp(Date.now());
-  };
-
-  const onShowModal = (taskId) => {
-    setCurrTaskId(taskId);
-    setVisible(true);
-  };
-
-  const onConfirm = async () => {
-    const today = getToday();
-
-    if (today && value && currTaskId) {
-      await setRecord(today, value, currTaskId);
-      onCancel();
-    }
-  };
 
   const onAddTaskCancel = () => {
     setTaskVisible(false);
@@ -114,10 +66,6 @@ function Task(props) {
     setTimestamp(Date.now());
 
     onAddTaskCancel();
-  };
-
-  const onCancel = () => {
-    setVisible(false);
   };
 
   const onDelete = (item) => {
