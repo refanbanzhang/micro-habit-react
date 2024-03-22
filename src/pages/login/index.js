@@ -5,13 +5,19 @@ import router from '@/router';
 
 const { Text } = Typography;
 
+const cacheUsername = 'cacheUsername';
+const cachePassword = 'cachePassword';
+
 function Login() {
   const usernameInputRef = useRef(null);
   const passwordInputRef = useRef(null);
 
+  const initialUsername = localStorage.getItem(cacheUsername) || '';
+  const initialPassword = localStorage.getItem(cachePassword) || '';
+
   const [loading, setLoading] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState(initialUsername);
+  const [password, setPassword] = useState(initialPassword);
 
   const login = useCallback(async () => {
     setLoading(true);
@@ -25,8 +31,12 @@ function Login() {
 
     if (res.code === 0) {
       localStorage.setItem('token', res.data);
+
       // TODO: 接入token后，需要去掉username
       localStorage.setItem('username', username);
+
+      localStorage.setItem(cacheUsername, username);
+      localStorage.setItem(cachePassword, password);
       router.navigate('/');
     }
   }, [username, password]);
