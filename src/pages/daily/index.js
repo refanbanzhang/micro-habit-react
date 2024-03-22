@@ -179,7 +179,7 @@ function Daily() {
   const renderPipe = (next) => {
     if (!tasks.length) {
       return <div className={textClassName}>
-        <IconEmpty style={{ fontSize: 50, marginBottom: 20 }} />
+        <IconEmpty className="text-[50px] mb-[20px]" style={{ fontSize: 50 }} />
         <div>暂无数据</div>
       </div>;
     }
@@ -187,7 +187,7 @@ function Daily() {
     if (finishedTasks.length && !unfinishedTasks.length) {
       return (
         <div className={textClassName}>
-          <IconToast style={{ fontSize: 50, marginBottom: 20 }} />
+          <IconToast className="mb-[20px]" style={{ fontSize: 50 }} />
           <div>恭喜你，今天所有的任务都完成了！</div>
         </div>
       );
@@ -249,7 +249,7 @@ function Daily() {
           </Skeleton>
         </div>
 
-        <div style={{ marginBottom: 25 }}>
+        <div className="mb-[25px]">
           <div
             className="flex items-center mb-[15px] font-bold"
             style={{
@@ -290,7 +290,7 @@ function Daily() {
       >
         <Input ref={inputRef} value={taskName} onChange={setTaskName}></Input>
         <Input
-          style={{ marginTop: 20 }}
+          className="mt-[20px]"
           value={taskLink}
           onChange={setTaskLink}
         ></Input>
@@ -310,7 +310,7 @@ function Daily() {
           onChange={setUpdateTaskName}
         />
         <Input
-          style={{ marginTop: 20 }}
+          className="mt-[20px]"
           value={updateTaskLink}
           onChange={setUpdateTaskLink}
         />

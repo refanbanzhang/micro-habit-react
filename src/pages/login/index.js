@@ -98,7 +98,7 @@ function Login() {
           登录
         </Button>
       </div>
-      <div style={{ textAlign: 'right', marginTop: 5, marginRight: 5 }}>
+      <div className="text-right mt-[5px] mr-[5px]">
         <Text link={{ href: '#register' }}>注册</Text>
       </div>
     </div>

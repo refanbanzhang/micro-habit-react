@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import classNames from "classnames";
 import { Skeleton } from "@douyinfe/semi-ui";
 import { getYearDatesUntilToday, getLevelClass } from "@/shared/utils";
 import * as recordApi from "@/apis/record";
@@ -51,7 +50,7 @@ function Year(props) {
 
   const placeholder = (
     <div>
-      <Skeleton.Image className="h-[126px]"/>
+      <Skeleton.Image style={{ height: 126 }}/>
     </div>
   );
 

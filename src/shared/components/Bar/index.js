@@ -32,9 +32,7 @@ function Bar() {
   }, []);
 
   const placeholder = (
-    <div>
-      <Skeleton.Image style={{ height: 137 }} />
-    </div>
+    <Skeleton.Image style={{ height: 137 }} />
   );
 
   return (

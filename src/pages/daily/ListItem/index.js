@@ -17,7 +17,7 @@ function ListItem(props) {
         <div className="absolute flex right-[10px]">
           {item.link && (
             <IconLink
-              style={{ color: 'rgb(0, 100, 250)' }}
+              className="text-blue-600"
               onClick={() => window.open(item.link)}
             />
           )}
