@@ -54,7 +54,6 @@ function Daily() {
         ...item,
         checked: item.name === name ? checked : item.checked,
       }));
-      // 更新前端，不请求后端数据
       setTasks(nextTasks);
     },
   });
@@ -149,15 +148,17 @@ function Daily() {
           </Skeleton>
         </div>
 
-        <div className="mb-[15px]">
-          <div className="flex items-center justify-between mb-[15px] font-bold">
-            <div className="flex items-center">
-              <IconDescriptions className="mr-[5px]" />
-              <span className="text-[14px]">已完成</span>
+        {visibleFinished && (
+          <div className="mb-[15px]">
+            <div className="flex items-center justify-between mb-[15px] font-bold">
+              <div className="flex items-center">
+                <IconDescriptions className="mr-[5px]" />
+                <span className="text-[14px]">已完成</span>
+              </div>
             </div>
+            {finishedTasks.map(renderItem)}
           </div>
-          {visibleFinished && finishedTasks.map(renderItem)}
-        </div>
+        )}
       </div>
 
       <Modal
