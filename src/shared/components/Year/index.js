@@ -48,11 +48,7 @@ function Year(props) {
     loadData();
   }, [timestamp]);
 
-  const placeholder = (
-    <div>
-      <Skeleton.Image style={{ height: 126 }}/>
-    </div>
-  );
+  const placeholder = <Skeleton.Image style={{ height: 126 }} />;
 
   const per = Math.ceil(items.length / 7);
   const nextItems = items.reduce((acc, currValue, currIndex) => {
@@ -85,7 +81,11 @@ function Year(props) {
               <li
                 key={_item.date}
                 title={`${_item.date} ${_item.value}`}
-                className={`w-[15px] h-[15px] mr-[3px] mb-[3px] bg-[#ebedf0] last:mr-0 ${getLevelClass(_item.value, _item.target, _item.allFinished)}`}
+                className={`w-[15px] h-[15px] mr-[3px] mb-[3px] bg-[#ebedf0] last:mr-0 ${getLevelClass(
+                  _item.value,
+                  _item.target,
+                  _item.allFinished
+                )}`}
               ></li>
             ))}
           </ul>

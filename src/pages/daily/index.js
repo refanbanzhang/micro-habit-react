@@ -6,6 +6,7 @@ import { IconDescriptions, IconOverflow } from "@douyinfe/semi-icons-lab";
 import openLoading from "@/shared/components/Loading/mount";
 import Fixed from "@/shared/components/Fixed";
 import useFocus from "@/shared/hooks/useFocus";
+import IF from "@/shared/components/IF";
 
 import ListItem from "./ListItem";
 import placeholder from "./Placeholder";
@@ -148,7 +149,7 @@ function Daily() {
           </Skeleton>
         </div>
 
-        {visibleFinished && (
+        <IF value={visibleFinished}>
           <div className="mb-[15px]">
             <div className="flex items-center justify-between mb-[15px] font-bold">
               <div className="flex items-center">
@@ -158,7 +159,7 @@ function Daily() {
             </div>
             {finishedTasks.map(renderItem)}
           </div>
-        )}
+        </IF>
       </div>
 
       <Modal

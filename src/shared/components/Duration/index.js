@@ -39,11 +39,7 @@ function Duration(props) {
     .sort((prev, next) => next.value - prev.value)
     .slice(0, 3);
 
-  const placeholder = (
-    <div>
-      <Skeleton.Image style={{ height: 84 }} />
-    </div>
-  );
+  const placeholder = <Skeleton.Image style={{ height: 84 }} />;
 
   return (
     <Skeleton placeholder={placeholder} loading={loading} active>

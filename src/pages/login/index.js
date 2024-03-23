@@ -1,19 +1,19 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Button, Input, Typography, Toast } from '@douyinfe/semi-ui';
-import * as userApi from '@/apis/user';
-import router from '@/router';
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import { Button, Input, Typography, Toast } from "@douyinfe/semi-ui";
+import * as userApi from "@/apis/user";
+import router from "@/router";
 
 const { Text } = Typography;
 
-const cacheUsername = 'cacheUsername';
-const cachePassword = 'cachePassword';
+const cacheUsername = "cacheUsername";
+const cachePassword = "cachePassword";
 
 function Login() {
   const usernameInputRef = useRef(null);
   const passwordInputRef = useRef(null);
 
-  const initialUsername = localStorage.getItem(cacheUsername) || '';
-  const initialPassword = localStorage.getItem(cachePassword) || '';
+  const initialUsername = localStorage.getItem(cacheUsername) || "";
+  const initialPassword = localStorage.getItem(cachePassword) || "";
 
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState(initialUsername);
@@ -25,50 +25,50 @@ function Login() {
     setLoading(false);
 
     if (res.code !== 0) {
-      Toast.error('账号或密码错误');
+      Toast.error("账号或密码错误");
       return;
     }
 
     if (res.code === 0) {
-      localStorage.setItem('token', res.data);
+      localStorage.setItem("token", res.data);
 
       // TODO: 接入token后，需要去掉username
-      localStorage.setItem('username', username);
+      localStorage.setItem("username", username);
 
       localStorage.setItem(cacheUsername, username);
       localStorage.setItem(cachePassword, password);
-      router.navigate('/');
+      router.navigate("/");
     }
   }, [username, password]);
 
   const onSubmit = useCallback(() => {
     if (!username) {
-      Toast.error('请输入用户名');
+      Toast.error("请输入用户名");
       usernameInputRef.current?.focus();
       return;
     }
 
     if (!password) {
-      Toast.error('请输入密码');
+      Toast.error("请输入密码");
       passwordInputRef.current?.focus();
       return;
     }
 
-    login()
-  }, [login, username, password])
+    login();
+  }, [login, username, password]);
 
   useEffect(() => {
     const onKeyup = (e) => {
-      if (e.key === 'Enter') {
+      if (e.key === "Enter") {
         onSubmit();
       }
-    }
-    window.addEventListener('keyup', onKeyup)
+    };
+    window.addEventListener("keyup", onKeyup);
 
     return () => {
-      window.removeEventListener('keyup', onKeyup)
-    }
-  }, [onSubmit])
+      window.removeEventListener("keyup", onKeyup);
+    };
+  }, [onSubmit]);
 
   useEffect(() => {
     if (usernameInputRef.current) {
@@ -80,7 +80,9 @@ function Login() {
 
   return (
     <div className="mx-auto px-[20px] pt-[120px] pb-[20px]">
-      <h1 className="mb-[20px] text-[16px] text-center tracking-[5px]">微习惯</h1>
+      <h1 className="mb-[20px] text-[16px] text-center tracking-[5px]">
+        微习惯
+      </h1>
       <Input
         ref={usernameInputRef}
         className="mb-[15px]"
@@ -96,20 +98,18 @@ function Login() {
         onChange={setPassword}
         placeholder="密码"
       />
-      <div>
-        <Button
-          block
-          theme="solid"
-          type="primary"
-          loading={loading}
-          disabled={isDisabled}
-          onClick={onSubmit}
-        >
-          登录
-        </Button>
-      </div>
+      <Button
+        block
+        theme="solid"
+        type="primary"
+        loading={loading}
+        disabled={isDisabled}
+        onClick={onSubmit}
+      >
+        登录
+      </Button>
       <div className="text-right mt-[5px] mr-[5px]">
-        <Text link={{ href: '#register' }}>注册</Text>
+        <Text link={{ href: "#register" }}>注册</Text>
       </div>
     </div>
   );
