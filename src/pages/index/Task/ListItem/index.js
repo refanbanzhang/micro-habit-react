@@ -7,7 +7,7 @@ function ListItem({ item, onShowModal, onDelete }) {
   return (
     <div
       className={classnames([
-        'relative mb-[15px] p-[10px] rounded-[3px] text-[14px] last:mb-0',
+        'relative mb-[15px] p-[10px] rounded-[3px] text-[14px] last:mb-0 bg-[#ebedf0]',
         getLevelClassNew(item.value, item.target),
       ])}
     >
