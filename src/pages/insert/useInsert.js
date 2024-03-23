@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import * as publicApi from "@/apis/public";
 
 const useInsert = () => {
-  const [loading, setLoading] = useState(false);
   const [initLoading, setInitLoading] = useState(false);
+  const [submitLoading, setLoading] = useState(false);
   const [content, setContent] = useState("");
   const [items, setItems] = useState([]);
 
@@ -51,8 +51,8 @@ const useInsert = () => {
   const changed = items[0]?.content === content;
 
   return {
-    loading,
     initLoading,
+    submitLoading,
     content,
     setContent,
     onSubmit,
