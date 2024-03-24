@@ -5,10 +5,9 @@ import { Dropdown } from "@douyinfe/semi-ui";
 import { IconAvatar } from "@douyinfe/semi-icons-lab";
 import { logout } from "@/shared/utils";
 import router from "@/router";
-import useThemeContext from "@/shared/hooks/useThemeContext";
 
 function Head() {
-  const { state: theme, setState } = useThemeContext();
+  const [isDark, setIsDark] = useState(false);
   const [items] = useState([
     {
       name: "时间",
@@ -34,12 +33,51 @@ function Head() {
     router.navigate("/login");
   };
 
-  const onChangeTheme = () => {
-    const nextTheme = theme === "light" ? "dark" : "light";
-    setState(nextTheme);
+  const setDarkMode = (value) => {
+    if (value) {
+      document.documentElement.classList.add("dark");
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      document.documentElement.setAttribute("data-theme", "light");
+    }
   };
 
-  const username = localStorage.getItem('username');
+  const onChangeTheme = (event) => {
+    const x = event.clientX;
+    const y = event.clientY;
+
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    const transition = document.startViewTransition(() => {
+      setIsDark(!isDark);
+      setDarkMode(!isDark);
+    });
+
+    transition.ready.then(() => {
+      const clipPath = [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${endRadius}px at ${x}px ${y}px)`,
+      ];
+      document.documentElement.animate(
+        {
+          clipPath: isDark ? clipPath : [...clipPath].reverse(),
+        },
+        {
+          duration: 300,
+          easing: "ease-in",
+          pseudoElement: isDark
+            ? "::view-transition-new(root)"
+            : "::view-transition-old(root)",
+        }
+      );
+    });
+  };
+
+  const username = localStorage.getItem("username");
 
   return (
     <div className="p-[15px] bg-[#efefef] max-w-[500px] mx-auto">
@@ -49,9 +87,10 @@ function Head() {
             <li
               key={item.path}
               className={classnames([
-                'mr-[15px] tracking-[3px] cursor-pointer',
+                "mr-[15px] tracking-[3px] cursor-pointer",
                 {
-                  'font-bold underline underline-offset-[10px]': pathname === item.path,
+                  "font-bold underline underline-offset-[10px]":
+                    pathname === item.path,
                 },
               ])}
               onClick={() => onClick(item.path)}
@@ -65,11 +104,9 @@ function Head() {
           clickToHide
           render={
             <Dropdown.Menu>
-              <Dropdown.Item disabled>
-                {username}
-              </Dropdown.Item>
+              <Dropdown.Item disabled>{username}</Dropdown.Item>
               <Dropdown.Item onClick={onChangeTheme}>
-                {theme === "light" ? "白天" : "夜晚"}
+                {isDark === "light" ? "白天" : "夜晚"}
               </Dropdown.Item>
               <Dropdown.Item onClick={onLogout}>退出登录</Dropdown.Item>
             </Dropdown.Menu>
@@ -78,7 +115,7 @@ function Head() {
           <IconAvatar size="extra-large" />
         </Dropdown>
       </div>
-    </div >
+    </div>
   );
 }
 
