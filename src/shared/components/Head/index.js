@@ -58,7 +58,7 @@ function Head() {
 
   useEffect(() => {
     setDarkMode(isDark);
-  }, [isDark])
+  }, [isDark]);
 
   const username = localStorage.getItem("username");
 
@@ -89,7 +89,7 @@ function Head() {
             <Dropdown.Menu>
               <Dropdown.Item disabled>{username}</Dropdown.Item>
               <Dropdown.Item onClick={onChangeTheme}>
-                {isDark === "light" ? "白天" : "夜晚"}
+                {isDark ? "夜晚" : "白天"}
               </Dropdown.Item>
               <Dropdown.Item onClick={onLogout}>退出登录</Dropdown.Item>
             </Dropdown.Menu>
