@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import classnames from "classnames";
 import { Dropdown } from "@douyinfe/semi-ui";
@@ -6,8 +6,12 @@ import { IconAvatar } from "@douyinfe/semi-icons-lab";
 import { logout } from "@/shared/utils";
 import router from "@/router";
 
+import { start } from "./animation";
+
+const initialIsDark = localStorage.getItem("isDark");
+
 function Head() {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(JSON.parse(initialIsDark));
   const [items] = useState([
     {
       name: "时间",
@@ -35,47 +39,26 @@ function Head() {
 
   const setDarkMode = (value) => {
     if (value) {
+      localStorage.setItem("isDark", true);
       document.documentElement.classList.add("dark");
       document.documentElement.setAttribute("data-theme", "dark");
     } else {
+      localStorage.setItem("isDark", false);
       document.documentElement.classList.remove("dark");
       document.documentElement.setAttribute("data-theme", "light");
     }
   };
 
   const onChangeTheme = (event) => {
-    const x = event.clientX;
-    const y = event.clientY;
-
-    const endRadius = Math.hypot(
-      Math.max(x, window.innerWidth - x),
-      Math.max(y, window.innerHeight - y)
-    );
-
-    const transition = document.startViewTransition(() => {
+    start(event, isDark, () => {
       setIsDark(!isDark);
       setDarkMode(!isDark);
     });
-
-    transition.ready.then(() => {
-      const clipPath = [
-        `circle(0px at ${x}px ${y}px)`,
-        `circle(${endRadius}px at ${x}px ${y}px)`,
-      ];
-      document.documentElement.animate(
-        {
-          clipPath: isDark ? clipPath : [...clipPath].reverse(),
-        },
-        {
-          duration: 300,
-          easing: "ease-in",
-          pseudoElement: isDark
-            ? "::view-transition-new(root)"
-            : "::view-transition-old(root)",
-        }
-      );
-    });
   };
+
+  useEffect(() => {
+    setDarkMode(isDark);
+  }, [isDark])
 
   const username = localStorage.getItem("username");
 
