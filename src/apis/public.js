@@ -3,6 +3,7 @@ import request from '@/shared/request';
 /**
  * @typedef {Object} Record
  * @property {string} _id
+ * @property {string} name
  * @property {string} createTime
  * @property {string} createUser
  * @property {string} updateTime
