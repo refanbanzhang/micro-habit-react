@@ -10,19 +10,12 @@ const useInsert = () => {
   const onSubmit = async () => {
     setLoading(true);
 
-    if (items.length) {
-      await publicApi.update({
-        name: "sentences",
-        content,
-      });
-    } else {
-      await publicApi.add({
-        name: "sentences",
-        content,
-      });
-    }
+    await publicApi.add({
+      name: "sentences",
+      content,
+    });
 
-    items[0].content = content
+    items[0].content = content;
 
     setLoading(false);
   };
@@ -53,6 +46,7 @@ const useInsert = () => {
   return {
     initLoading,
     submitLoading,
+    items,
     content,
     setContent,
     onSubmit,

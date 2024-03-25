@@ -4,9 +4,9 @@ import Fixed from "@/shared/components/Fixed";
 import Head from "@/shared/components/Head";
 import If from "@/shared/components/IF";
 
-import useInsert from "./useInsert";
+import useInsert from "@/shared/hooks/useInsert";
 
-function Insert() {
+function Sentence() {
   const { initLoading, submitLoading, content, setContent, onSubmit, changed } =
     useInsert();
 
@@ -48,4 +48,4 @@ function Insert() {
   );
 }
 
-export default Insert;
+export default Sentence;
