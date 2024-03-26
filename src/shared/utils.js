@@ -1,8 +1,8 @@
 export function getToday() {
   const now = new Date();
   const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
 
@@ -15,8 +15,8 @@ export function formatDate(date) {
   const nextDate = date ? new Date(date) : new Date();
 
   const year = nextDate.getFullYear();
-  const month = String(nextDate.getMonth() + 1).padStart(2, '0');
-  const day = String(nextDate.getDate()).padStart(2, '0');
+  const month = String(nextDate.getMonth() + 1).padStart(2, "0");
+  const day = String(nextDate.getDate()).padStart(2, "0");
 
   return `${year}-${month}-${day}`;
 }
@@ -46,63 +46,65 @@ export const getLevelClass = (value, target, allFinished) => {
   const ratio = value / target;
 
   if (!allFinished) {
-    return '';
+    return "";
   }
   if (!target) {
-    return '';
+    return "";
   }
   if (ratio < 1) {
-    return '';
+    return "";
   }
   if (ratio === 1) {
-    return 'l1-bg';
+    return "l1-bg";
   }
   if (ratio <= 5) {
-    return 'l2-bg';
+    return "l2-bg";
   }
   if (ratio <= 10) {
-    return 'l3-bg';
+    return "l3-bg";
   }
-  return 'l4-bg';
+  return "l4-bg";
 };
 
 export const getLevelClassNew = (value, target) => {
   const ratio = value / target;
 
   if (!target) {
-    return '';
+    return "";
   }
   if (ratio < 1) {
-    return '';
+    return "";
   }
   if (ratio === 1) {
-    return 'l1-bg';
+    return "l1-bg";
   }
   if (ratio <= 5) {
-    return 'l2-bg';
+    return "l2-bg";
   }
   if (ratio <= 10) {
-    return 'l3-bg';
+    return "l3-bg";
   }
-  return 'l4-bg';
+  return "l4-bg";
 };
 
 export function logout() {
-  localStorage.removeItem('token');
+  localStorage.removeItem("token");
   // TODO: 接入token后，需要去掉username
-  localStorage.removeItem('username');
+  localStorage.removeItem("username");
 }
 
 export function isLogged() {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   // TODO: 接入token后，需要去掉username
-  const username = localStorage.getItem('username');
+  const username = localStorage.getItem("username");
 
   return token && username;
 }
 
 export function isMobile() {
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
 }
 
 /**
@@ -113,4 +115,15 @@ export function isMobile() {
  */
 export function getRandomInRange(minValue, maxValue) {
   return minValue + (maxValue - minValue) * Math.random();
+}
+
+export function getRandomInRange2(minValue, maxValue) {
+  let previousValue = 0;
+  return () => {
+    const currValue = getRandomInRange(minValue, maxValue);
+
+    if (currValue) 
+
+    return getRandomInRange(minValue, maxValue);
+  };
 }

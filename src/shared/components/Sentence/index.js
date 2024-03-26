@@ -7,36 +7,45 @@ import useInsert from "@/shared/hooks/useInsert";
 
 import "./style.css";
 
+const animate = (element) => {
+  element.classList.remove("animate");
+  setTimeout(() => {
+    element.classList.add("animate");
+  });
+};
+
 function Sentence() {
-  const [items, setItems] = useState([]);
-  const [sentence, setSentence] = useState("");
-  const [timestamp, setTimestamp] = useState(Date.now());
   const { initLoading, content } = useInsert();
   const refreshBtnRef = useRef(null);
+  const [items, setItems] = useState([]);
+  const [itemsCopy, setItemsCopy] = useState([]);
+  const [sentence, setSentence] = useState("");
 
   useEffect(() => {
     if (content) {
-      const sentences = content.split("\n").filter(Boolean);
-      setItems(sentences);
+      const items = content.split("\n").filter(Boolean);
+      setItems(items);
+      setItemsCopy(items);
     }
   }, [content]);
 
-  useEffect(() => {
-    const randomIndex = Math.floor(getRandomInRange(0, items.length - 1));
-    const sentence = items.find((_, index) => index === randomIndex);
-    setSentence(sentence);
-  }, [items, timestamp]);
-
-  const animate = () => {
-    refreshBtnRef.current.classList.remove("animate");
-    setTimeout(() => {
-      refreshBtnRef.current.classList.add("animate");
-    });
-  };
-
   const onRefresh = () => {
-    animate();
-    setTimestamp(Date.now());
+    animate(refreshBtnRef.current);
+
+    // TODO: 提取为一个独立的函数
+    const nextItems = [...items];
+    // 随机出来的数字不会大于nextItems.length
+    const limitNum = Math.random() * nextItems.length
+    const randomIndex = Math.floor(limitNum);
+    const [item] = nextItems.splice(randomIndex, 1);
+
+    if (nextItems.length) {
+      setItems(nextItems);
+      setSentence(item);
+    } else {
+      setItems(itemsCopy);
+      setSentence(item);
+    }
   };
 
   const placeholder = <Skeleton.Image style={{ height: 100 }} />;
