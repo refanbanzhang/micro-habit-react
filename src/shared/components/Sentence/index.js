@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Skeleton } from "@douyinfe/semi-ui";
 import { IconDescriptions } from "@douyinfe/semi-icons-lab";
-import { getRandomInRange } from "@/shared/utils";
 import { IconRefresh } from "@douyinfe/semi-icons";
 import useInsert from "@/shared/hooks/useInsert";
 

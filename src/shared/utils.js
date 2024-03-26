@@ -114,16 +114,7 @@ export function isMobile() {
  * @returns {number}
  */
 export function getRandomInRange(minValue, maxValue) {
+  // 随机出来的数字不会大于arr.length
+  // const limitNum = Math.random() * arr.length;
   return minValue + (maxValue - minValue) * Math.random();
-}
-
-export function getRandomInRange2(minValue, maxValue) {
-  let previousValue = 0;
-  return () => {
-    const currValue = getRandomInRange(minValue, maxValue);
-
-    if (currValue) 
-
-    return getRandomInRange(minValue, maxValue);
-  };
 }
