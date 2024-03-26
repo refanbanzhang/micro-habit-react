@@ -51,7 +51,10 @@ function Task(props) {
     visible: confirmDeleteTaskVisible,
   });
 
-  const placeholder = <Skeleton.Image style={{ height: 220 }} />;
+  const placeholder = <>
+    <Skeleton.Image style={{ height: 112, marginBottom: 15 }} />
+    <Skeleton.Image style={{ height: 112 }} />
+  </>;
 
   return (
     <>
