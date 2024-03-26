@@ -50,17 +50,6 @@ function Year(props) {
 
   const placeholder = <Skeleton.Image style={{ height: 126 }} />;
 
-  const per = Math.ceil(items.length / 7);
-  const nextItems = items.reduce((acc, currValue, currIndex) => {
-    const index = Math.floor(currIndex / per);
-    if (acc[index]) {
-      acc[index].push(currValue);
-    } else {
-      acc[index] = [currValue];
-    }
-    return acc;
-  }, []);
-
   useEffect(() => {
     if (!items.length) {
       return;
@@ -75,21 +64,19 @@ function Year(props) {
   return (
     <Skeleton placeholder={placeholder} loading={loading} active>
       <div className="overflow-auto" ref={containerRef}>
-        {nextItems.map((item, index) => (
-          <ul className="flex w-[951px] mx-auto" key={index}>
-            {item.map((_item) => (
-              <li
-                key={_item.date}
-                title={`${_item.date} ${_item.value}`}
-                className={`w-[15px] h-[15px] mr-[3px] mb-[3px] bg-[#ebedf0] last:mr-0 ${getLevelClass(
-                  _item.value,
-                  _item.target,
-                  _item.allFinished
-                )}`}
-              ></li>
-            ))}
-          </ul>
-        ))}
+        <ul className="flex flex-col flex-wrap w-[951px] h-[126px] mx-auto">
+          {items.map((item) => (
+            <li
+              key={item.date}
+              title={`${item.date} ${item.value}`}
+              className={`w-[15px] h-[15px] mr-[3px] mb-[3px] bg-[#ebedf0] last:mr-0 ${getLevelClass(
+                item.value,
+                item.target,
+                item.allFinished
+              )}`}
+            ></li>
+          ))}
+        </ul>
       </div>
     </Skeleton>
   );
