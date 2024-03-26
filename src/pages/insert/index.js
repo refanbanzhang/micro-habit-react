@@ -77,6 +77,7 @@ function Sentence() {
         visible={visible}
         bodyStyle={{
           overflow: "auto",
+          marginBottom: 15,
         }}
         footer={null}
         onOk={() => setVisible(false)}
@@ -86,7 +87,7 @@ function Sentence() {
           initLoading={initLoading}
           items={items}
           onRevert={async (id) => {
-            await onRevert(id)
+            await onRevert(id);
             onDone();
           }}
         />
