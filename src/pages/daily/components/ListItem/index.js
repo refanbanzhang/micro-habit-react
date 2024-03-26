@@ -6,7 +6,12 @@ function ListItem(props) {
   const { item, onEdit, onChange, onRemove } = props;
 
   return (
-    <div className="relative flex items-center mb-[10px] p-[10px] rounded-[3px] bg-[#f1f1f1]">
+    <div
+      style={{
+        "--id": `id${item._id}`,
+      }}
+      className="item relative flex items-center mb-[10px] p-[10px] rounded-[3px] bg-[#f1f1f1]"
+    >
       <Checkbox
         className="mr-[10px]"
         defaultChecked={item.checked}

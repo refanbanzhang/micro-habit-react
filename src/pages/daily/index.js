@@ -1,13 +1,14 @@
 import { useState } from "react";
+import { flushSync } from "react-dom";
 import { Input, Modal, Skeleton, Dropdown } from "@douyinfe/semi-ui";
 import { isMobile } from "@/shared/utils";
 import Head from "@/shared/components/Head";
 import { IconDescriptions, IconOverflow } from "@douyinfe/semi-icons-lab";
-import openLoading from "@/shared/components/Loading/mount";
 import Fixed from "@/shared/components/Fixed";
 import useFocus from "@/shared/hooks/useFocus";
 import IF from "@/shared/components/IF";
 
+import "./style.css";
 import ListItem from "./components/ListItem";
 import placeholder from "./components/Placeholder";
 import useAdd from "./hooks/useAdd";
@@ -19,11 +20,13 @@ function Daily() {
   const [timestamp, setTimestamp] = useState(Date.now());
   const [visibleFinished, setVisibleFinished] = useState(false);
 
+  const onDone = () => {
+    setTimestamp(Date.now());
+  };
+
   const { loading, tasks, setTasks, onRemove } = useData({
     timestamp,
-    onDone() {
-      setTimestamp(Date.now());
-    },
+    onDone,
   });
   const {
     visible,
@@ -35,9 +38,7 @@ function Daily() {
     onCancel: onTaskNameModalCancel,
     onOk: onTaskNameModalOk,
   } = useAdd({
-    onDone() {
-      setTimestamp(Date.now());
-    },
+    onDone,
   });
   const {
     editVisible,
@@ -55,7 +56,16 @@ function Daily() {
         ...item,
         checked: item.name === name ? checked : item.checked,
       }));
-      setTasks(nextTasks);
+
+      if (document.startViewTransition) {
+        document.startViewTransition(() => {
+          flushSync(() => {
+            setTasks(nextTasks);
+          });
+        });
+      } else {
+        setTasks(nextTasks);
+      }
     },
   });
 
@@ -63,9 +73,7 @@ function Daily() {
   const { ref: editInputRef } = useFocus({ visible: editVisible });
 
   const onChange = async (query) => {
-    const close = openLoading();
     await updateChecked(query);
-    close();
   };
 
   const { unfinishedTasks, finishedTasks } = tasks.reduce(
