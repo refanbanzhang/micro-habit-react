@@ -6,9 +6,14 @@ import useInsert from "@/shared/hooks/useInsert";
 
 import "./style.css";
 
-const getRandomIndex = (max) => {
-  // 确保随机出来的数字不会大于max
-  const value = Math.random() * max;
+/**
+ * 获取随机索引
+ * @param {number} len
+ * @returns 0 至 (len - 1)
+ */
+const getRandomIndex = (len) => {
+  // 确保随机出来的数字不会大于len
+  const value = Math.random() * len;
   return Math.floor(value);
 };
 
