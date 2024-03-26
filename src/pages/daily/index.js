@@ -8,12 +8,12 @@ import Fixed from "@/shared/components/Fixed";
 import useFocus from "@/shared/hooks/useFocus";
 import IF from "@/shared/components/IF";
 
-import ListItem from "./ListItem";
-import placeholder from "./Placeholder";
-import useAdd from "./useAdd";
-import useData from "./useData";
-import useUpdate from "./useUpdate";
-import Tips from "./Tips";
+import ListItem from "./components/ListItem";
+import placeholder from "./components/Placeholder";
+import useAdd from "./hooks/useAdd";
+import useData from "./hooks/useData";
+import useUpdate from "./hooks/useUpdate";
+import Tips from "./components/Tips";
 
 function Daily() {
   const [timestamp, setTimestamp] = useState(Date.now());
