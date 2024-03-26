@@ -3,19 +3,9 @@ import { Skeleton } from "@douyinfe/semi-ui";
 import { IconDescriptions } from "@douyinfe/semi-icons-lab";
 import { IconRefresh } from "@douyinfe/semi-icons";
 import useInsert from "@/shared/hooks/useInsert";
+import { getRandomIndex } from "@/shared/utils";
 
 import "./style.css";
-
-/**
- * 获取随机索引
- * @param {number} len
- * @returns 0 至 (len - 1)
- */
-const getRandomIndex = (len) => {
-  // 确保随机出来的数字不会大于len
-  const value = Math.random() * len;
-  return Math.floor(value);
-};
 
 const animate = (element) => {
   element.classList.remove("animate");
@@ -28,7 +18,7 @@ function Sentence() {
   const { initLoading, content } = useInsert();
   const refreshBtnRef = useRef(null);
   const [items, setItems] = useState([]);
-  const [sentence, setSentence] = useState("");
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     if (content) {
@@ -37,24 +27,21 @@ function Sentence() {
     }
   }, [content]);
 
-  const renderSentence = useCallback(() => {
-    // TODO: 提取为一个独立的函数
-    const nextItems = [...items];
-    const randomIndex = getRandomIndex(nextItems.length);
-    const [item] = nextItems.splice(randomIndex, 1);
-
-    setSentence(item);
+  const onRefresh = useCallback(() => {
+    animate(refreshBtnRef.current);
+    const index = getRandomIndex(items.length);
+    setIndex(index);
   }, [items]);
 
   useEffect(() => {
-    renderSentence();
-  }, [renderSentence]);
+    if (!items.length) {
+      return;
+    }
 
-  const onRefresh = () => {
-    animate(refreshBtnRef.current);
-    renderSentence();
-  };
+    onRefresh();
+  }, [onRefresh, items]);
 
+  const sentence = items[index];
   const placeholder = <Skeleton.Image style={{ height: 100 }} />;
 
   return (

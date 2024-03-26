@@ -118,3 +118,27 @@ export function getRandomInRange(minValue, maxValue) {
   // const limitNum = Math.random() * arr.length;
   return minValue + (maxValue - minValue) * Math.random();
 }
+
+export function shuffleArray(array) {
+  // 创建原数组的副本
+  const newArray = array.slice();
+
+  // 使用 Fisher-Yates 洗牌算法对副本数组进行乱序
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+
+  return newArray;
+}
+
+/**
+ * 获取随机索引
+ * @param {number} len
+ * @returns 0 至 (len - 1)
+ */
+export function getRandomIndex(len) {
+  // 确保随机出来的数字不会大于len
+  const value = Math.random() * len;
+  return Math.floor(value);
+}
