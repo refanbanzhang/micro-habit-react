@@ -1,10 +1,16 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Skeleton } from "@douyinfe/semi-ui";
 import { IconDescriptions } from "@douyinfe/semi-icons-lab";
 import { IconRefresh } from "@douyinfe/semi-icons";
 import useInsert from "@/shared/hooks/useInsert";
 
 import "./style.css";
+
+const getRandomIndex = (max) => {
+  // 确保随机出来的数字不会大于max
+  const value = Math.random() * max;
+  return Math.floor(value);
+};
 
 const animate = (element) => {
   element.classList.remove("animate");
@@ -17,34 +23,31 @@ function Sentence() {
   const { initLoading, content } = useInsert();
   const refreshBtnRef = useRef(null);
   const [items, setItems] = useState([]);
-  const [itemsCopy, setItemsCopy] = useState([]);
   const [sentence, setSentence] = useState("");
 
   useEffect(() => {
     if (content) {
       const items = content.split("\n").filter(Boolean);
       setItems(items);
-      setItemsCopy(items);
     }
   }, [content]);
 
-  const onRefresh = () => {
-    animate(refreshBtnRef.current);
-
+  const renderSentence = useCallback(() => {
     // TODO: 提取为一个独立的函数
     const nextItems = [...items];
-    // 随机出来的数字不会大于nextItems.length
-    const limitNum = Math.random() * nextItems.length
-    const randomIndex = Math.floor(limitNum);
+    const randomIndex = getRandomIndex(nextItems.length);
     const [item] = nextItems.splice(randomIndex, 1);
 
-    if (nextItems.length) {
-      setItems(nextItems);
-      setSentence(item);
-    } else {
-      setItems(itemsCopy);
-      setSentence(item);
-    }
+    setSentence(item);
+  }, [items]);
+
+  useEffect(() => {
+    renderSentence();
+  }, [renderSentence]);
+
+  const onRefresh = () => {
+    animate(refreshBtnRef.current);
+    renderSentence();
   };
 
   const placeholder = <Skeleton.Image style={{ height: 100 }} />;
