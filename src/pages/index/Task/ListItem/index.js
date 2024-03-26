@@ -22,7 +22,7 @@ function ListItem({ item, onShowModal, onDelete }) {
           render={
             <Dropdown.Menu>
               <Dropdown.Item>编辑任务</Dropdown.Item>
-              <Dropdown.Item onClick={() => onDelete(item)}>
+              <Dropdown.Item onClick={onDelete}>
                 删除任务
               </Dropdown.Item>
             </Dropdown.Menu>
@@ -32,7 +32,7 @@ function ListItem({ item, onShowModal, onDelete }) {
         </Dropdown>
       </div>
       <div className="absolute bottom-[10px] right-[10px]">
-        <IconHeart onClick={() => onShowModal(item._id)} />
+        <IconHeart onClick={onShowModal} />
       </div>
     </div>
   );

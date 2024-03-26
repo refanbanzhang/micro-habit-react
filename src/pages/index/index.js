@@ -9,10 +9,12 @@ import Duration from "@/shared/components/Duration";
 import Fixed from "@/shared/components/Fixed";
 
 import Task from "./Task";
+import useAddTask from "./Task/hooks/useAddTask";
 
 function Index() {
   const [timestamp, setTimestamp] = useState(Date.now());
-  const [taskVisible, setTaskVisible] = useState(false);
+  // TODO: 这里需要优化一下，不能为了一个外部新增按钮，将所有的数据都提到外面
+  const { visible, setVisible, onAddTaskCancel, onAddTaskConfirm } = useAddTask();
 
   return (
     <div className="flex flex-col">
@@ -36,14 +38,16 @@ function Index() {
           </div>
           <IconCopyAdd
             style={{ color: "rgba(var(--semi-grey-4), 1)" }}
-            onClick={() => setTaskVisible(true)}
+            onClick={() => setVisible(true)}
           />
         </div>
         <Task
-          taskVisible={taskVisible}
-          setTaskVisible={setTaskVisible}
+          taskVisible={visible}
+          setTaskVisible={setVisible}
           timestamp={timestamp}
           setTimestamp={setTimestamp}
+          onAddTaskCancel={onAddTaskCancel}
+          onAddTaskConfirm={onAddTaskConfirm}
         />
       </div>
       <div className="mx-[15px] mb-[15px]">

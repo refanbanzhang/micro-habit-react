@@ -1,129 +1,57 @@
-import { useState, useEffect } from "react";
 import { Button, Modal, Skeleton } from "@douyinfe/semi-ui";
-import { getToday, isMobile } from "@/shared/utils";
-import * as taskApi from "@/apis/task";
-import * as recordApi from "@/apis/record";
-import useFocus from '@/shared/hooks/useFocus';
+import { isMobile } from "@/shared/utils";
+import useFocus from "@/shared/hooks/useFocus";
 
 import ListItem from "./ListItem";
-import CreateForm from './CreateForm';
-import RemoveForm from './RemoveForm';
-import AddTimeForm from './AddTimeForm';
-import useRemove from './hooks/useRemove';
-import useAddTime from './hooks/useAddTime';
+import CreateForm from "./CreateForm";
+import RemoveForm from "./RemoveForm";
+import AddTimeForm from "./AddTimeForm";
+import useData from "./hooks/useData";
+import useRemove from "./hooks/useRemove";
+import useAddTime from "./hooks/useAddTime";
 
 function Task(props) {
-  const { timestamp, setTimestamp, taskVisible, setTaskVisible } = props;
-  const [loading, setLoading] = useState(true);
-  const [tasks, setTasks] = useState([]);
-  const [items, setItems] = useState([]);
-  const [taskName, setTaskName] = useState("");
-  const [taskTarget, setTaskTarget] = useState(5);
-  const { value, setValue, visible, onShowModal, onCancel, onConfirm } = useAddTime({
+  const { timestamp, setTimestamp, taskVisible, onAddTaskCancel, onAddTaskConfirm } = props;
+
+  const {
+    loading,
     tasks,
-    onDone: () => {
-      setTimestamp(Date.now());
-    }
+    items,
+    taskName,
+    setTaskName,
+    taskTarget,
+    setTaskTarget,
+  } = useData({
+    timestamp,
   });
+
+  const { value, setValue, visible, onShowModal, onCancel, onConfirm } =
+    useAddTime({
+      tasks,
+      onDone: () => {
+        setTimestamp(Date.now());
+      },
+    });
 
   const {
     visible: confirmDeleteTaskVisible,
     setVisible: setConfirmDeleteTaskVisible,
     confirmDeleteTaskName,
     setConfirmDeleteTaskName,
-    setCurrentOperationTask,
     onConfirmDeleteTaskConfirm,
+    onDelete,
   } = useRemove({
     onDone: () => {
       setTimestamp(Date.now());
-    }
+    },
   });
   const size = isMobile() ? "full-width" : "small";
   const { ref: inputRef } = useFocus({ visible: taskVisible });
-  const { ref: confirmDeleteTaskNameInputRef } = useFocus({ visible: confirmDeleteTaskVisible });
+  const { ref: confirmDeleteTaskNameInputRef } = useFocus({
+    visible: confirmDeleteTaskVisible,
+  });
 
-  const onAddTaskCancel = () => {
-    setTaskVisible(false);
-  };
-
-  const onAddTaskConfirm = async () => {
-    if (!taskName) {
-      alert("请输入任务名称");
-      return;
-    }
-
-    if (!taskTarget) {
-      alert("请输入目标时间");
-      return;
-    }
-
-    // 发起创建请求
-    await taskApi.add({
-      name: taskName,
-      target: taskTarget,
-    });
-
-    setTimestamp(Date.now());
-
-    onAddTaskCancel();
-  };
-
-  const onDelete = (item) => {
-    const config = {
-      size,
-      title: "确定要删除吗？",
-      content: "此操作将不可逆！",
-      ...(isMobile() ? {} : { width: "90%" }),
-      onOk: () => {
-        setConfirmDeleteTaskVisible(true);
-        setCurrentOperationTask(item);
-      },
-    };
-    Modal.error(config);
-  };
-
-  // 获取tasks
-  useEffect(() => {
-    const fetchData = async () => {
-      const today = getToday();
-
-      setLoading(true);
-      const res = await taskApi.list();
-      const tasks = res.data ?? [];
-
-      if (!tasks.length) {
-        setLoading(false);
-        return;
-      }
-
-      const pros = tasks.map((item) =>
-        recordApi.list({
-          date: today,
-          name: item.name,
-        })
-      );
-      Promise.all(pros).then((reses) => {
-        const records = reses.flatMap((res) => res.data);
-        // 往tasks里面塞了一个投入时间的字段value
-        const nextTasks = tasks.map((task) => {
-          const record = records.find((record) => task.name === record.name);
-          return {
-            ...task,
-            value: record?.value ?? 0,
-          };
-        });
-
-        setItems(nextTasks);
-        setTasks(tasks);
-        setLoading(false);
-      });
-    };
-    fetchData();
-  }, [timestamp]);
-
-  const placeholder = (
-    <Skeleton.Image style={{ height: 220 }} />
-  );
+  const placeholder = <Skeleton.Image style={{ height: 220 }} />;
 
   return (
     <>
@@ -133,8 +61,8 @@ function Task(props) {
             <ListItem
               key={item._id}
               item={item}
-              onShowModal={onShowModal}
-              onDelete={onDelete}
+              onShowModal={() => onShowModal(item._id)}
+              onDelete={() => onDelete(item)}
             />
           ))}
         </div>
@@ -146,7 +74,10 @@ function Task(props) {
         visible={taskVisible}
         onCancel={onAddTaskCancel}
         footer={
-          <Button type="primary" onClick={onAddTaskConfirm}>
+          <Button type="primary" onClick={async () => {
+            await onAddTaskConfirm(taskName, taskTarget);
+            setTimestamp(Date.now());
+          }}>
             确定
           </Button>
         }

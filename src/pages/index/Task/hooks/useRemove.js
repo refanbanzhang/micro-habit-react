@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Modal } from "@douyinfe/semi-ui";
+import { isMobile } from "@/shared/utils";
 import * as taskApi from "@/apis/task";
 
 const useRemove = ({ onDone }) => {
@@ -26,7 +28,22 @@ const useRemove = ({ onDone }) => {
     setCurrentOperationTask(null);
 
     onDone && onDone();
-  }
+  };
+
+  const onDelete = (item) => {
+    const size = isMobile() ? "full-width" : "small";
+    const config = {
+      size,
+      title: "确定要删除吗？",
+      content: "此操作将不可逆！",
+      ...(isMobile() ? {} : { width: "90%" }),
+      onOk: () => {
+        setVisible(true);
+        setCurrentOperationTask(item);
+      },
+    };
+    Modal.error(config);
+  };
 
   return {
     visible,
@@ -34,9 +51,9 @@ const useRemove = ({ onDone }) => {
     confirmDeleteTaskName,
     setConfirmDeleteTaskName,
     currentOperationTask,
-    setCurrentOperationTask,
     onConfirmDeleteTaskConfirm,
-  }
-}
+    onDelete,
+  };
+};
 
-export default useRemove
+export default useRemove;
