@@ -14,7 +14,8 @@ import useAddTask from "./Task/hooks/useAddTask";
 function Index() {
   const [timestamp, setTimestamp] = useState(Date.now());
   // TODO: 这里需要优化一下，不能为了一个外部新增按钮，将所有的数据都提到外面
-  const { visible, setVisible, onAddTaskCancel, onAddTaskConfirm } = useAddTask();
+  const { visible, setVisible, onAddTaskCancel, onAddTaskConfirm } =
+    useAddTask();
 
   return (
     <div className="flex flex-col">
@@ -24,10 +25,6 @@ function Index() {
         </Fixed>
       </div>
       <div className="mx-[15px] mb-[15px]">
-        <div className="mb-[15px] flex items-center text-[14px] font-bold">
-          <IconDescriptions className="mr-[5px]" />
-          <span>信条</span>
-        </div>
         <Sentence />
       </div>
       <div className="mx-[15px] mb-[15px]">

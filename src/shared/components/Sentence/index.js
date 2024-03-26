@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Skeleton } from "@douyinfe/semi-ui";
-import { IconRefresh } from "@douyinfe/semi-icons";
+import { IconDescriptions } from "@douyinfe/semi-icons-lab";
 import { getRandomInRange } from "@/shared/utils";
+import { IconRefresh } from "@douyinfe/semi-icons";
 import useInsert from "@/shared/hooks/useInsert";
 
 import "./style.css";
@@ -41,21 +42,28 @@ function Sentence() {
   const placeholder = <Skeleton.Image style={{ height: 100 }} />;
 
   return (
-    <Skeleton placeholder={placeholder} loading={initLoading} active>
-      <div className="relative flex items-center justify-center min-h-[100px] p-[10px] rounded-[3px] bg-[#eaeaea]">
+    <div>
+      <div className="flex justify-between mb-[15px] ">
+        <div className="flex items-center text-[14px] font-bold">
+          <IconDescriptions className="mr-[5px]" />
+          <span>信条</span>
+        </div>
         <div
           ref={refreshBtnRef}
-          className="absolute top-[10px] right-[10px] cursor-pointer"
+          className="top-[10px] right-[10px] cursor-pointer"
         >
           <IconRefresh
             onClick={onRefresh}
             style={{ color: "rgba(var(--semi-grey-5), 1)" }}
           />
         </div>
-
-        {sentence}
       </div>
-    </Skeleton>
+      <Skeleton placeholder={placeholder} loading={initLoading} active>
+        <div className="relative flex items-center justify-center min-h-[100px] p-[10px] rounded-[3px] bg-[#eaeaea]">
+          {sentence}
+        </div>
+      </Skeleton>
+    </div>
   );
 }
 
