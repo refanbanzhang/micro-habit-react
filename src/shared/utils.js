@@ -120,16 +120,13 @@ export function getRandomInRange(minValue, maxValue) {
 }
 
 export function shuffleArray(array) {
-  // 创建原数组的副本
-  const newArray = array.slice();
-
   // 使用 Fisher-Yates 洗牌算法对副本数组进行乱序
-  for (let i = newArray.length - 1; i > 0; i--) {
+  for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    [array[i], array[j]] = [array[j], array[i]];
   }
 
-  return newArray;
+  return array;
 }
 
 /**

@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Skeleton } from "@douyinfe/semi-ui";
 import { IconDescriptions } from "@douyinfe/semi-icons-lab";
 import { IconRefresh } from "@douyinfe/semi-icons";
 import useInsert from "@/shared/hooks/useInsert";
-import { getRandomIndex } from "@/shared/utils";
+import { shuffleArray } from "@/shared/utils";
 
 import "./style.css";
 
@@ -18,7 +18,20 @@ function Sentence() {
   const { initLoading, content } = useInsert();
   const refreshBtnRef = useRef(null);
   const [items, setItems] = useState([]);
-  const [index, setIndex] = useState(0);
+  const [sentence, setSentence] = useState("");
+  const itemsRef = useRef([]);
+  const itemsCopyRef = useRef([]);
+
+  const onRefresh = () => {
+    animate(refreshBtnRef.current);
+
+    const nextItems = shuffleArray(itemsRef.current);
+    const item = nextItems.pop();
+    if (!nextItems.length) {
+      itemsRef.current = [...itemsCopyRef.current];
+    }
+    setSentence(item);
+  };
 
   useEffect(() => {
     if (content) {
@@ -27,21 +40,17 @@ function Sentence() {
     }
   }, [content]);
 
-  const onRefresh = useCallback(() => {
-    animate(refreshBtnRef.current);
-    const index = getRandomIndex(items.length);
-    setIndex(index);
-  }, [items]);
-
   useEffect(() => {
     if (!items.length) {
       return;
     }
 
-    onRefresh();
-  }, [onRefresh, items]);
+    itemsRef.current = [...items];
+    itemsCopyRef.current = [...items];
 
-  const sentence = items[index];
+    onRefresh();
+  }, [items]);
+
   const placeholder = <Skeleton.Image style={{ height: 100 }} />;
 
   return (
