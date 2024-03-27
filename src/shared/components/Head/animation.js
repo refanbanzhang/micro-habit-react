@@ -1,4 +1,8 @@
 export const start = (event, isDark, cb) => {
+  if (!document.startViewTransition) {
+    cb();
+  }
+
   const x = event.clientX;
   const y = event.clientY;
 
