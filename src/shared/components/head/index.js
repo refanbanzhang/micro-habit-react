@@ -5,24 +5,26 @@ import { Dropdown } from "@douyinfe/semi-ui";
 import { IconAvatar } from "@douyinfe/semi-icons-lab";
 import { logout } from "@/shared/utils";
 import router from "@/router";
+import { useTranslation } from 'react-i18next';
 
 import { start } from "./animation";
 
 const initialIsDark = localStorage.getItem("isDark");
 
 function Head() {
+  const { t } = useTranslation();
   const [isDark, setIsDark] = useState(JSON.parse(initialIsDark));
   const [items] = useState([
     {
-      name: "时间",
+      name: `${t('time')}`,
       path: "/",
     },
     {
-      name: "检查清单",
+      name: `${t('checklist')}`,
       path: "/checklist",
     },
     {
-      name: "信条",
+      name: `${t('belief')}`,
       path: "/insert",
     },
   ]);
