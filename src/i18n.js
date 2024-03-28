@@ -9,10 +9,12 @@ import { initReactI18next } from 'react-i18next';
 // en代表英文
 // us代表美国
 
-export const lngs = {
-  en: { nativeName: 'English' },
-  zh: { nativeName: '中文' },
+export const langs = {
+  en: { nativeName: 'English', name: 'en' },
+  zh: { nativeName: '中文', name: 'zh' },
 };
+
+export const defaultLang = 'en';
 
 const resources = {
   zh: {
@@ -24,15 +26,15 @@ const resources = {
   },
   en: {
     translation: {
-      time: 'time',
-      checklist: 'checklist',
-      belief: 'belief'
+      time: 'Time',
+      checklist: 'Checklist',
+      belief: 'Belief'
     }
   },
 }
 
 i18n.use(initReactI18next).init({
-  fallbackLng: 'en',
+  fallbackLng: defaultLang,
   interpolation: {
     // not needed for react as it escapes by default
     escapeValue: false,

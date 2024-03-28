@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import classnames from "classnames";
+import { useTranslation } from 'react-i18next';
 import { Dropdown } from "@douyinfe/semi-ui";
 import { IconAvatar } from "@douyinfe/semi-icons-lab";
 import { logout } from "@/shared/utils";
 import router from "@/router";
-import { useTranslation } from 'react-i18next';
+import { defaultLang, langs } from '@/i18n';
 
 import { start } from "./animation";
 
 const initialIsDark = localStorage.getItem("isDark");
 
 function Head() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isDark, setIsDark] = useState(JSON.parse(initialIsDark));
+  const [lang, setLang] = useState(langs[defaultLang]);
   const [items] = useState([
     {
       name: `${t('time')}`,
@@ -58,6 +60,16 @@ function Head() {
     });
   };
 
+  const onChangeLang = () => {
+    if (lang.name === 'zh') {
+      setLang(langs.en);
+      i18n.changeLanguage('en');
+    } else {
+      setLang(langs.zh);
+      i18n.changeLanguage('zh');
+    }
+  }
+
   useEffect(() => {
     setDarkMode(isDark);
   }, [isDark]);
@@ -72,7 +84,7 @@ function Head() {
             <li
               key={item.path}
               className={classnames([
-                "mr-[15px] tracking-[3px] cursor-pointer",
+                "mr-[15px] tracking-wider cursor-pointer",
                 {
                   "font-bold underline underline-offset-[10px]":
                     pathname === item.path,
@@ -92,6 +104,9 @@ function Head() {
               <Dropdown.Item disabled>{username}</Dropdown.Item>
               <Dropdown.Item onClick={onChangeTheme}>
                 {isDark ? "夜晚" : "白天"}
+              </Dropdown.Item>
+              <Dropdown.Item onClick={onChangeLang}>
+                {lang.nativeName}
               </Dropdown.Item>
               <Dropdown.Item onClick={onLogout}>退出登录</Dropdown.Item>
             </Dropdown.Menu>
