@@ -1,35 +1,35 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import classnames from "classnames";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 import { Dropdown } from "@douyinfe/semi-ui";
 import { IconLanguage } from "@douyinfe/semi-icons";
 import { IconAvatar } from "@douyinfe/semi-icons-lab";
 import { logout } from "@/shared/utils";
 import router from "@/router";
-import { langs } from '@/i18n';
-import useLanguage from '@/shared/hooks/useLanguage';
+import { langs } from "@/i18n";
+import useLanguage from "@/shared/hooks/useLanguage";
+import useTheme from "@/shared/hooks/useTheme";
 
 import { start } from "./animation";
 
-const initialIsDark = localStorage.getItem("isDark");
-
 function Head() {
   const { t, i18n } = useTranslation();
-  const [isDark, setIsDark] = useState(JSON.parse(initialIsDark));
+  const { theme, updateTheme } = useTheme();
+
   const { setLanguage, getLanguage } = useLanguage();
   const [currentLang, setCurrentLang] = useState(getLanguage());
   const [items] = useState([
     {
-      name: 'time',
+      name: "time",
       path: "/",
     },
     {
-      name: 'checklist',
+      name: "checklist",
       path: "/checklist",
     },
     {
-      name: 'belief',
+      name: "belief",
       path: "/insert",
     },
   ]);
@@ -44,34 +44,36 @@ function Head() {
     router.navigate("/login");
   };
 
-  const setDarkMode = (value) => {
-    if (value) {
-      localStorage.setItem("isDark", true);
-      document.documentElement.classList.add("dark");
-      document.documentElement.setAttribute("data-theme", "dark");
-    } else {
-      localStorage.setItem("isDark", false);
-      document.documentElement.classList.remove("dark");
-      document.documentElement.setAttribute("data-theme", "light");
-    }
-  };
-
   const onChangeTheme = (event) => {
+    const isDark = theme === "dark";
     start(event, isDark, () => {
-      setIsDark(!isDark);
-      setDarkMode(!isDark);
+      // 这里可以更新theme，因为这里更新theme，因为这里的调用源头只会是用户点击按钮，所以不会有死循环的情况
+      updateTheme(!isDark ? "dark" : "light");
     });
   };
 
   const onChangeLang = (lang) => {
     i18n.changeLanguage(lang);
-    setCurrentLang(lang)
+    setCurrentLang(lang);
     setLanguage(lang);
-  }
+  };
 
   useEffect(() => {
-    setDarkMode(isDark);
-  }, [isDark]);
+    const isDark = theme === "dark";
+
+    const updateThemeUI = (value) => {
+      if (value) {
+        document.documentElement.classList.add("dark");
+        document.documentElement.setAttribute("data-theme", "dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    };
+
+    // 这个函数内部不应该存在更新theme的操作
+    updateThemeUI(isDark);
+  }, [theme]);
 
   const username = localStorage.getItem("username");
 
@@ -101,7 +103,13 @@ function Head() {
             clickToHide
             render={
               <Dropdown.Menu>
-                {Object.keys(langs).filter(key => key !== currentLang).map((key) => <Dropdown.Item key={key} onClick={() => onChangeLang(key)}>{langs[key].nativeName}</Dropdown.Item>)}
+                {Object.keys(langs)
+                  .filter((key) => key !== currentLang)
+                  .map((key) => (
+                    <Dropdown.Item key={key} onClick={() => onChangeLang(key)}>
+                      {langs[key].nativeName}
+                    </Dropdown.Item>
+                  ))}
               </Dropdown.Menu>
             }
           >
@@ -114,7 +122,7 @@ function Head() {
               <Dropdown.Menu>
                 <Dropdown.Item disabled>{username}</Dropdown.Item>
                 <Dropdown.Item onClick={onChangeTheme}>
-                  {isDark ? "夜晚" : "白天"}
+                  {theme === "light" ? "夜晚" : "白天"}
                 </Dropdown.Item>
                 <Dropdown.Item onClick={onLogout}>退出登录</Dropdown.Item>
               </Dropdown.Menu>
