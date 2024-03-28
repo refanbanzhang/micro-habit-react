@@ -1,28 +1,35 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import classnames from "classnames";
+import { useTranslation } from 'react-i18next';
 import { Dropdown } from "@douyinfe/semi-ui";
+import { IconLanguage } from "@douyinfe/semi-icons";
 import { IconAvatar } from "@douyinfe/semi-icons-lab";
 import { logout } from "@/shared/utils";
 import router from "@/router";
+import { langs } from '@/i18n';
+import useLanguage from '@/shared/hooks/useLanguage';
 
 import { start } from "./animation";
 
 const initialIsDark = localStorage.getItem("isDark");
 
 function Head() {
+  const { t, i18n } = useTranslation();
   const [isDark, setIsDark] = useState(JSON.parse(initialIsDark));
+  const { setLanguage, getLanguage } = useLanguage();
+  const [currentLang, setCurrentLang] = useState(getLanguage());
   const [items] = useState([
     {
-      name: "时间",
+      name: 'time',
       path: "/",
     },
     {
-      name: "打卡",
-      path: "/daily",
+      name: 'checklist',
+      path: "/checklist",
     },
     {
-      name: "信条",
+      name: 'belief',
       path: "/insert",
     },
   ]);
@@ -56,6 +63,12 @@ function Head() {
     });
   };
 
+  const onChangeLang = (lang) => {
+    i18n.changeLanguage(lang);
+    setCurrentLang(lang)
+    setLanguage(lang);
+  }
+
   useEffect(() => {
     setDarkMode(isDark);
   }, [isDark]);
@@ -64,13 +77,13 @@ function Head() {
 
   return (
     <div className="p-[15px] bg-[#efefef] max-w-[500px] mx-auto">
-      <div className="flex items-start justify-between">
+      <div className="flex items-center justify-between">
         <ul className="flex shrink-0">
           {items.map((item) => (
             <li
               key={item.path}
               className={classnames([
-                "mr-[15px] tracking-[3px] cursor-pointer",
+                "mr-[15px] tracking-wider cursor-pointer",
                 {
                   "font-bold underline underline-offset-[10px]":
                     pathname === item.path,
@@ -78,25 +91,38 @@ function Head() {
               ])}
               onClick={() => onClick(item.path)}
             >
-              {item.name}
+              {t(item.name)}
             </li>
           ))}
         </ul>
-        <Dropdown
-          trigger={"click"}
-          clickToHide
-          render={
-            <Dropdown.Menu>
-              <Dropdown.Item disabled>{username}</Dropdown.Item>
-              <Dropdown.Item onClick={onChangeTheme}>
-                {isDark ? "夜晚" : "白天"}
-              </Dropdown.Item>
-              <Dropdown.Item onClick={onLogout}>退出登录</Dropdown.Item>
-            </Dropdown.Menu>
-          }
-        >
-          <IconAvatar size="extra-large" />
-        </Dropdown>
+        <div className="flex items-center">
+          <Dropdown
+            trigger={"click"}
+            clickToHide
+            render={
+              <Dropdown.Menu>
+                {Object.keys(langs).filter(key => key !== currentLang).map((key) => <Dropdown.Item key={key} onClick={() => onChangeLang(key)}>{langs[key].nativeName}</Dropdown.Item>)}
+              </Dropdown.Menu>
+            }
+          >
+            <IconLanguage className="mr-[10px]" size="large" />
+          </Dropdown>
+          <Dropdown
+            trigger={"click"}
+            clickToHide
+            render={
+              <Dropdown.Menu>
+                <Dropdown.Item disabled>{username}</Dropdown.Item>
+                <Dropdown.Item onClick={onChangeTheme}>
+                  {isDark ? "夜晚" : "白天"}
+                </Dropdown.Item>
+                <Dropdown.Item onClick={onLogout}>退出登录</Dropdown.Item>
+              </Dropdown.Menu>
+            }
+          >
+            <IconAvatar size="extra-large" />
+          </Dropdown>
+        </div>
       </div>
     </div>
   );
