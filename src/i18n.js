@@ -1,5 +1,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import language from '@/shared/hooks/useLanguage';
+
+const { getLanguage } = language();
 
 // zh-cn/en-us是什么意思
 // 语言-国家
@@ -15,7 +18,6 @@ export const langs = {
   ja: { nativeName: '日本語', name: 'ja' },
 };
 
-export const defaultLang = 'ja';
 
 const resources = {
   zh: {
@@ -42,7 +44,7 @@ const resources = {
 }
 
 i18n.use(initReactI18next).init({
-  fallbackLng: defaultLang,
+  fallbackLng: getLanguage(),
   interpolation: {
     // not needed for react as it escapes by default
     escapeValue: false,

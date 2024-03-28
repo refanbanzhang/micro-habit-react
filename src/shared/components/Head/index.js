@@ -7,7 +7,8 @@ import { IconLanguage } from "@douyinfe/semi-icons";
 import { IconAvatar } from "@douyinfe/semi-icons-lab";
 import { logout } from "@/shared/utils";
 import router from "@/router";
-import { defaultLang, langs } from '@/i18n';
+import { langs } from '@/i18n';
+import useLanguage from '@/shared/hooks/useLanguage';
 
 import { start } from "./animation";
 
@@ -16,7 +17,8 @@ const initialIsDark = localStorage.getItem("isDark");
 function Head() {
   const { t, i18n } = useTranslation();
   const [isDark, setIsDark] = useState(JSON.parse(initialIsDark));
-  const [currentLang, setCurrentLang] = useState(defaultLang);
+  const { setLanguage, getLanguage } = useLanguage();
+  const [currentLang, setCurrentLang] = useState(getLanguage());
   const [items] = useState([
     {
       name: 'time',
@@ -64,6 +66,7 @@ function Head() {
   const onChangeLang = (lang) => {
     i18n.changeLanguage(lang);
     setCurrentLang(lang)
+    setLanguage(lang);
   }
 
   useEffect(() => {
@@ -98,7 +101,7 @@ function Head() {
             clickToHide
             render={
               <Dropdown.Menu>
-                {Object.keys(langs).filter(key => key !== currentLang).map((key) => <Dropdown.Item onClick={() => onChangeLang(key)}>{langs[key].nativeName}</Dropdown.Item>)}
+                {Object.keys(langs).filter(key => key !== currentLang).map((key) => <Dropdown.Item key={key} onClick={() => onChangeLang(key)}>{langs[key].nativeName}</Dropdown.Item>)}
               </Dropdown.Menu>
             }
           >
