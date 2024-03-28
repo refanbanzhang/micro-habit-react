@@ -18,8 +18,8 @@ function Head() {
       path: "/",
     },
     {
-      name: "打卡",
-      path: "/daily",
+      name: "检查清单",
+      path: "/checklist",
     },
     {
       name: "信条",

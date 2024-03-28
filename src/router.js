@@ -6,7 +6,7 @@ import FallbackLoading from './shared/components/FallbackLoading';
 const Index = React.lazy(() => import('@/pages/index'));
 const Login = React.lazy(() => import('@/pages/login'));
 const Register = React.lazy(() => import('@/pages/register'));
-const Daily = React.lazy(() => import('@/pages/daily'));
+const Checklist = React.lazy(() => import('@/pages/checklist'));
 const Insert = React.lazy(() => import('@/pages/insert'));
 
 export default createHashRouter([
@@ -37,11 +37,11 @@ export default createHashRouter([
     ),
   },
   {
-    path: '/daily',
+    path: '/checklist',
     element: (
       <Suspense fallback={<FallbackLoading />}>
         <Auth>
-          <Daily />
+          <Checklist />
         </Auth>
       </Suspense>
     ),
