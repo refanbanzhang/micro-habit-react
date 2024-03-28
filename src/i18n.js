@@ -11,10 +11,11 @@ import { initReactI18next } from 'react-i18next';
 
 export const langs = {
   en: { nativeName: 'English', name: 'en' },
-  zh: { nativeName: '中文', name: 'zh' },
+  zh: { nativeName: '简体中文', name: 'zh' },
+  ja: { nativeName: '日本語', name: 'ja' },
 };
 
-export const defaultLang = 'en';
+export const defaultLang = 'ja';
 
 const resources = {
   zh: {
@@ -31,6 +32,13 @@ const resources = {
       belief: 'Belief'
     }
   },
+  ja: {
+    translation: {
+      time: 'じかん',
+      checklist: 'チェックリスト',
+      belief: 'しんねん'
+    }
+  }
 }
 
 i18n.use(initReactI18next).init({
