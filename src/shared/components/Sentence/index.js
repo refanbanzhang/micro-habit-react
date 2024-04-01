@@ -22,15 +22,18 @@ function Sentence() {
   const itemsRef = useRef([]);
   const itemsCopyRef = useRef([]);
 
-  const onRefresh = () => {
-    animate(refreshBtnRef.current);
-
+  const refresh = () => {
     const nextItems = shuffleArray(itemsRef.current);
     const item = nextItems.pop();
     if (!nextItems.length) {
       itemsRef.current = [...itemsCopyRef.current];
     }
     setSentence(item);
+  };
+
+  const onRefresh = () => {
+    animate(refreshBtnRef.current);
+    refresh();
   };
 
   useEffect(() => {
@@ -48,7 +51,7 @@ function Sentence() {
     itemsRef.current = [...items];
     itemsCopyRef.current = [...items];
 
-    onRefresh();
+    refresh();
   }, [items]);
 
   const placeholder = <Skeleton.Image style={{ height: 100 }} />;
