@@ -98,7 +98,7 @@ const useAdd = ({ timestamp, onDone }) => {
 
       const taskRes = await dailyTaskApi.list();
       const dateRes = await dailyDateApi.list({
-        date: getToday(),
+        dates: [getToday()],
       });
       const nextTasks = await filterTaskByType(taskRes.data, 'week').then((data) => filterTaskByType(data, 'month'))
 
