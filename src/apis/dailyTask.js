@@ -39,6 +39,7 @@ export const list = (params) => request({
  * @param {Object} data
  * @param {string} data.name
  * @param {string} [data.link]
+ * @param {string} data.period
  * @returns {ApiResponse}
  */
 export const add = (data) => request({

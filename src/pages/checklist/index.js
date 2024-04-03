@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { flushSync } from "react-dom";
-import { Input, Modal, Skeleton, Dropdown } from "@douyinfe/semi-ui";
+import { Input, Modal, Skeleton, Dropdown, Select } from "@douyinfe/semi-ui";
 import { isMobile } from "@/shared/utils";
 import Head from "@/shared/components/Head";
 import { IconDescriptions, IconOverflow } from "@douyinfe/semi-icons-lab";
@@ -35,6 +35,8 @@ function Daily() {
     setTaskName,
     taskLink,
     setTaskLink,
+    taskPeriod,
+    setTaskPeriod,
     onCancel: onTaskNameModalCancel,
     onOk: onTaskNameModalOk,
   } = useAdd({
@@ -180,6 +182,11 @@ function Daily() {
       >
         <Input ref={inputRef} value={taskName} onChange={setTaskName} />
         <Input className="mt-[20px]" value={taskLink} onChange={setTaskLink} />
+        <Select className="mt-[20px]" value={taskPeriod}  onChange={setTaskPeriod} style={{ width: '100%' }}>
+            <Select.Option value="day">日检查项</Select.Option>
+            <Select.Option value="week">周检查项</Select.Option>
+            <Select.Option value="month">月检查项</Select.Option>
+        </Select>
       </Modal>
 
       <Modal

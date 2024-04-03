@@ -6,6 +6,7 @@ const useAdd = ({ onDone }) => {
   const [visible, setVisible] = useState(false);
   const [taskName, setTaskName] = useState("");
   const [taskLink, setTaskLink] = useState("");
+  const [taskPeriod, setTaskPeriod] = useState("day");
 
   const onCancel = () => {
     setVisible(false);
@@ -21,6 +22,7 @@ const useAdd = ({ onDone }) => {
     await dailyTaskApi.add({
       name: taskName,
       link: taskLink,
+      period: taskPeriod
     });
     onCancel();
 
@@ -34,6 +36,8 @@ const useAdd = ({ onDone }) => {
     setTaskName,
     taskLink,
     setTaskLink,
+    taskPeriod,
+    setTaskPeriod,
     onCancel,
     onOk,
   };

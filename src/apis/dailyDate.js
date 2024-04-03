@@ -22,16 +22,16 @@ import request from '@/shared/request';
 
 /**
  * 列表
- * @param {Object} params
- * @param {string} [params._id]
- * @param {string} [params.date]
- * @param {string} [params.name]
+ * @param {Object} data
+ * @param {string} [data._id]
+ * @param {string} [data.date]
+ * @param {string} [data.name]
  * @returns {DailyDateApiResponse}
  */
-export const list = (params) => request({
-  method: 'get',
+export const list = (data) => request({
+  method: 'post',
   url: '/dailyDate/list',
-  params,
+  data,
 });
 
 /**
