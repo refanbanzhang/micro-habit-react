@@ -1,4 +1,4 @@
-import { Checkbox, Dropdown } from "@douyinfe/semi-ui";
+import { Checkbox, Dropdown, Tag } from "@douyinfe/semi-ui";
 import { IconLink } from "@douyinfe/semi-icons";
 import { IconOverflow } from "@douyinfe/semi-icons-lab";
 
@@ -17,8 +17,9 @@ function ListItem(props) {
         defaultChecked={item.checked}
         onChange={onChange}
       />
-      <div className="flex flex-1 justify-center flex-col mr-[10px]">
+      <div className="flex flex-1 items-center">
         <span>{item.name}</span>
+        {['week', 'month'].includes(item.period) && <Tag className="ml-[5px]" size="small" color='amber'>{item.period}</Tag>}
         <div className="absolute flex right-[10px]">
           {item.link && (
             <IconLink
