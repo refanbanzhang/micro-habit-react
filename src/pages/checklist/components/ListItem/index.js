@@ -2,6 +2,11 @@ import { Checkbox, Dropdown, Tag } from "@douyinfe/semi-ui";
 import { IconLink } from "@douyinfe/semi-icons";
 import { IconOverflow } from "@douyinfe/semi-icons-lab";
 
+const periodTextSchema = {
+  week: '周',
+  month: '月',
+}
+
 function ListItem(props) {
   const { item, onEdit, onChange, onRemove } = props;
 
@@ -19,7 +24,7 @@ function ListItem(props) {
       />
       <div className="flex flex-1 items-center">
         <span>{item.name}</span>
-        {['week', 'month'].includes(item.period) && <Tag className="ml-[5px]" size="small" color='amber'>{item.period}</Tag>}
+        {['week', 'month'].includes(item.period) && <Tag className="ml-[5px]" size="small" color='amber'>{periodTextSchema[item.period]}</Tag>}
         <div className="absolute flex right-[10px]">
           {item.link && (
             <IconLink
