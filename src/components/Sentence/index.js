@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Skeleton } from "@douyinfe/semi-ui";
 import { IconDescriptions } from "@douyinfe/semi-icons-lab";
 import { IconRefresh } from "@douyinfe/semi-icons";
+import { useTranslation } from "react-i18next";
 import useInsert from "@/hooks/useInsert";
 import { shuffleArray } from "@/shared/utils";
 
@@ -21,6 +22,7 @@ function Sentence() {
   const [sentence, setSentence] = useState("");
   const itemsRef = useRef([]);
   const itemsCopyRef = useRef([]);
+  const { t } = useTranslation();
 
   const refresh = () => {
     const nextItems = shuffleArray(itemsRef.current);
@@ -61,7 +63,7 @@ function Sentence() {
       <div className="flex justify-between mb-[15px] ">
         <div className="flex items-center text-[14px] font-bold">
           <IconDescriptions className="mr-[5px]" />
-          <span>信条</span>
+          <span>{t('belief')}</span>
         </div>
         <div
           ref={refreshBtnRef}

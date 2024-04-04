@@ -1,0 +1,14 @@
+{
+  "zh": {
+    "finished": "已完成",
+    "unfinished": "未完成"
+  },
+  "en": {
+    "finished": "finished",
+    "unfinished": "unfinished"
+  },
+  "ja": {
+    "finished": "終えた",
+    "unfinished": "未完"
+  }
+}

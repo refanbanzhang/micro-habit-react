@@ -1,0 +1,20 @@
+{
+  "zh": {
+    "tasks": "任务",
+    "timeBlock": "时间块",
+    "progressBar": "进度条",
+    "top3": "top3"
+  },
+  "en": {
+    "tasks": "tasks",
+    "timeBlock": "Time block",
+    "progressBar": "Progress bar",
+    "top3": "top3"
+  },
+  "ja": {
+    "tasks": "タスク",
+    "timeBlock": "時間ブロック",
+    "progressBar": "プログレスバー",
+    "top3": "top3"
+  }
+}
