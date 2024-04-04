@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Skeleton } from "@douyinfe/semi-ui";
 import { IconDescriptions } from "@douyinfe/semi-icons-lab";
 import { IconRefresh } from "@douyinfe/semi-icons";
-import useInsert from "@/shared/hooks/useInsert";
+import useInsert from "@/hooks/useInsert";
 import { shuffleArray } from "@/shared/utils";
 
 import "./style.css";

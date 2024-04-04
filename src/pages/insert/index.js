@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Button, TextArea, Skeleton, Modal } from "@douyinfe/semi-ui";
 import { IconHistory } from "@douyinfe/semi-icons";
-import Fixed from "@/shared/components/Fixed";
-import Head from "@/shared/components/Head";
-import If from "@/shared/components/IF";
-import useInsert from "@/shared/hooks/useInsert";
+import Fixed from "@/components/Fixed";
+import Head from "@/components/Head";
+import If from "@/components/IF";
+import useInsert from "@/hooks/useInsert";
 
 import History from "./History";
 

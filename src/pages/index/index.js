@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { IconCopyAdd } from "@douyinfe/semi-icons";
 import { IconDescriptions } from "@douyinfe/semi-icons-lab";
-import Head from "@/shared/components/Head";
-import Year from "@/shared/components/Year";
-import Bar from "@/shared/components/Bar";
-import Sentence from "@/shared/components/Sentence";
-import Duration from "@/shared/components/Duration";
-import Fixed from "@/shared/components/Fixed";
+import Head from "@/components/Head";
+import Year from "@/components/Year";
+import Bar from "@/components/Bar";
+import Sentence from "@/components/Sentence";
+import Duration from "@/components/Duration";
+import Fixed from "@/components/Fixed";
 
 import Task from "./Task";
 import useAddTask from "./Task/hooks/useAddTask";

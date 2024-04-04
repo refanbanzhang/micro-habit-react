@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import * as publicApi from "@/apis/public";
-import openLoading from "@/shared/components/Loading/mount";
+import openLoading from "@/components/Loading/mount";
 
 /** @typedef {import('@/apis/public').Record} Record */
 

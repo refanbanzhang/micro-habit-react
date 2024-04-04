@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { getToday } from "@/shared/utils";
 import * as recordApi from "@/apis/record";
-import openLoading from "@/shared/components/Loading/mount";
+import openLoading from "@/components/Loading/mount";
 
 const useAddTime = ({ tasks, onDone }) => {
   const [value, setValue] = useState(25);

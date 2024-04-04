@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { createHashRouter } from 'react-router-dom';
-import Auth from '@/shared/components/Auth';
-import FallbackLoading from './shared/components/FallbackLoading';
+import Auth from '@/components/Auth';
+import FallbackLoading from '@/components/FallbackLoading';
 
 const Index = React.lazy(() => import('@/pages/index'));
 const Login = React.lazy(() => import('@/pages/login'));

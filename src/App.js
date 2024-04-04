@@ -1,6 +1,6 @@
 import { RouterProvider } from "react-router-dom";
 import router from "@/router";
-import FallbackLoading from './shared/components/FallbackLoading';
+import FallbackLoading from '@/components/FallbackLoading';
 
 function App() {
   return (

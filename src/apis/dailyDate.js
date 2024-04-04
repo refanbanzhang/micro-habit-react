@@ -1,4 +1,4 @@
-import request from '@/shared/request';
+import request from '@/apis/request';
 
 /**
  * @typedef {Object} DailyDate
@@ -47,15 +47,15 @@ export const add = (data) => request({
   data,
 });
 
-
 /**
  * 删除
- * @param {Object} params
- * @param {string} params.name
+ * @param {Object} data
+ * @param {string} data.date
+ * @param {string} data.name
  * @returns {ApiResponse}
  */
-export const del = (params) => request({
-  method: 'get',
+export const del = (data) => request({
+  method: 'post',
   url: '/dailyDate/del',
-  params,
+  data,
 });

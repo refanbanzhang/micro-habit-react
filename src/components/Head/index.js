@@ -8,8 +8,8 @@ import { IconAvatar } from "@douyinfe/semi-icons-lab";
 import { logout } from "@/shared/utils";
 import router from "@/router";
 import { langs } from "@/i18n";
-import useLanguage from "@/shared/hooks/useLanguage";
-import useTheme from "@/shared/hooks/useTheme";
+import useLanguage from "@/hooks/useLanguage";
+import useTheme from "@/hooks/useTheme";
 
 import { start } from "./animation";
 

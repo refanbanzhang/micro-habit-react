@@ -1,4 +1,4 @@
-import request from '@/shared/request';
+import request from '@/apis/request';
 
 /**
  * @typedef {Object} DailyTask
@@ -22,16 +22,16 @@ import request from '@/shared/request';
 
 /**
  * 列表
- * @param {Object} params
- * @param {string} [params._id]
- * @param {string} [params.name]
- * @param {string} [params.link]
+ * @param {Object} data
+ * @param {string} [data._id]
+ * @param {string} [data.name]
+ * @param {string} [data.link]
  * @returns {DailyTaskApiResponse}
  */
-export const list = (params) => request({
-  method: 'get',
+export const list = (data) => request({
+  method: 'post',
   url: '/dailyTask/list',
-  params,
+  data,
 });
 
 /**

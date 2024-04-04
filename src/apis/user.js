@@ -1,4 +1,4 @@
-import request from '@/shared/request';
+import request from '@/apis/request';
 
 /**
  * @typedef {Object} User

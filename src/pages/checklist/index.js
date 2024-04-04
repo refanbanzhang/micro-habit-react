@@ -2,11 +2,11 @@ import { useState } from "react";
 import { flushSync } from "react-dom";
 import { Input, Modal, Skeleton, Dropdown, Select } from "@douyinfe/semi-ui";
 import { isMobile } from "@/shared/utils";
-import Head from "@/shared/components/Head";
+import Head from "@/components/Head";
 import { IconDescriptions, IconOverflow } from "@douyinfe/semi-icons-lab";
-import Fixed from "@/shared/components/Fixed";
-import useFocus from "@/shared/hooks/useFocus";
-import IF from "@/shared/components/IF";
+import Fixed from "@/components/Fixed";
+import useFocus from "@/hooks/useFocus";
+import IF from "@/components/IF";
 
 import "./style.css";
 import ListItem from "./components/ListItem";

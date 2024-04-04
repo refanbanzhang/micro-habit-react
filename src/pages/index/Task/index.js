@@ -1,6 +1,6 @@
 import { Button, Modal, Skeleton } from "@douyinfe/semi-ui";
 import { isMobile } from "@/shared/utils";
-import useFocus from "@/shared/hooks/useFocus";
+import useFocus from "@/hooks/useFocus";
 
 import ListItem from "./ListItem";
 import CreateForm from "./CreateForm";

@@ -1,4 +1,4 @@
-import request from '@/shared/request';
+import request from '@/apis/request';
 
 /**
  * @typedef {Object} Record
@@ -57,30 +57,30 @@ export const update = (data = {}) =>
 
 /**
  * 记录列表
- * @param {Object} params
- * @param {string} [params.username]
- * @param {string} [params.date]
- * @param {string} [params.name]
- * @param {string} [params.value]
- * @param {string} [params.target]
+ * @param {Object} data
+ * @param {string} [data.username]
+ * @param {string} [data.date]
+ * @param {string} [data.name]
+ * @param {string} [data.value]
+ * @param {string} [data.target]
  * @returns {RecordApiResponse}
  */
-export const list = (params = {}) =>
+export const list = (data) =>
   request({
-    method: 'get',
+    method: 'post',
     url: '/record/list',
-    params,
+    data,
   });
 
 /**
  * 合计
- * @param {Object} params
- * @param {string} params.name
+ * @param {Object} data
+ * @param {string} data.name
  * @returns {Number}
  */
-export const totalValue = (params = {}) =>
+export const totalValue = (data) =>
   request({
-    method: 'get',
+    method: 'post',
     url: '/record/totalValue',
-    params,
+    data,
   });
