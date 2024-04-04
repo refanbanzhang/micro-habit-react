@@ -9,7 +9,7 @@ import { getToday } from "@/shared/utils";
  * @param {string} date - 格式为 'YYYY-MM-DD'
  * @returns {string[]} - 那一周的日期数组
  */
-const getWeekDatesByDate = (date) => {
+export const getWeekDatesByDate = (date) => {
   // 将输入的日期字符串转换为Date对象
   const inputDate = new Date(date);
 
@@ -23,7 +23,7 @@ const getWeekDatesByDate = (date) => {
   // 生成并返回那一周的所有日期
   return Array.from({ length: 7 }, (_, i) => {
     const weekDate = new Date(weekStart);
-    weekDate.setDate(weekStart.getDate() + i);
+    weekDate.setDate(weekStart.getDate() + i + 1);
     return weekDate.toISOString().split('T')[0];
   });
 };
@@ -33,7 +33,7 @@ const getWeekDatesByDate = (date) => {
  * @param {string} date - 格式为 'YYYY-MM-DD'
  * @returns {string[]} - 那个月的日期数组
  */
-const getMonthDatesByDate = (date) => {
+export const getMonthDatesByDate = (date) => {
   // 将输入的日期字符串转换为Date对象
   const inputDate = new Date(date);
 
