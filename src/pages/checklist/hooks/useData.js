@@ -50,7 +50,6 @@ const filterTaskByType = async (tasks, type) => {
   const today = getToday();
   const dates =
     type === "week" ? getWeekDatesByDate(today) : getMonthDatesByDate(today);
-  console.log(getMonthDatesByDate(today));
   const monthTask = tasks.filter((item) => item.period === type);
   const monthPros = monthTask.map(async (task) => {
     const res = await dailyDateApi.list({
