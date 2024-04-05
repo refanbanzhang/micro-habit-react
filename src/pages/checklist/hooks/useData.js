@@ -4,74 +4,70 @@ import * as dailyTaskApi from "@/apis/dailyTask";
 import * as dailyDateApi from "@/apis/dailyDate";
 import { getToday } from "@/shared/utils";
 
+const getDatesByDate = (handler) => {
+  // 使用处理函数计算开始日期和结束日期
+  const [startDate, endDate] = handler();
+  const length = endDate.getDate() - startDate.getDate() + 1;
+  return Array.from({ length }, (_, index) => {
+    const date = new Date(startDate);
+    date.setDate(startDate.getDate() + index + 1);
+    return date.toISOString().split("T")[0];
+  });
+};
+
 /**
  * 根据给定的日期返回那一周的所有日期
  * @param {string} date - 格式为 'YYYY-MM-DD'
  * @returns {string[]} - 那一周的日期数组
  */
-export const getWeekDatesByDate = (date) => {
-  // 将输入的日期字符串转换为Date对象
-  const inputDate = new Date(date);
-
-  // 获取输入日期是周几
-  const dayOfWeek = inputDate.getDay();
-
-  // 计算周一的日期
-  const weekStart = new Date(inputDate);
-  weekStart.setDate(inputDate.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1));
-
-  // 生成并返回那一周的所有日期
-  return Array.from({ length: 7 }, (_, i) => {
-    const weekDate = new Date(weekStart);
-    weekDate.setDate(weekStart.getDate() + i + 1);
-    return weekDate.toISOString().split('T')[0];
+export const getWeekDatesByDate = (dateString) =>
+  getDatesByDate(() => {
+    const date = new Date(dateString);
+    const dayOfWeek = date.getDay();
+    const startDate = new Date(date);
+    startDate.setDate(date.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1));
+    const endDate = new Date(startDate);
+    endDate.setDate(startDate.getDate() + 6);
+    return [startDate, endDate];
   });
-};
 
 /**
  * 根据给定的日期返回那个月的所有日期
  * @param {string} date - 格式为 'YYYY-MM-DD'
  * @returns {string[]} - 那个月的日期数组
  */
-export const getMonthDatesByDate = (date) => {
-  // 将输入的日期字符串转换为Date对象
-  const inputDate = new Date(date);
-
-  // 获取输入日期的年份和月份
-  const year = inputDate.getFullYear();
-  const month = inputDate.getMonth();
-
-  // 计算那个月的第一天和最后一天
-  const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month + 1, 0);
-
-  // 生成并返回那个月的所有日期
-  return Array.from({ length: lastDay.getDate() - firstDay.getDate() + 1 }, (_, i) => {
-    const monthDate = new Date(firstDay);
-    // setDate的参数指定0，那么日期就会被设置为上个月的最后一天
-    monthDate.setDate(firstDay.getDate() + i + 1);
-    return monthDate.toISOString().split('T')[0];
+export const getMonthDatesByDate = (dateString) =>
+  getDatesByDate(() => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const startDate = new Date(year, month, 1);
+    const endDate = new Date(year, month + 1, 0);
+    return [startDate, endDate];
   });
-};
 
 const filterTaskByType = async (tasks, type) => {
   const today = getToday();
-  const dates = type === 'week' ? getWeekDatesByDate(today) : getMonthDatesByDate(today)
-  const monthTask = tasks.filter(item => item.period === type)
-  const monthPros = monthTask.map(async task => {
+  const dates =
+    type === "week" ? getWeekDatesByDate(today) : getMonthDatesByDate(today);
+  console.log(getMonthDatesByDate(today));
+  const monthTask = tasks.filter((item) => item.period === type);
+  const monthPros = monthTask.map(async (task) => {
     const res = await dailyDateApi.list({
       name: task.name,
-      dates
-    })
+      dates,
+    });
     return {
       name: task.name,
       checked: res.data.length,
-    }
-  })
+    };
+  });
   const monthDateResItems = await Promise.all(monthPros);
-  const checkedMonthTaskNameItems = monthDateResItems.filter(item => item.checked).map(item => item.name);
-  return tasks.filter(task => !checkedMonthTaskNameItems.includes(task.name))
-}
+  const checkedMonthTaskNameItems = monthDateResItems
+    .filter((item) => item.checked)
+    .map((item) => item.name);
+  return tasks.filter((task) => !checkedMonthTaskNameItems.includes(task.name));
+};
 
 const useAdd = ({ timestamp, onDone }) => {
   const [tasks, setTasks] = useState([]);
@@ -100,7 +96,9 @@ const useAdd = ({ timestamp, onDone }) => {
       const dateRes = await dailyDateApi.list({
         dates: [getToday()],
       });
-      const nextTasks = await filterTaskByType(taskRes.data, 'week').then((data) => filterTaskByType(data, 'month'))
+      const nextTasks = await filterTaskByType(taskRes.data, "week").then(
+        (data) => filterTaskByType(data, "month")
+      );
 
       // 将dates中的数据，融合到tasks中，实现初始化选中
       const names = dateRes.data.map((item) => item.name);
