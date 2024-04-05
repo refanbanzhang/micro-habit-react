@@ -103,10 +103,16 @@ const useAdd = ({ timestamp, onDone }) => {
       // 将dates中的数据，融合到tasks中，实现初始化选中
       const names = dateRes.data.map((item) => item.name);
       setTasks(
-        nextTasks.map((item) => ({
-          ...item,
-          checked: names.includes(item.name),
-        }))
+        nextTasks
+          .map((item) => ({
+            ...item,
+            checked: names.includes(item.name),
+          }))
+          .sort(
+            (prev, next) =>
+              (next.position ? Number(next.position) : 0) -
+              (prev.position ? Number(prev.position) : 0)
+          )
       );
 
       setLoading(false);
