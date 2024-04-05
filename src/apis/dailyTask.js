@@ -66,6 +66,7 @@ export const del = (data) => request({
  * @param {string} data.id
  * @param {string} data.name
  * @param {string} [data.link]
+ * @param {'day'|'week'|'month'} [data.period]
  * @returns {ApiResponse}
  */
 export const update = (data) => request({

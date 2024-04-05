@@ -8,6 +8,7 @@ const useUpdate = ({ onDone }) => {
   const [editVisible, setEditVisible] = useState(false);
   const [updateTaskName, setUpdateTaskName] = useState("");
   const [updateTaskLink, setUpdateTaskLink] = useState("");
+  const [updateTaskPeriod, setUpdateTaskPeriod] = useState("");
   const [currentTask, setCurrentTask] = useState(null);
 
   const updateChecked = async ({ name, checked }) => {
@@ -32,8 +33,8 @@ const useUpdate = ({ onDone }) => {
       });
   };
 
-  const updateTask = async (id, name, link) => {
-    await dailyTaskApi.update({ id, name, link });
+  const updateTask = async (id, name, link, period) => {
+    await dailyTaskApi.update({ id, name, link, period });
 
     setCurrentTask(null);
     setUpdateTaskName("");
@@ -47,6 +48,7 @@ const useUpdate = ({ onDone }) => {
     setCurrentTask(target);
     setUpdateTaskName(target.name);
     setUpdateTaskLink(target.link);
+    setUpdateTaskPeriod(target.period);
     setEditVisible(true);
   };
 
@@ -54,14 +56,15 @@ const useUpdate = ({ onDone }) => {
     const { _id } = currentTask;
 
     if (
-      updateTaskName === currentTask.name &&
-      updateTaskLink === currentTask.link
+      updateTaskName === currentTask.name
+      && updateTaskLink === currentTask.link
+      && updateTaskPeriod === currentTask.period
     ) {
       Toast.error("未检测到修改");
       return;
     }
 
-    updateTask(_id, updateTaskName, updateTaskLink);
+    updateTask(_id, updateTaskName, updateTaskLink, updateTaskPeriod);
 
     // cleanup
     setUpdateTaskName("");
@@ -75,6 +78,8 @@ const useUpdate = ({ onDone }) => {
     setUpdateTaskName,
     updateTaskLink,
     setUpdateTaskLink,
+    updateTaskPeriod,
+    setUpdateTaskPeriod,
     currentTask,
     setCurrentTask,
     updateChecked,

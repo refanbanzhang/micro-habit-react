@@ -55,6 +55,8 @@ function Daily() {
     setUpdateTaskName,
     updateTaskLink,
     setUpdateTaskLink,
+    updateTaskPeriod,
+    setUpdateTaskPeriod,
     updateChecked,
     onEdit,
     onUpdateTaskOk,
@@ -213,6 +215,11 @@ function Daily() {
           value={updateTaskLink}
           onChange={setUpdateTaskLink}
         />
+        <Select className="mt-[20px]" value={updateTaskPeriod}  onChange={setUpdateTaskPeriod} style={{ width: '100%' }}>
+          <Select.Option value="day">日检查项</Select.Option>
+          <Select.Option value="week">周检查项</Select.Option>
+          <Select.Option value="month">月检查项</Select.Option>
+        </Select>
       </Modal>
     </div>
   );
