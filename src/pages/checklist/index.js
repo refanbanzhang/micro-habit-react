@@ -24,7 +24,7 @@ addResources(translation);
 function Daily() {
   const [timestamp, setTimestamp] = useState(Date.now());
   const [visibleFinished, setVisibleFinished] = useState(false);
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const onDone = () => {
     setTimestamp(Date.now());
@@ -57,10 +57,20 @@ function Daily() {
     setUpdateTaskLink,
     updateTaskPeriod,
     setUpdateTaskPeriod,
+    updateTaskPosition,
+    setUpdateTaskPosition,
     updateChecked,
     onEdit,
     onUpdateTaskOk,
   } = useUpdate({
+    onDonePosition(task) {
+      setTasks((tasks) =>
+        tasks.map((_task) => ({
+          ..._task,
+          position: _task._id === task.id ? task.position : undefined,
+        }))
+      );
+    },
     onDone({ name, checked }) {
       const nextTasks = tasks.map((item) => ({
         ...item,
@@ -139,7 +149,7 @@ function Daily() {
           <div className="flex items-center justify-between mb-[15px] font-bold">
             <div className="flex items-center">
               <IconDescriptions className="mr-[5px]" />
-              <span className="text-[14px]">{t('unfinished')}</span>
+              <span className="text-[14px]">{t("unfinished")}</span>
             </div>
             <Dropdown
               clickToHide
@@ -150,7 +160,8 @@ function Daily() {
                     <Dropdown.Item
                       onClick={() => setVisibleFinished((_state) => !_state)}
                     >
-                      {visibleFinished ? "隐藏" : "显示"}{t('finished')}
+                      {visibleFinished ? "隐藏" : "显示"}
+                      {t("finished")}
                     </Dropdown.Item>
                   )}
                   <Dropdown.Item onClick={() => setVisible(true)}>
@@ -172,7 +183,7 @@ function Daily() {
             <div className="flex items-center justify-between mb-[15px] font-bold">
               <div className="flex items-center">
                 <IconDescriptions className="mr-[5px]" />
-                <span className="text-[14px]">{t('finished')}</span>
+                <span className="text-[14px]">{t("finished")}</span>
               </div>
             </div>
             {finishedTasks.map(renderItem)}
@@ -190,10 +201,15 @@ function Daily() {
       >
         <Input ref={inputRef} value={taskName} onChange={setTaskName} />
         <Input className="mt-[20px]" value={taskLink} onChange={setTaskLink} />
-        <Select className="mt-[20px]" value={taskPeriod}  onChange={setTaskPeriod} style={{ width: '100%' }}>
-            <Select.Option value="day">日检查项</Select.Option>
-            <Select.Option value="week">周检查项</Select.Option>
-            <Select.Option value="month">月检查项</Select.Option>
+        <Select
+          className="mt-[20px]"
+          value={taskPeriod}
+          onChange={setTaskPeriod}
+          style={{ width: "100%" }}
+        >
+          <Select.Option value="day">日检查项</Select.Option>
+          <Select.Option value="week">周检查项</Select.Option>
+          <Select.Option value="month">月检查项</Select.Option>
         </Select>
       </Modal>
 
@@ -215,11 +231,21 @@ function Daily() {
           value={updateTaskLink}
           onChange={setUpdateTaskLink}
         />
-        <Select className="mt-[20px]" value={updateTaskPeriod}  onChange={setUpdateTaskPeriod} style={{ width: '100%' }}>
+        <Select
+          className="mt-[20px]"
+          value={updateTaskPeriod}
+          onChange={setUpdateTaskPeriod}
+          style={{ width: "100%" }}
+        >
           <Select.Option value="day">日检查项</Select.Option>
           <Select.Option value="week">周检查项</Select.Option>
           <Select.Option value="month">月检查项</Select.Option>
         </Select>
+        <Input
+          className="mt-[20px]"
+          value={updateTaskPosition}
+          onChange={setUpdateTaskPosition}
+        />
       </Modal>
     </div>
   );

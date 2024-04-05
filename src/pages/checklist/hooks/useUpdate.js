@@ -4,11 +4,12 @@ import * as dailyDateApi from "@/apis/dailyDate";
 import * as dailyTaskApi from "@/apis/dailyTask";
 import { getToday } from "@/shared/utils";
 
-const useUpdate = ({ onDone }) => {
+const useUpdate = ({ onDone, onDonePosition }) => {
   const [editVisible, setEditVisible] = useState(false);
   const [updateTaskName, setUpdateTaskName] = useState("");
   const [updateTaskLink, setUpdateTaskLink] = useState("");
   const [updateTaskPeriod, setUpdateTaskPeriod] = useState("");
+  const [updateTaskPosition, setUpdateTaskPosition] = useState();
   const [currentTask, setCurrentTask] = useState(null);
 
   const updateChecked = async ({ name, checked }) => {
@@ -33,15 +34,16 @@ const useUpdate = ({ onDone }) => {
       });
   };
 
-  const updateTask = async (id, name, link, period) => {
-    await dailyTaskApi.update({ id, name, link, period });
+  // TODO: 改成一个对象直接传进去
+  const updateTask = async (id, name, link, period, position) => {
+    await dailyTaskApi.update({ id, name, link, period, position });
 
     setCurrentTask(null);
     setUpdateTaskName("");
     setUpdateTaskLink("");
     setEditVisible(false);
 
-    onDone && onDone();
+    onDonePosition && onDonePosition({ id, name, link, period, position });
   };
 
   const onEdit = (target) => {
@@ -49,6 +51,7 @@ const useUpdate = ({ onDone }) => {
     setUpdateTaskName(target.name);
     setUpdateTaskLink(target.link);
     setUpdateTaskPeriod(target.period);
+    setUpdateTaskPosition(target.position);
     setEditVisible(true);
   };
 
@@ -59,12 +62,13 @@ const useUpdate = ({ onDone }) => {
       updateTaskName === currentTask.name
       && updateTaskLink === currentTask.link
       && updateTaskPeriod === currentTask.period
+      && updateTaskPosition === currentTask.position
     ) {
       Toast.error("未检测到修改");
       return;
     }
 
-    updateTask(_id, updateTaskName, updateTaskLink, updateTaskPeriod);
+    updateTask(_id, updateTaskName, updateTaskLink, updateTaskPeriod, updateTaskPosition);
 
     // cleanup
     setUpdateTaskName("");
@@ -80,6 +84,8 @@ const useUpdate = ({ onDone }) => {
     setUpdateTaskLink,
     updateTaskPeriod,
     setUpdateTaskPeriod,
+    updateTaskPosition,
+    setUpdateTaskPosition,
     currentTask,
     setCurrentTask,
     updateChecked,
