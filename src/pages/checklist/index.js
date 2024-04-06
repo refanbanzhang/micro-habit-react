@@ -9,6 +9,8 @@ import Fixed from "@/components/Fixed";
 import useFocus from "@/hooks/useFocus";
 import IF from "@/components/IF";
 import { addResources } from "@/i18n";
+import { DraggableWrap, DraggableItem } from "@/components/Draggable";
+import * as dailyTaskApi from "@/apis/dailyTask";
 
 import "./style.css";
 import ListItem from "./components/ListItem";
@@ -20,6 +22,35 @@ import Tips from "./components/Tips";
 import translation from "./translation";
 
 addResources(translation);
+
+// a little function to help us with reordering the result
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+  return result;
+};
+
+// 该函数的前提是前端的顺序和后端是一致的,目前是无法保证的
+const sort = (sourceIndex, destinationIndex, items) => {
+  // Create a new copy of the array
+  const nextItems = [...items];
+
+  // Remove the source item from its original position
+  const [removed] = nextItems.splice(sourceIndex, 1);
+
+  // Insert the source item at the destination position
+  nextItems.splice(destinationIndex, 0, removed);
+
+  // Update the order property of the items between the source and destination positions
+  const minIndex = Math.min(sourceIndex, destinationIndex);
+  const maxIndex = Math.max(sourceIndex, destinationIndex);
+  for (let i = minIndex; i <= maxIndex; i++) {
+    nextItems[i].position = i + 1;
+  }
+
+  return nextItems;
+};
 
 function Daily() {
   const [timestamp, setTimestamp] = useState(Date.now());
@@ -110,6 +141,30 @@ function Daily() {
 
   const size = isMobile() ? "full-width" : "small";
 
+  const updatePosition = (items) => {
+    dailyTaskApi.updatePosition({ items });
+  };
+
+  const onDragEnd = (result) => {
+    // dropped outside the list
+    if (!result.destination) {
+      return;
+    }
+
+    const nextItems = reorder(
+      tasks,
+      result.source.index,
+      result.destination.index
+    );
+    const nextNextItems = nextItems.map((item, index) => ({
+      ...item,
+      position: index + 1
+    }))
+    updatePosition(nextNextItems);
+
+    setTasks(nextItems);
+  };
+
   const renderPipe = (next) => {
     if (!tasks.length) {
       return <Tips type="IconEmpty">暂无数据</Tips>;
@@ -122,19 +177,25 @@ function Daily() {
     return next();
   };
 
-  const renderItem = (item) => (
-    <ListItem
+  const renderItem = (item, index) => (
+    <DraggableItem
+      className="mb-[10px]"
       key={item._id}
-      item={item}
-      onEdit={() => onEdit(item)}
-      onChange={(e) =>
-        onChange({
-          name: item.name,
-          checked: e.target.checked,
-        })
-      }
-      onRemove={() => onRemove(item._id)}
-    />
+      id={item._id}
+      index={index}
+    >
+      <ListItem
+        item={item}
+        onEdit={() => onEdit(item)}
+        onChange={(e) =>
+          onChange({
+            name: item.name,
+            checked: e.target.checked,
+          })
+        }
+        onRemove={() => onRemove(item._id)}
+      />
+    </DraggableItem>
   );
 
   return (
@@ -174,7 +235,9 @@ function Daily() {
             </Dropdown>
           </div>
           <Skeleton placeholder={placeholder} loading={loading} active>
-            {renderPipe(() => unfinishedTasks.map(renderItem))}
+            <DraggableWrap onDragEnd={onDragEnd}>
+              {renderPipe(() => unfinishedTasks.map(renderItem))}
+            </DraggableWrap>
           </Skeleton>
         </div>
 

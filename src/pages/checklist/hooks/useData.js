@@ -109,8 +109,8 @@ const useAdd = ({ timestamp, onDone }) => {
           }))
           .sort(
             (prev, next) =>
-              (next.position ? Number(next.position) : 0) -
-              (prev.position ? Number(prev.position) : 0)
+              (prev.position ? Number(prev.position) : 0) -
+              (next.position ? Number(next.position) : 0)
           )
       );
 

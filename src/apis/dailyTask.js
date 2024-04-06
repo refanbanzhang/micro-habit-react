@@ -75,3 +75,15 @@ export const update = (data) => request({
   url: '/dailyTask/update',
   data,
 });
+
+/**
+ * 更新排序
+ * @param {Object} data
+ * @param {task[]} data.items
+ * @returns {ApiResponse}
+ */
+export const updatePosition = (data) => request({
+  method: 'post',
+  url: '/dailyTask/updatePosition',
+  data,
+});
