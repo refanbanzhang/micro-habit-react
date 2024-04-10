@@ -52,7 +52,7 @@ const sort = (sourceIndex, destinationIndex, items) => {
   return nextItems;
 };
 
-function Daily() {
+function Checklist() {
   const [timestamp, setTimestamp] = useState(Date.now());
   const [visibleFinished, setVisibleFinished] = useState(false);
   const { t } = useTranslation();
@@ -314,4 +314,4 @@ function Daily() {
   );
 }
 
-export default Daily;
+export default Checklist;
