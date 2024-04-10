@@ -79,7 +79,8 @@ export const update = (data) => request({
 /**
  * 更新排序
  * @param {Object} data
- * @param {task[]} data.items
+ * @param {number} data.startIndex
+ * @param {number} data.endIndex
  * @returns {ApiResponse}
  */
 export const updatePosition = (data) => request({

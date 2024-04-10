@@ -141,8 +141,8 @@ function Checklist() {
 
   const size = isMobile() ? "full-width" : "small";
 
-  const updatePosition = (items) => {
-    dailyTaskApi.updatePosition({ items });
+  const updatePosition = (startIndex, endIndex) => {
+    dailyTaskApi.updatePosition({ startIndex, endIndex });
   };
 
   const onDragEnd = (result) => {
@@ -156,11 +156,7 @@ function Checklist() {
       result.source.index,
       result.destination.index
     );
-    const nextNextItems = nextItems.map((item, index) => ({
-      ...item,
-      position: index + 1
-    }))
-    updatePosition(nextNextItems);
+    updatePosition(result.source.index, result.destination.index);
 
     setTasks(nextItems);
   };
