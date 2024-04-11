@@ -79,8 +79,8 @@ export const update = (data) => request({
 /**
  * 更新排序
  * @param {Object} data
- * @param {number} data.startIndex
- * @param {number} data.endIndex
+ * @param {string} data.sourceId
+ * @param {string} data.order
  * @returns {ApiResponse}
  */
 export const updatePosition = (data) => request({

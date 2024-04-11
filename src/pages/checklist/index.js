@@ -21,6 +21,21 @@ import useUpdate from "./hooks/useUpdate";
 import Tips from "./components/Tips";
 import translation from "./translation";
 
+function getOrder(tasks, endIndex) {
+  let nextPosition;
+
+  if (endIndex === 0) {
+    nextPosition = tasks[0].position / 2;
+  } else if (endIndex === tasks.length - 1) {
+    nextPosition = tasks[endIndex].position + 10;
+  } else {
+    nextPosition =
+      (tasks[endIndex - 1].position + tasks[endIndex].position) / 2;
+  }
+
+  return nextPosition;
+}
+
 addResources(translation);
 
 // a little function to help us with reordering the result
@@ -141,8 +156,8 @@ function Checklist() {
 
   const size = isMobile() ? "full-width" : "small";
 
-  const updatePosition = (startIndex, endIndex) => {
-    dailyTaskApi.updatePosition({ startIndex, endIndex });
+  const updatePosition = (sourceId, order) => {
+    dailyTaskApi.updatePosition({ sourceId, order });
   };
 
   const onDragEnd = (result) => {
@@ -156,9 +171,25 @@ function Checklist() {
       result.source.index,
       result.destination.index
     );
-    updatePosition(result.source.index, result.destination.index);
 
-    setTasks(nextItems);
+    const order = getOrder(tasks, result.destination.index);
+    updatePosition(result.draggableId, order);
+
+    const nextNextItems = nextItems.map(item => {
+      if (item._id === result.draggableId) {
+        return {
+          ...item,
+          position: order,
+        }
+      }
+      return {
+        ...item,
+      }
+    })
+
+    debugger
+
+    setTasks(nextNextItems);
   };
 
   const renderPipe = (next) => {
