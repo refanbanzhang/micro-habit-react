@@ -46,27 +46,6 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-// 该函数的前提是前端的顺序和后端是一致的,目前是无法保证的
-const sort = (sourceIndex, destinationIndex, items) => {
-  // Create a new copy of the array
-  const nextItems = [...items];
-
-  // Remove the source item from its original position
-  const [removed] = nextItems.splice(sourceIndex, 1);
-
-  // Insert the source item at the destination position
-  nextItems.splice(destinationIndex, 0, removed);
-
-  // Update the order property of the items between the source and destination positions
-  const minIndex = Math.min(sourceIndex, destinationIndex);
-  const maxIndex = Math.max(sourceIndex, destinationIndex);
-  for (let i = minIndex; i <= maxIndex; i++) {
-    nextItems[i].position = i + 1;
-  }
-
-  return nextItems;
-};
-
 function Checklist() {
   const [timestamp, setTimestamp] = useState(Date.now());
   const [visibleFinished, setVisibleFinished] = useState(false);
@@ -156,8 +135,8 @@ function Checklist() {
 
   const size = isMobile() ? "full-width" : "small";
 
-  const updatePosition = (sourceId, order) => {
-    dailyTaskApi.updatePosition({ sourceId, order });
+  const updatePosition = (query) => {
+    dailyTaskApi.updatePosition(query);
   };
 
   const onDragEnd = (result) => {
@@ -173,7 +152,7 @@ function Checklist() {
     );
 
     const order = getOrder(tasks, result.destination.index);
-    updatePosition(result.draggableId, order);
+    updatePosition({ sourceId: result.draggableId, order });
 
     const nextNextItems = nextItems.map(item => {
       if (item._id === result.draggableId) {
@@ -186,8 +165,6 @@ function Checklist() {
         ...item,
       }
     })
-
-    debugger
 
     setTasks(nextNextItems);
   };
