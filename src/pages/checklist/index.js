@@ -23,8 +23,22 @@ import useUpdate from "./hooks/useUpdate";
 import Tips from "./components/Tips";
 import translation from "./translation";
 
-// 验证手机号
+/**
+ * @typedef {Object} Task
+ * @property {string} _id
+ * @property {string} name
+ * @property {string} link
+ * @property {string} period
+ * @property {number} position
+ * @property {boolean} checked
+ */
 
+/**
+ * 获取下一个位置
+ * @param {Task[]} tasks 任务列表
+ * @param {Number} endIndex 结束位置
+ * @returns {Number} 下一个位置
+ */
 export function getOrder(tasks, endIndex) {
   let nextPosition;
 
@@ -42,7 +56,14 @@ export function getOrder(tasks, endIndex) {
 
 addResources(translation);
 
-// a little function to help us with reordering the result
+/**
+ * Reorders an array by moving an element from one index to another.
+ *
+ * @param {Array} list - The original array to be reordered.
+ * @param {number} startIndex - The index of the element to be moved.
+ * @param {number} endIndex - The index where the element should be moved to.
+ * @returns {Array} - The reordered array.
+ */
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
