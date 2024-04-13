@@ -24,8 +24,8 @@ const useAdd = ({ onDone }) => {
       link: taskLink,
       period: taskPeriod
     });
-    onCancel();
 
+    onCancel();
     onDone && onDone();
   };
 
