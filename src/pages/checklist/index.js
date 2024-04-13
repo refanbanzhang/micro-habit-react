@@ -1,3 +1,5 @@
+// 帮我优化import排序
+
 import { useState } from "react";
 import { flushSync } from "react-dom";
 import { useTranslation } from "react-i18next";
@@ -21,7 +23,9 @@ import useUpdate from "./hooks/useUpdate";
 import Tips from "./components/Tips";
 import translation from "./translation";
 
-function getOrder(tasks, endIndex) {
+// 验证手机号
+
+export function getOrder(tasks, endIndex) {
   let nextPosition;
 
   if (endIndex === 0) {
