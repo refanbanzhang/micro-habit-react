@@ -4,11 +4,11 @@ function Tips(props) {
   const { type, children } = props;
 
   const icon = () => {
-    return type === "IconEmpty" ? (
-      <IconEmpty className="mb-[20px]" style={{ fontSize: 50 }} />
-    ) : (
-      <IconToast className="mb-[20px]" style={{ fontSize: 50 }} />
-    );
+    if (type === "IconEmpty") {
+      return <IconEmpty className="mb-[20px]" style={{ fontSize: 50 }} />;
+    }
+
+    return <IconToast className="mb-[20px]" style={{ fontSize: 50 }} />;
   };
 
   return (
