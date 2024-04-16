@@ -2,9 +2,20 @@ import { useState, useEffect } from "react";
 import { Skeleton } from "@douyinfe/semi-ui";
 import * as recordApi from "@/apis/record";
 
+interface Record {
+  createTime: string;
+  date: string;
+  name: string;
+  target: number;
+  updateTime: string;
+  username: string;
+  value: number;
+  _id: string;
+}
+
 function Duration(props) {
   const { timestamp } = props;
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<Record[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,7 +30,9 @@ function Duration(props) {
   }, [timestamp]);
 
   // 数据按日期归类
-  const obj = items.reduce((acc, curr) => {
+  const obj: {
+    [key: string]: Record[];
+  } = items.reduce((acc, curr) => {
     if (acc[curr.date]) {
       acc[curr.date].push(curr);
     } else {

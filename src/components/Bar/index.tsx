@@ -3,12 +3,17 @@ import { Skeleton } from "@douyinfe/semi-ui";
 import * as taskApi from "@/apis/task";
 import * as recordApi from "@/apis/record";
 
+interface Item {
+  name: string;
+  value: number;
+}
+
 
 // 将一万小时换算为分钟
 const target = 10000 * 60;
 
 function Bar() {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,6 +29,7 @@ function Bar() {
         }))
       );
       const resList = await Promise.all(pros);
+      debugger
       setItems(resList);
       setLoading(false);
     };
@@ -40,7 +46,7 @@ function Bar() {
       {items.map((item) => (
         <div key={item.name} className="mt-[15px] first:mt-0">
           <div className="font-bold mb-[10px]">
-            {item.name} 1万小时定律（{parseInt(item.value / 60)}/10000）
+            {item.name} 1万小时定律（{(item.value / 60).toFixed(0)}/10000）
           </div>
           <div className="h-[30px] border-r-[3px] bg-[#eaeaea]">
             <div

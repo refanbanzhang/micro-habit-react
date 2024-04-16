@@ -4,8 +4,9 @@
     "paths": {
       "@/*": ["src/*"]
     },
+    "resolveJsonModule": true,
     "esModuleInterop": true,
-    "jsx": "react"
+    "jsx": "react-jsx"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]

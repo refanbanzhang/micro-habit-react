@@ -1,4 +1,3 @@
-import React from 'react';
 import { Spin } from '@douyinfe/semi-ui';
 import { IconLoading } from '@douyinfe/semi-icons';
 

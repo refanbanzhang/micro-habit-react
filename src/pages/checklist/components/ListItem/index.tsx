@@ -14,7 +14,7 @@ function ListItem(props) {
     <div
       style={{
         "--id": `id${item._id}`,
-      }}
+      } as React.CSSProperties}
       className="item relative flex items-center  p-[10px] rounded-[3px] bg-[#f1f1f1]"
     >
       <Checkbox

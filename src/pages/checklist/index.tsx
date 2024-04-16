@@ -1,10 +1,10 @@
 // 帮我优化import排序
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { flushSync } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { Input, Modal, Skeleton, Dropdown, Select } from "@douyinfe/semi-ui";
-import { isMobile } from "@/shared/utils";
+import { isMobile } from "@/shared/utils/index";
 import Head from "@/components/Head";
 import { IconDescriptions, IconOverflow } from "@douyinfe/semi-icons-lab";
 import Fixed from "@/components/Fixed";
@@ -21,17 +21,16 @@ import useAdd from "./hooks/useAdd";
 import useData from "./hooks/useData";
 import useUpdate from "./hooks/useUpdate";
 import Tips from "./components/Tips";
-import translation from "./translation";
+import translation from "./translation.json";
 
-/**
- * @typedef {Object} Task
- * @property {string} _id
- * @property {string} name
- * @property {string} link
- * @property {string} period
- * @property {number} position
- * @property {boolean} checked
- */
+interface Task {
+  _id: string;
+  name: string;
+  link: string;
+  period: string;
+  position: number;
+  checked: boolean;
+}
 
 /**
  * 获取下一个位置
@@ -39,7 +38,7 @@ import translation from "./translation";
  * @param {Number} endIndex 结束位置
  * @returns {Number} 下一个位置
  */
-export function getOrder(tasks, endIndex) {
+export function getOrder(tasks: Task[], endIndex: number): number {
   let nextPosition;
 
   if (endIndex === 0) {
@@ -64,7 +63,7 @@ addResources(translation);
  * @param {number} endIndex - The index where the element should be moved to.
  * @returns {Array} - The reordered array.
  */
-const reorder = (list, startIndex, endIndex) => {
+const reorder = (list: Task[], startIndex, endIndex) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
