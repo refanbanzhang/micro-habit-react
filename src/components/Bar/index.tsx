@@ -29,7 +29,6 @@ function Bar() {
         }))
       );
       const resList = await Promise.all(pros);
-      debugger
       setItems(resList);
       setLoading(false);
     };

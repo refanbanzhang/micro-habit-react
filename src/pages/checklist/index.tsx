@@ -13,6 +13,7 @@ import IF from "@/components/IF";
 import { addResources } from "@/i18n";
 import { DraggableWrap, DraggableItem } from "@/components/Draggable";
 import * as dailyTaskApi from "@/apis/dailyTask";
+import { signal } from '@preact/signals-react'
 
 import "./style.css";
 import ListItem from "./components/ListItem";
@@ -70,9 +71,10 @@ const reorder = (list: Task[], startIndex, endIndex) => {
   return result;
 };
 
+const finishedVisbible = signal(false)
+
 function Checklist() {
   const [timestamp, setTimestamp] = useState(Date.now());
-  const [visibleFinished, setVisibleFinished] = useState(false);
   const { t } = useTranslation();
 
   const onDone = () => {
@@ -247,9 +249,11 @@ function Checklist() {
                 <Dropdown.Menu>
                   {tasks.length > 0 && (
                     <Dropdown.Item
-                      onClick={() => setVisibleFinished((_state) => !_state)}
+                      onClick={() => {
+                        finishedVisbible.value = !finishedVisbible.value
+                      }}
                     >
-                      {visibleFinished ? "隐藏" : "显示"}
+                      {finishedVisbible.value ? "隐藏" : "显示"}
                       {t("finished")}
                     </Dropdown.Item>
                   )}
@@ -269,7 +273,7 @@ function Checklist() {
           </Skeleton>
         </div>
 
-        <IF value={visibleFinished}>
+        <IF value={finishedVisbible.value}>
           <div className="mb-[15px]">
             <div className="flex items-center justify-between mb-[15px] font-bold">
               <div className="flex items-center">
