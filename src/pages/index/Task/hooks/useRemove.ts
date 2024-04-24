@@ -31,9 +31,7 @@ const useRemove = ({ onDone }) => {
   };
 
   const onDelete = (item) => {
-    const size = isMobile() ? "full-width" : "small";
     const config = {
-      size,
       title: "确定要删除吗？",
       content: "此操作将不可逆！",
       ...(isMobile() ? {} : { width: "90%" }),

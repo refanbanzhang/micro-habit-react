@@ -11,7 +11,7 @@ import Fixed from "@/components/Fixed";
 import { addResources } from "@/i18n";
 
 import Task from "./Task";
-import translation from "./translation";
+import translation from "./translation.json";
 import useAddTask from "./Task/hooks/useAddTask";
 
 addResources(translation);
