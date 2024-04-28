@@ -200,7 +200,7 @@ function Checklist() {
       return <Tips type="IconEmpty">暂无数据</Tips>;
     }
 
-    if (finishedTasks.length && !unfinishedTasks.length) {
+    if (finishedTasks.length && !nextUnfinishedTasks.length) {
       return <Tips type="IconToast">恭喜你，今天所有的任务都完成了！</Tips>;
     }
 
@@ -227,6 +227,17 @@ function Checklist() {
       />
     </DraggableItem>
   );
+
+  const nextUnfinishedTasks = unfinishedTasks.filter(item => {
+    // 如果为真，则只在周末显示
+    if (item.period) {
+      const day = new Date().getDay();
+      return day === 0 || day === 6;
+    }
+
+    return true;
+  })
+
 
   return (
     <div className="flex flex-col">
@@ -268,7 +279,7 @@ function Checklist() {
           </div>
           <Skeleton placeholder={placeholder} loading={loading} active>
             <DraggableWrap onDragEnd={onDragEnd}>
-              {renderPipe(() => unfinishedTasks.map(renderItem))}
+              {renderPipe(() => nextUnfinishedTasks.map(renderItem))}
             </DraggableWrap>
           </Skeleton>
         </div>
