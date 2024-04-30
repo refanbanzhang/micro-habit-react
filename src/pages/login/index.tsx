@@ -3,14 +3,31 @@ import { Button, Input, Typography, Toast } from "@douyinfe/semi-ui";
 import * as userApi from "@/apis/user";
 import router from "@/router";
 
+const useFocus = () => {
+  const ref = useRef(null);
+
+  const focus = () => {
+    ref.current?.focus();
+  }
+
+  useEffect(() => {
+    focus();
+  }, [])
+
+  return {
+    ref,
+    focus,
+  }
+}
+
 const { Text } = Typography;
 
 const cacheUsername = "cacheUsername";
 const cachePassword = "cachePassword";
 
 function Login() {
-  const usernameInputRef = useRef(null);
-  const passwordInputRef = useRef(null);
+  const { ref: usernameInputRef, focus: usernameInputFocus } = useFocus()
+  const { ref: passwordInputRef, focus: passwordInputFocus } = useFocus()
 
   const initialUsername = localStorage.getItem(cacheUsername) || "";
   const initialPassword = localStorage.getItem(cachePassword) || "";
@@ -44,18 +61,18 @@ function Login() {
   const onSubmit = useCallback(() => {
     if (!username) {
       Toast.error("请输入用户名");
-      usernameInputRef.current?.focus();
+      usernameInputFocus();
       return;
     }
 
     if (!password) {
       Toast.error("请输入密码");
-      passwordInputRef.current?.focus();
+      passwordInputFocus();
       return;
     }
 
     login();
-  }, [login, username, password]);
+  }, [login, username, password, usernameInputFocus, passwordInputFocus]);
 
   useEffect(() => {
     const onKeyup = (e) => {
